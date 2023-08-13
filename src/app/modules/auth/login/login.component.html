@@ -53,45 +53,9 @@
         class="form-control form-control-solid h-auto py-7 px-6 rounded-lg"
         type="text"
         name="email"
-
-      />
-
-      <!-- formControlName="email"
-      autocomplete="off"
-      [ngClass]="{ 'is-invalid': loginForm.controls['email'].invalid }" -->
-
-      <!-- <ng-container
-        [ngTemplateOutlet]="formError"
-        [ngTemplateOutletContext]="{
-          validation: 'required',
-          message: 'Email is required',
-          control: loginForm.controls['email']
-        }"
-      ></ng-container>       -->
-      <!-- <ng-container
-        [ngTemplateOutlet]="formError"
-        [ngTemplateOutletContext]="{
-          validation: 'email',
-          message: 'Email is invalid',
-          control: loginForm.controls['email']
-        }"
-      ></ng-container> -->
-      <!-- <ng-container
-        [ngTemplateOutlet]="formError"
-        [ngTemplateOutletContext]="{
-          validation: 'minLength',
-          message: 'Email should have at least 3 symbols',
-          control: loginForm.controls['email']
-        }"
-      ></ng-container> -->
-      <!-- <ng-container
-        [ngTemplateOutlet]="formError"
-        [ngTemplateOutletContext]="{
-          validation: 'maxLength',
-          message: 'Email should have maximum 360 symbols',
-          control: loginForm.controls['email']
-        }"
-      ></ng-container> -->
+        autocomplete="off"
+        formControlName="email"
+        [ngClass]="{ 'is-invalid': loginForm.controls['email'].invalid }" />
     </div>
     <!--end::Form group-->
 
@@ -101,13 +65,13 @@
         <label class="font-size-h6 font-weight-bolder text-dark pt-5"
           >Password</label
         >
-        <a
+        <!-- <a
           routerLink="/auth/forgot-password"
           class="text-primary font-size-h6 font-weight-bolder text-hover-primary pt-5"
           id="kt_login_forgot"
         >
           Forgot Password ?
-        </a>
+        </a> -->
       </div>
 
       <input
@@ -157,7 +121,7 @@
         Sign In
       </button>
 
-      <button
+      <!-- <button
         type="button"
         class="btn btn-light-primary font-weight-bolder px-8 py-4 my-3 font-size-lg"
       >
@@ -165,7 +129,7 @@
           <img src="./assets/media/svg/social-icons/google.svg" />
         </span>
         Sign in with Google
-      </button>
+      </button> -->
 
       <ng-container *ngIf="isLoading$ | async">
         <span class="spinner spinner-primary ml-5"></span>

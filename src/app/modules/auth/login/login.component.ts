@@ -18,8 +18,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   //   password: '',
   // };
   defaultAuth: any = {
-    email: 'test',
-    password: 'Ttuan123456@',
+    email: '',
+    password: 'Tt123456@',
   };
   loginForm: FormGroup;
   hasError: boolean;
@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.defaultAuth.email,
         Validators.compose([
           Validators.required,
-          Validators.email,
+          //Validators.email,
           Validators.minLength(3),
           Validators.maxLength(320), // https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
         ]),
@@ -77,6 +77,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submit() {
+    debugger;
     this.hasError = false;
     const loginSubscr = this.authService
       .login(this.f.email.value, this.f.password.value)

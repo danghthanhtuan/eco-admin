@@ -7,7 +7,7 @@ export const environment = {
   appVersion: 'v726demo1',
   USERDATA_KEY: 'authf649fc9a5f55',
   isMockEnabled: true,
-  apiUrl: 'https://localhost:5001/api'
+  apiUrl: 'https://thanhtuandang.bsite.net/api'
 };
 
 /*

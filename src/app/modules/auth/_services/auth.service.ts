@@ -3,9 +3,9 @@ import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { UserModel } from '../_models/user.model';
 import { AuthModel } from '../_models/auth.model';
-import { AuthHTTPService } from './auth-http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { AuthHTTPService } from './auth-http/auth-http.service';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +46,8 @@ export class AuthService implements OnDestroy {
   login(email: string, password: string): Observable<UserModel> {
     this.isLoadingSubject.next(true);
     return this.authHttpService.login(email, password).pipe(
-      map((auth: AuthModel) => {
+      map((authRes: any) => {
+        var auth : AuthModel = authRes.data;
         const result = this.setAuthFromLocalStorage(auth);
         return result;
       }),
@@ -68,14 +69,16 @@ export class AuthService implements OnDestroy {
 
   getUserByToken(): Observable<UserModel> {
     const auth = this.getAuthFromLocalStorage();
-    if (!auth || !auth.authToken) {
+    if (!auth || !auth.token) {
       return of(undefined);
     }
-
+    debugger;
     this.isLoadingSubject.next(true);
-    return this.authHttpService.getUserByToken(auth.authToken).pipe(
-      map((user: UserModel) => {
-        if (user) {
+    return this.authHttpService.getUserByToken(auth.token).pipe(
+      map((userRes: any) => {
+        if (userRes) {
+          var user = new UserModel;
+          user.fullname = userRes?.data?.fullName;
           this.currentUserSubject = new BehaviorSubject<UserModel>(user);
         } else {
           this.logout();
@@ -112,7 +115,7 @@ export class AuthService implements OnDestroy {
   // private methods
   private setAuthFromLocalStorage(auth: AuthModel): boolean {
     // store auth authToken/refreshToken/epiresIn in local storage to keep user logged in between page refreshes
-    if (auth && auth.authToken) {
+    if (auth && auth.token) {
       localStorage.setItem(this.authLocalStorageToken, JSON.stringify(auth));
       return true;
     }
