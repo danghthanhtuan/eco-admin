@@ -24,7 +24,7 @@ export class AuthHTTPService {
 
   // public methods
   login(email: string, password: string): Observable<any> {
-    debugger;
+
     var modelLogin = new LoginModel();
     modelLogin.username = email;
     modelLogin.password = password;

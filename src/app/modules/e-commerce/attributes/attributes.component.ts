@@ -18,7 +18,8 @@ import {
   IGroupingView,
   ISearchView,
 } from '../../../_metronic/shared/crud-table';
-// import { DeleteProductModalComponent } from './components/delete-product-modal/delete-product-modal.component';
+import { AttributesService } from '../_services/attributes.service';
+import { DeleteAttributeModalComponent } from './components/delete-attribute-modal/delete-attribute-modal.component';
 // import { DeleteProductsModalComponent } from './components/delete-products-modal/delete-products-modal.component';
 // import { UpdateProductsStatusModalComponent } from './components/update-products-status-modal/update-products-status-modal.component';
 // import { FetchProductsModalComponent } from './components/fetch-products-modal/fetch-products-modal.component';
@@ -32,7 +33,7 @@ export class AttributesComponent
   implements
   OnInit,
   OnDestroy,
-  // IDeleteAction,
+  IDeleteAction,
   // IDeleteSelectedAction,
   // IFetchSelectedAction,
   // IUpdateStatusForSelectedAction,
@@ -52,20 +53,21 @@ export class AttributesComponent
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
-    public productsService: ProductsService
+    //public productsService: ProductsService,
+    public attributeService : AttributesService
   ) { }
 
   // angular lifecircle hooks
   ngOnInit(): void {
     this.filterForm();
     this.searchForm();
-    this.productsService.fetch();
-    const sb = this.productsService.isLoading$.subscribe(res => this.isLoading = res);
+    this.attributeService.fetch();
+    const sb = this.attributeService.isLoading$.subscribe(res => this.isLoading = res);
     this.subscriptions.push(sb);
-    this.grouping = this.productsService.grouping;
-    this.paginator = this.productsService.paginator;
-    this.sorting = this.productsService.sorting;
-    this.productsService.fetch();
+    this.grouping = this.attributeService.grouping;
+    this.paginator = this.attributeService.paginator;
+    this.sorting = this.attributeService.sorting;
+    this.attributeService.fetch();
   }
 
   ngOnDestroy() {
@@ -100,7 +102,7 @@ export class AttributesComponent
     if (condition) {
       filter['condition'] = condition;
     }
-    this.productsService.patchState({ filter });
+    this.attributeService.patchState({ filter });
   }
 
   // search
@@ -122,7 +124,7 @@ export class AttributesComponent
   }
 
   search(searchTerm: string) {
-    this.productsService.patchState({ searchTerm });
+    this.attributeService.patchState({ searchTerm });
   }
 
   // sorting
@@ -135,31 +137,32 @@ export class AttributesComponent
     } else {
       sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
     }
-    this.productsService.patchState({ sorting });
+    this.attributeService.patchState({ sorting });
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.productsService.patchState({ paginator });
+    this.attributeService.patchState({ paginator });
   }
   // actions
-  // delete(id: number) {
-  //   const modalRef = this.modalService.open(DeleteProductModalComponent);
-  //   modalRef.componentInstance.id = id;
-  //   modalRef.result.then(
-  //     () => this.productsService.fetch(),
-  //     () => { }
-  //   );
-  // }
+  
+  delete(id: number) {
+    const modalRef = this.modalService.open(DeleteAttributeModalComponent);
+    modalRef.componentInstance.id = id;
+    modalRef.result.then(
+      () => this.attributeService.fetch(),
+      () => { }
+    );
+  }
 
-  // deleteSelected() {
-  //   const modalRef = this.modalService.open(DeleteProductsModalComponent);
-  //   modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-  //   modalRef.result.then(
-  //     () => this.productsService.fetch(),
-  //     () => { }
-  //   );
-  // }
+  deleteSelected() {
+    const modalRef = this.modalService.open(DeleteAttributeModalComponent);
+    modalRef.componentInstance.ids = this.grouping.getSelectedRows();
+    modalRef.result.then(
+      () => this.attributeService.fetch(),
+      () => { }
+    );
+  }
 
   // updateStatusForSelected() {
   //   const modalRef = this.modalService.open(

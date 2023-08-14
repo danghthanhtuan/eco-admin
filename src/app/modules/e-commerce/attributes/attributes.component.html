@@ -1,20 +1,20 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Products list</h3>
+      <h3 class="card-label">Thuộc tính sản phẩm</h3>
     </div>
     <div class="card-toolbar">
       <a
         type="button"
         class="btn btn-primary"
         routerLink="/ecommerce/product/add"
-        >New Product</a
+        >New Attribute</a
       >
     </div>
   </div>
   <div class="card-body">
     <!-- begin: Filtration form -->
-    <div class="form form-label-right">
+    <!-- <div class="form form-label-right">
       <div class="form-group row">
         <div class="col-lg-4">
           <div class="row" [formGroup]="filterGroup">
@@ -61,7 +61,7 @@
           >
         </div>
       </div>
-    </div>
+    </div> -->
     <!-- end: Filtration form -->
 
     <!-- begin: Grouping -->
@@ -83,25 +83,29 @@
               <div>
                 <button
                   type="button"
-                  class="btn btn-danger font-weight-bolder font-size-sm mr-1"
-                  --(click)="deleteSelected()"
+                  class="btn btn-danger font-weight-bolder font-size-sm mr-1"               
                 >
+                <!-- --(click)="deleteSelected()" -->
                   <i class="fa fa-trash"></i> Delete All</button
                 >&nbsp;
                 <button
                   type="button"
                   class="btn btn-light-primary font-weight-bolder font-size-sm mr-1"
-                  --(click)="fetchSelected()"
+                
                 >
+                <!-- --(click)="fetchSelected()" -->
                   <i class="fa fa-stream"></i> Fetch Selected</button
                 >&nbsp;
                 <button
                   type="button"
                   class="btn btn-light-primary font-weight-bolder font-size-sm"
-                  --(click)="updateStatusForSelected()"
+                 
                 >
                   <i class="fa fa-sync-alt"></i> Update Status
                 </button>
+
+                <!-- (click)="updateStatusForSelected()" -->
+
               </div>
             </div>
           </div>
@@ -124,7 +128,7 @@
             ></label>
           </th>
           <th>
-            VIN CODE (ID)
+            (ID)
             <app-sort-icon
               column="VINCode"
               [activeColumn]="sorting.column"
@@ -133,111 +137,35 @@
             ></app-sort-icon>
           </th>
           <th>
-            MANUFACTURE
+            Name
             <app-sort-icon
               column="manufacture"
               [activeColumn]="sorting.column"
               [activeDirection]="sorting.direction"
               (sort)="sort($event)"
             ></app-sort-icon>
-          </th>
-          <th>
-            MODEL
-            <app-sort-icon
-              column="model"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon>
-          </th>
-          <th>
-            YEAR
-            <app-sort-icon
-              column="modelYear"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon>
-          </th>
-          <th>
-            COLOR
-            <app-sort-icon
-              column="color"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon>
-          </th>
-          <th>
-            PRICE
-            <app-sort-icon
-              column="price"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon>
-          </th>
-          <th>
-            STATUS
-            <app-sort-icon
-              column="status"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon>
-          </th>
-          <th>
-            CONDITION
-            <app-sort-icon
-              column="condition"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon>
-          </th>
+          </th>       
           <th>ACTIONS</th>
         </thead>
         <tbody>
-          <tr *ngFor="let product of productsService.items$ | async">
+          <tr *ngFor="let att of attributeService.items$ | async">
             <td class="selection-cell">
               <label class="checkbox checkbox-single"
                 ><input
                   type="checkbox"
-                  (click)="grouping.selectRow(product.id)"
-                  [checked]="grouping.isRowSelected(product.id)"
+                  (click)="grouping.selectRow(att.id)"
+                  [checked]="grouping.isRowSelected(att.id)"
                 />
                 <span></span>
               </label>
             </td>
-            <td>{{ product.VINCode }}</td>
-            <td>{{ product.manufacture }}</td>
-            <td>{{ product.model }}</td>
-            <td>{{ product.modelYear }}</td>
-            <td>
-              <span [style.color]="product.color">{{ product.color }}</span>
-            </td>
-            <td>$ {{ product.price }}</td>
-            <td>
-              <span
-                class="label label-lg label-inline"
-                [class.label-light-success]="product.status === 1"
-                [class.label-light-primary]="product.status === 2"
-              >
-                <ng-container *ngIf="product.status === 1"
-                  >Selling</ng-container
-                >
-                <ng-container *ngIf="product.status === 2">Sold</ng-container>
-              </span>
-            </td>
-            <td>
-              <ng-container *ngIf="product.condition === 1">NEW</ng-container>
-              <ng-container *ngIf="product.condition === 2">USED</ng-container>
-            </td>
+            <td>{{ att.id }}</td>
+            <td>{{ att.name }}</td>
             <td>
               <a
                 title="Edit product"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-                [routerLink]="'/ecommerce/product/edit/' + product.id"
+                [routerLink]="'/ecommerce/product/edit/' + att.id"
               >
                 <span
                   [inlineSVG]="
@@ -251,8 +179,9 @@
               <a
                 title="Delete product"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
-                --(click)="delete(product.id)"
+                (click)="delete(att.id)"
               >
+              <!-- --(click)="delete(product.id)" -->
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
                   cacheSVG="true"

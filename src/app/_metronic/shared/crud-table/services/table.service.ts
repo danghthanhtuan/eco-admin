@@ -29,6 +29,7 @@ export abstract class TableService<T> {
 
   // Getters
   get items$() {
+    console.log(this._items$);
     return this._items$.asObservable();
   }
   get isLoading$() {
@@ -177,6 +178,7 @@ export abstract class TableService<T> {
     const request = this.find(this._tableState$.value)
       .pipe(
         tap((res: TableResponseModel<T>) => {
+          debugger;
           this._items$.next(res.items);
           this.patchStateWithoutFetch({
             paginator: this._tableState$.value.paginator.recalculatePaginator(
