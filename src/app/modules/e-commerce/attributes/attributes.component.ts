@@ -24,7 +24,7 @@ import {
 // import { FetchProductsModalComponent } from './components/fetch-products-modal/fetch-products-modal.component';
 
 @Component({
-  selector: 'app-products',
+  selector: 'app-attributes',
   templateUrl: './attributes.component.html',
   styleUrls: ['./attributes.component.scss'],
 })

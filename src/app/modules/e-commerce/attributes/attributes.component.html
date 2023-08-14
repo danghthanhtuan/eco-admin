@@ -84,21 +84,21 @@
                 <button
                   type="button"
                   class="btn btn-danger font-weight-bolder font-size-sm mr-1"
-                  (click)="deleteSelected()"
+                  --(click)="deleteSelected()"
                 >
                   <i class="fa fa-trash"></i> Delete All</button
                 >&nbsp;
                 <button
                   type="button"
                   class="btn btn-light-primary font-weight-bolder font-size-sm mr-1"
-                  (click)="fetchSelected()"
+                  --(click)="fetchSelected()"
                 >
                   <i class="fa fa-stream"></i> Fetch Selected</button
                 >&nbsp;
                 <button
                   type="button"
                   class="btn btn-light-primary font-weight-bolder font-size-sm"
-                  (click)="updateStatusForSelected()"
+                  --(click)="updateStatusForSelected()"
                 >
                   <i class="fa fa-sync-alt"></i> Update Status
                 </button>
@@ -251,7 +251,7 @@
               <a
                 title="Delete product"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
-                (click)="delete(product.id)"
+                --(click)="delete(product.id)"
               >
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Attribute, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { InlineSVGModule } from 'ng-inline-svg';
@@ -29,6 +29,7 @@ import { DeleteSpecsModalComponent } from './products/product-edit/specification
 import { FetchSpecsModalComponent } from './products/product-edit/specifications/fetch-specs-modal/fetch-specs-modal.component';
 import { EditRemarkModalComponent } from './products/product-edit/remarks/edit-remark-modal/edit-remark-modal.component';
 import { EditSpecModalComponent } from './products/product-edit/specifications/edit-spec-modal/edit-spec-modal.component';
+import { AttributesComponent } from './attributes/attributes.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { EditSpecModalComponent } from './products/product-edit/specifications/e
     FetchSpecsModalComponent,
     EditRemarkModalComponent,
     EditSpecModalComponent,
+    AttributesComponent
   ],
   imports: [
     CommonModule,

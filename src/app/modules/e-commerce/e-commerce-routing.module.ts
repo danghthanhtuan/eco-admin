@@ -5,12 +5,17 @@ import { ECommerceComponent } from './e-commerce.component';
 import { CustomersComponent } from './customers/customers.component';
 import { ProductsComponent } from './products/products.component';
 import { ProductEditComponent } from './products/product-edit/product-edit.component';
+import { AttributesComponent } from './attributes/attributes.component';
 
 const routes: Routes = [
   {
     path: '',
     component: ECommerceComponent,
     children: [
+       {
+      path: 'attributes',
+      component: AttributesComponent,
+      },
       {
         path: 'customers',
         component: CustomersComponent,
