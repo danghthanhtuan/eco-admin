@@ -43,7 +43,7 @@ export class CustomersService extends TableService<Customer> implements OnDestro
   deleteItems(ids: number[] = []): Observable<any> {
     const tasks$ = [];
     ids.forEach(id => {
-      tasks$.push(this.delete(id));
+      tasks$.push(this.delete(id, ''));
     });
     return forkJoin(tasks$);
   }

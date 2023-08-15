@@ -4,33 +4,30 @@ import { ITableState, TableResponseModel, TableService } from "src/app/_metronic
 import { Attribute } from "../_models/attribute.model";
 import { environment } from "src/environments/environment";
 import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { baseFilter } from '../../../_fake/fake-helpers/http-extenstions';
-import { exhaustMap, map } from 'rxjs/operators';
+import { exhaustMap, map, mergeMap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
   })
   export class AttributesService extends TableService<Attribute> {
-    API_URL = `${environment.apiUrl}/v1/attribute/all`;
+    API_URL = `${environment.apiUrl}`;
     constructor(@Inject(HttpClient) http) {
       super(http);
     }
 
      // READ
   find(tableState: ITableState): Observable<TableResponseModel<Attribute>> {
-    return this.http.get<Attribute[]>(this.API_URL).pipe(
-      map((response: any) => {
-
+    return this.http.get<any>(this.API_URL + '/v1/attribute/all').pipe(
+      mergeMap((response: any) => {
         var res :  Attribute[] = response.data
-        debugger;
-
         const filteredResult = baseFilter(res, tableState);
         const result: TableResponseModel<Attribute> = {
           items: filteredResult.items,
           total: filteredResult.total
         };
-        return result;
+        return of<TableResponseModel<Attribute>>(<TableResponseModel<Attribute>> result);
       })
     );
   }

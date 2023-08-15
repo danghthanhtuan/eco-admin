@@ -33,7 +33,7 @@ export class SpecificationsService extends TableService<ProductSpecification> im
   deleteItems(ids: number[] = []): Observable<any> {
     const tasks$ = [];
     ids.forEach(id => {
-      tasks$.push(this.delete(id));
+      tasks$.push(this.delete(id, ''));
     });
     return forkJoin(tasks$);
   }

@@ -14,7 +14,7 @@
   </ng-container>
 
   <ng-container *ngIf="!isLoading">
-    <span>Are you sure to permanently delete this product?</span>
+    <span>Bạn muốn xoá?</span>
   </ng-container>
 </div>
 
@@ -23,7 +23,7 @@
     <button type="button" class="btn btn-light btn-elevate mr-1" (click)="modal.dismiss()">
       Cancel
     </button>&nbsp;
-    <button type="button" class="btn btn-primary btn-elevate" (click)="deleteProduct()">
+    <button type="button" class="btn btn-primary btn-elevate" (click)="deleteAttribute()">
       Delete
     </button>
   </div>

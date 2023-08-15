@@ -21,7 +21,7 @@ export class DeleteRemarkModalComponent implements OnInit, OnDestroy {
 
   deleteRemark() {
     this.isLoading = true;
-    const sb = this.remraksService.delete(this.id).pipe(
+    const sb = this.remraksService.delete(this.id, '').pipe(
       delay(1000), // Remove it from your code (just for showing loading)
       tap(() => this.modal.close()),
       catchError((err) => {

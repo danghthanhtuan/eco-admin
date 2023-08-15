@@ -103,7 +103,7 @@ export class EditCustomerModalComponent implements OnInit, OnDestroy {
   }
 
   create() {
-    const sbCreate = this.customersService.create(this.customer).pipe(
+    const sbCreate = this.customersService.create(this.customer, '').pipe(
       tap(() => {
         this.modal.close();
       }),

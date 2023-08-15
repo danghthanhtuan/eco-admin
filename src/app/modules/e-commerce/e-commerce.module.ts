@@ -31,6 +31,7 @@ import { EditRemarkModalComponent } from './products/product-edit/remarks/edit-r
 import { EditSpecModalComponent } from './products/product-edit/specifications/edit-spec-modal/edit-spec-modal.component';
 import { AttributesComponent } from './attributes/attributes.component';
 import { DeleteAttributeModalComponent } from './attributes/components/delete-attribute-modal/delete-attribute-modal.component';
+import { AddAttributeModalComponent } from './attributes/components/add-attribute-modal/add-attribute-modal.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { DeleteAttributeModalComponent } from './attributes/components/delete-at
     EditRemarkModalComponent,
     EditSpecModalComponent,
     AttributesComponent,
-    DeleteAttributeModalComponent
+    DeleteAttributeModalComponent,
+    AddAttributeModalComponent
   ],
   imports: [
     CommonModule,

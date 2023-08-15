@@ -1,5 +1,5 @@
 // tslint:disable:variable-name
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
 import { PaginatorState } from '../models/paginator.model';
@@ -27,6 +27,24 @@ export abstract class TableService<T> {
   private _errorMessage = new BehaviorSubject<string>('');
   private _subscriptions: Subscription[] = [];
 
+  httpOptions = {
+    headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Authorization' : this.getToken()
+    }),
+  };
+
+  getToken(){
+    debugger;
+    var token = '';
+    if(localStorage.getItem(`${environment.appVersion}-${environment.USERDATA_KEY}`)){
+      var auth: any = JSON.parse(localStorage.getItem(`${environment.appVersion}-${environment.USERDATA_KEY}`));
+      token = auth.token;
+    }
+    return token;
+  }
   // Getters
   get items$() {
     console.log(this._items$);
@@ -63,17 +81,34 @@ export abstract class TableService<T> {
 
   protected http: HttpClient;
   // API URL has to be overrided
-  API_URL = `${environment.apiUrl}/endpoint`;
+  API_URL = `${environment.apiUrl}`;
   constructor(http: HttpClient) {
     this.http = http;
   }
 
   // CREATE
   // server should return the object with ID
-  create(item: BaseModel): Observable<BaseModel> {
+  create(item: BaseModel, endpoint: string): Observable<BaseModel> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
-    return this.http.post<BaseModel>(this.API_URL, item).pipe(
+    return this.http.post<BaseModel>(this.API_URL + endpoint, item).pipe(
+      catchError(err => {
+        this._errorMessage.next(err);
+        console.error('CREATE ITEM', err);
+        return of({ id: undefined });
+      }),
+      finalize(() => this._isLoading$.next(false))
+    );
+  }
+
+  // CREATE
+  // server should return the object with ID
+  createArr(item: BaseModel, endpoint: string): Observable<BaseModel> {
+    this._isLoading$.next(true);
+    var arr : any = [];
+    arr.push(item);
+    this._errorMessage.next('');
+    return this.http.post<BaseModel>(this.API_URL + endpoint, JSON.stringify(arr), this.httpOptions).pipe(
       catchError(err => {
         this._errorMessage.next(err);
         console.error('CREATE ITEM', err);
@@ -142,10 +177,10 @@ export abstract class TableService<T> {
   }
 
   // DELETE
-  delete(id: any): Observable<any> {
+  delete(id: any, endpoint: string): Observable<any> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
-    const url = `${this.API_URL}/${id}`;
+    const url = `${this.API_URL}/${endpoint}/${id}`;
     return this.http.delete(url).pipe(
       catchError(err => {
         this._errorMessage.next(err);
@@ -178,7 +213,6 @@ export abstract class TableService<T> {
     const request = this.find(this._tableState$.value)
       .pipe(
         tap((res: TableResponseModel<T>) => {
-          debugger;
           this._items$.next(res.items);
           this.patchStateWithoutFetch({
             paginator: this._tableState$.value.paginator.recalculatePaginator(

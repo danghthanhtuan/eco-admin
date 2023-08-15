@@ -1,0 +1,103 @@
+<ng-container *ngIf="isLoading">
+  <div class="progress progress-modal">
+    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar"
+      style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+</ng-container>
+
+<div class="modal-header">
+  <div class="modal-title h4">Attribute Add</div>
+</div>
+<div class="modal-body">
+  <!-- <ng-container *ngIf="isLoading">
+    <span>Thêm thuộc tính....</span>
+  </ng-container> -->
+
+  <ng-container *ngIf="isLoading">
+    <form action="#" class="form form-label-right" [formGroup]="formGroup">
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label class="form-label">Nhập tên thuộc tính</label>
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            name="attributeName"
+            placeholder="Name"
+            autocomplete="off"
+            [class.is-invalid]="isControlInvalid('attributeName')"
+            [class.is-valid]="isControlValid('attributeName')"
+            formControlName="attributeName"
+          />
+          <div class="valid-feedback" *ngIf="isControlValid('attributeName')">
+            Tên thuộc tính hợp lệ
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="controlHasError('required', 'attributeName')"
+          >
+            Tên thuộc tính bắt buộc
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="controlHasError('minlength', 'attributeName')"
+          >
+            Phải hiều hơn 1 ký tự
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="controlHasError('maxlength', 'attributeName')"
+          >
+            Tối đa 100 ký tự
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <label class="form-label">Nhập url (redirect trang mong muốn)</label>
+          <input
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            name="url"
+            placeholder="url"
+            autocomplete="off"
+            [class.is-invalid]="isControlInvalid('url')"
+            [class.is-valid]="isControlValid('url')"
+            formControlName="url"
+          />
+          <!-- <div class="valid-feedback" *ngIf="isControlValid('url')">
+            Url hợp lệ
+          </div> -->
+          <!-- <div
+            class="invalid-feedback"
+            *ngIf="controlHasError('required', 'url')"
+          >
+            Url bắt buộc
+          </div> -->
+          <!-- <div
+            class="invalid-feedback"
+            *ngIf="controlHasError('minlength', 'url')"
+          >
+            Phải hiều hơn 1 ký tự
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="controlHasError('maxlength', 'url')"
+          >
+          Url đa 100 ký tự
+          </div> -->
+        </div>
+      </div>  
+    </form>
+    
+  </ng-container>
+ 
+</div>
+
+<div class="modal-footer">
+  <div>
+    <button type="button" class="btn btn-light btn-elevate mr-1" (click)="modal.dismiss()">
+      Cancel
+    </button>&nbsp;
+    <button type="button" class="btn btn-primary btn-elevate" (click)="save()">
+      OK
+    </button>
+  </div>
+</div>

@@ -33,7 +33,7 @@ export class ProductsService extends TableService<Product> implements OnDestroy 
   deleteItems(ids: number[] = []): Observable<any> {
     const tasks$ = [];
     ids.forEach(id => {
-      tasks$.push(this.delete(id));
+      tasks$.push(this.delete(id, ''));
     });
     return forkJoin(tasks$);
   }

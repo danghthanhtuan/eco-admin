@@ -22,7 +22,7 @@ export class DeleteProductModalComponent implements OnInit, OnDestroy {
 
   deleteProduct() {
     this.isLoading = true;
-    const sb = this.productsService.delete(this.id).pipe(
+    const sb = this.productsService.delete(this.id, '').pipe(
       delay(1000), // Remove it from your code (just for showing loading)
       tap(() => this.modal.close()),
       catchError((err) => {

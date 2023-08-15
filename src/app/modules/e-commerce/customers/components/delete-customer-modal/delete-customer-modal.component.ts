@@ -21,7 +21,7 @@ export class DeleteCustomerModalComponent implements OnInit, OnDestroy {
 
   deleteCustomer() {
     this.isLoading = true;
-    const sb = this.customersService.delete(this.id).pipe(
+    const sb = this.customersService.delete(this.id, '').pipe(
       delay(1000), // Remove it from your code (just for showing loading)
       tap(() => this.modal.close()),
       catchError((err) => {

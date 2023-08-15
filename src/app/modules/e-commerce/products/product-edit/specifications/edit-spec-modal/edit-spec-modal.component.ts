@@ -90,7 +90,7 @@ export class EditSpecModalComponent implements OnInit, OnDestroy {
   }
 
   create() {
-    const sbCreate = this.specsService.create(this.spec).pipe(
+    const sbCreate = this.specsService.create(this.spec, '').pipe(
       tap(() => {
         this.modal.close();
       }),

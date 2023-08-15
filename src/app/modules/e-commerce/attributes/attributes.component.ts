@@ -20,6 +20,7 @@ import {
 } from '../../../_metronic/shared/crud-table';
 import { AttributesService } from '../_services/attributes.service';
 import { DeleteAttributeModalComponent } from './components/delete-attribute-modal/delete-attribute-modal.component';
+import { AddAttributeModalComponent } from './components/add-attribute-modal/add-attribute-modal.component';
 // import { DeleteProductsModalComponent } from './components/delete-products-modal/delete-products-modal.component';
 // import { UpdateProductsStatusModalComponent } from './components/update-products-status-modal/update-products-status-modal.component';
 // import { FetchProductsModalComponent } from './components/fetch-products-modal/fetch-products-modal.component';
@@ -67,7 +68,7 @@ export class AttributesComponent
     this.grouping = this.attributeService.grouping;
     this.paginator = this.attributeService.paginator;
     this.sorting = this.attributeService.sorting;
-    this.attributeService.fetch();
+    //this.attributeService.fetch();
   }
 
   ngOnDestroy() {
@@ -147,7 +148,16 @@ export class AttributesComponent
   // actions
   
   delete(id: number) {
-    const modalRef = this.modalService.open(DeleteAttributeModalComponent);
+    const modalRef = this.modalService.open(DeleteAttributeModalComponent, );
+    modalRef.componentInstance.id = id;
+    modalRef.result.then(
+      () => this.attributeService.fetch(),
+      () => { }
+    );
+  }
+
+  addAttribute(id: number) {
+    const modalRef = this.modalService.open(AddAttributeModalComponent, {size: 'xl'});
     modalRef.componentInstance.id = id;
     modalRef.result.then(
       () => this.attributeService.fetch(),
