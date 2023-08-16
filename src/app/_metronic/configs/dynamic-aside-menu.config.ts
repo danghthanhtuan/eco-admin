@@ -295,6 +295,10 @@ export const DynamicAsideMenuConfig = {
           page: '/ecommerce/atrributes'
         },
         {
+          title: 'AttributeValues',
+          page: '/ecommerce/attribute/values'
+        },
+        {
           title: 'Customers',
           page: '/ecommerce/customers'
         },

@@ -6,6 +6,7 @@ import { CustomersComponent } from './customers/customers.component';
 import { ProductsComponent } from './products/products.component';
 import { ProductEditComponent } from './products/product-edit/product-edit.component';
 import { AttributesComponent } from './attributes/attributes.component';
+import { AttributeValuesComponent } from './attribute-values/attribute-values.component';
 
 const routes: Routes = [
   {
@@ -13,8 +14,12 @@ const routes: Routes = [
     component: ECommerceComponent,
     children: [
        {
-      path: 'attributes',
-      component: AttributesComponent,
+        path: 'attributes',
+        component: AttributesComponent,
+      },
+      {
+        path: 'attribute/values',
+        component: AttributeValuesComponent,
       },
       {
         path: 'customers',

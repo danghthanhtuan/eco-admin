@@ -1,11 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { NgbActiveModal, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { catchError, delay, finalize, first, tap } from 'rxjs/operators';
-import { ProductsService } from '../../../_services';
 import { AttributesService } from '../../../_services/attributes.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Attribute } from '../../../_models/attribute.model';
+import { SwalService, TYPE } from 'src/app/modules/common/alter.service';
 
 @Component({
   selector: 'app-add-attribute-modal',
@@ -30,8 +30,8 @@ export class AddAttributeModalComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   constructor(private attributeService: AttributesService, public modal: NgbActiveModal,
-    private fb: FormBuilder,) { }
-
+    private fb: FormBuilder,private srvAlter: SwalService) { }
+   
   ngOnInit(): void {
     
     this.loadAttribute();
@@ -59,6 +59,7 @@ export class AddAttributeModalComponent implements OnInit, OnDestroy {
       }),
       finalize(() => {
         this.isLoading = false;
+      
       })
     ).subscribe();
     this.subscriptions.push(sb);
@@ -77,17 +78,20 @@ export class AddAttributeModalComponent implements OnInit, OnDestroy {
         return of(undefined);
       }),
       finalize(() => {
-        this.isLoading = false;
+        //this.isLoading = false;
         // tính sau 
+        this.srvAlter.toast(TYPE.SUCCESS, "Thêm thành công!", false);
+        this.attributeService.fetch();
       })
     ).subscribe(
-      //this.attributeService.fetch
+     
+      
       );
     this.subscriptions.push(sb);
   }
 
   edit() {
-    const sbUpdate = this.attributeService.update(this.attributes, '').pipe(
+    const sbUpdate = this.attributeService.update(this.attributes, '/v1/attribute').pipe(
       tap(() => {
         this.modal.close();
       }),
@@ -114,7 +118,7 @@ export class AddAttributeModalComponent implements OnInit, OnDestroy {
         this.attributes = {
           id: att.data?.id,
           attributeName : att.data?.name,
-          url: att.data?.url
+          url: att.data?.url ?? ''
         };
         this.loadForm();
       });
@@ -129,14 +133,13 @@ export class AddAttributeModalComponent implements OnInit, OnDestroy {
   save() {
     this.prepareAttribute();
     if (this.attributes.id) {
-      //this.edit();
+      this.edit();
     } else {
       this.AddAttribute();
     }
   }
 
   private prepareAttribute() {
-    debugger;
     const formData = this.formGroup.value;
     this.attributes.attributeName = formData.attributeName;
     this.attributes.url = formData.url;

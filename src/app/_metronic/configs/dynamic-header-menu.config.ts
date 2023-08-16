@@ -308,6 +308,10 @@ export const DynamicHeaderMenuConfig = {
               page: '/ecommerce/atrributes'
             },
             {
+              title: 'AttributeValues',
+              page: '/ecommerce/attribute/values'
+            },
+            {
               title: 'Customers',
               page: '/ecommerce/customers'
             },

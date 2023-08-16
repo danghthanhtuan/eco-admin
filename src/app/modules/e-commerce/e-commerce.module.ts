@@ -32,6 +32,7 @@ import { EditSpecModalComponent } from './products/product-edit/specifications/e
 import { AttributesComponent } from './attributes/attributes.component';
 import { DeleteAttributeModalComponent } from './attributes/components/delete-attribute-modal/delete-attribute-modal.component';
 import { AddAttributeModalComponent } from './attributes/components/add-attribute-modal/add-attribute-modal.component';
+import { AttributeValuesComponent } from './attribute-values/attribute-values.component';
 
 @NgModule({
   declarations: [
@@ -59,8 +60,8 @@ import { AddAttributeModalComponent } from './attributes/components/add-attribut
     EditRemarkModalComponent,
     EditSpecModalComponent,
     AttributesComponent,
-    DeleteAttributeModalComponent,
-    AddAttributeModalComponent
+   
+    AttributeValuesComponent
   ],
   imports: [
     CommonModule,
@@ -90,7 +91,9 @@ import { AddAttributeModalComponent } from './attributes/components/add-attribut
     DeleteSpecsModalComponent,
     FetchSpecsModalComponent,
     EditRemarkModalComponent,
-    EditSpecModalComponent
+    EditSpecModalComponent,
+    DeleteAttributeModalComponent,
+    AddAttributeModalComponent,
   ]
 })
 export class ECommerceModule {}

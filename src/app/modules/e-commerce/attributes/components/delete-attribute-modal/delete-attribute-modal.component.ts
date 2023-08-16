@@ -4,6 +4,7 @@ import { of, Subscription } from 'rxjs';
 import { catchError, delay, finalize, tap } from 'rxjs/operators';
 import { ProductsService } from '../../../_services';
 import { AttributesService } from '../../../_services/attributes.service';
+import { SwalService, TYPE } from 'src/app/modules/common/alter.service';
 
 @Component({
   selector: 'app-delete-attribute-modal',
@@ -16,7 +17,8 @@ export class DeleteAttributeModalComponent implements OnInit, OnDestroy {
   isLoading = false;
   subscriptions: Subscription[] = [];
 
-  constructor(private attributeService: AttributesService, public modal: NgbActiveModal) { }
+  constructor(private attributeService: AttributesService, public modal: NgbActiveModal,
+    private srvAlter : SwalService) { }
 
   ngOnInit(): void {
   }
@@ -32,6 +34,7 @@ export class DeleteAttributeModalComponent implements OnInit, OnDestroy {
       }),
       finalize(() => {
         this.isLoading = false;
+        this.srvAlter.toast(TYPE.SUCCESS, "Xoá thành công!", false);
       })
     ).subscribe();
     this.subscriptions.push(sb);

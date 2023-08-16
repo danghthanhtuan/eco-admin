@@ -81,7 +81,7 @@ export class EditRemarkModalComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-    const sbUpdate = this.remarksService.update(this.remark).pipe(
+    const sbUpdate = this.remarksService.update(this.remark, '').pipe(
       tap(() => {
         this.modal.close();
       }),

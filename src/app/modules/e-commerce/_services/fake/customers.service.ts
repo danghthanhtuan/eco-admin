@@ -7,6 +7,7 @@ import { Customer } from '../../_models/customer.model';
 import { baseFilter } from '../../../../_fake/fake-helpers/http-extenstions';
 import { environment } from '../../../../../environments/environment';
 import { Router } from '@angular/router';
+import { SwalService } from 'src/app/modules/common/alter.service';
 
 const DEFAULT_STATE: ITableState = {
   filter: {},
@@ -22,7 +23,8 @@ const DEFAULT_STATE: ITableState = {
 })
 export class CustomersService extends TableService<Customer> implements OnDestroy {
   API_URL = `${environment.apiUrl}/customers`;
-  constructor(@Inject(HttpClient) http,@Inject(Router) router) {
+  constructor(@Inject(HttpClient) http,
+  @Inject(Router) router) {
     super(http, router);
   }
 
@@ -59,7 +61,7 @@ export class CustomersService extends TableService<Customer> implements OnDestro
       exhaustMap((customers: Customer[]) => {
         const tasks$ = [];
         customers.forEach(customer => {
-          tasks$.push(this.update(customer));
+          tasks$.push(this.update(customer, ''));
         });
         return forkJoin(tasks$);
       })

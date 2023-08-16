@@ -9,6 +9,7 @@ import { SortState } from '../models/sort.model';
 import { GroupingState } from '../models/grouping.model';
 import { environment } from '../../../../../environments/environment';
 import { Router } from '@angular/router';
+import { SwalService, TYPE } from 'src/app/modules/common/alter.service';
 
 const DEFAULT_STATE: ITableState = {
   filter: {},
@@ -87,7 +88,6 @@ export abstract class TableService<T> {
     this.http = http;
     this.router = router;
   }
-
   // CREATE
   // server should return the object with ID
   create(item: BaseModel, endpoint: string): Observable<BaseModel> {
@@ -118,7 +118,10 @@ export abstract class TableService<T> {
         console.error('CREATE ITEM', err);
         return of({ id: undefined });
       }),
-      finalize(() => this._isLoading$.next(false))
+      finalize(
+       
+        () => this._isLoading$.next(false),
+        )
     );
   }
 
@@ -151,11 +154,12 @@ export abstract class TableService<T> {
 
   // UPDATE
   update(item: BaseModel, endpoint: string): Observable<any> {
-    const url = `${this.API_URL}/${item.id}`;
+    const url = `${this.API_URL}${endpoint}`;
     this._isLoading$.next(true);
     this._errorMessage.next('');
-    return this.http.put(url, item).pipe(
+    return this.http.put(url, JSON.stringify(item), this.httpOptions).pipe(
       catchError(err => {
+        this.handleAuthError(err);
         this._errorMessage.next(err);
         console.error('UPDATE ITEM', item, err);
         return of(item);
@@ -192,7 +196,9 @@ export abstract class TableService<T> {
         console.error('DELETE ITEM', id, err);
         return of({});
       }),
-      finalize(() => this._isLoading$.next(false))
+      finalize(
+        () => this._isLoading$.next(false)
+      )
     );
   }
 

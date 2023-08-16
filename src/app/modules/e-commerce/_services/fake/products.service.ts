@@ -7,6 +7,7 @@ import { Product } from '../../_models/product.model';
 import { baseFilter } from '../../../../_fake/fake-helpers/http-extenstions';
 import { environment } from '../../../../../environments/environment';
 import { Router } from '@angular/router';
+import { SwalService } from 'src/app/modules/common/alter.service';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +51,7 @@ export class ProductsService extends TableService<Product> implements OnDestroy 
       exhaustMap((products: Product[]) => {
         const tasks$ = [];
         products.forEach(product => {
-          tasks$.push(this.update(product));
+          tasks$.push(this.update(product, ''));
         });
         return forkJoin(tasks$);
       })
