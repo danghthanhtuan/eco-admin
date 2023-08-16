@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
-import { catchError, delay, finalize, tap } from 'rxjs/operators';
+import { catchError, delay, finalize, first, tap } from 'rxjs/operators';
 import { ProductsService } from '../../../_services';
 import { AttributesService } from '../../../_services/attributes.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -10,9 +10,15 @@ import { Attribute } from '../../../_models/attribute.model';
 @Component({
   selector: 'app-add-attribute-modal',
   templateUrl: './add-attribute-modal.component.html',
-  styleUrls: ['./add-attribute-modal.component.scss']
+  styleUrls: []
 })
 export class AddAttributeModalComponent implements OnInit, OnDestroy {
+  EMPTY_Attribute : any = {
+    id: undefined,
+    attributeName : '',
+    url: ''
+  }
+
   formGroup: FormGroup;
   @Input() id: number;
   attributes: Attribute = {
@@ -20,14 +26,15 @@ export class AddAttributeModalComponent implements OnInit, OnDestroy {
     attributeName : '',
     url: ''
   };
-  isLoading = true;
+  isLoading = false;
   subscriptions: Subscription[] = [];
 
   constructor(private attributeService: AttributesService, public modal: NgbActiveModal,
     private fb: FormBuilder,) { }
 
   ngOnInit(): void {
-    this.loadForm();
+    
+    this.loadAttribute();
   }
 
   loadForm() {
@@ -37,6 +44,8 @@ export class AddAttributeModalComponent implements OnInit, OnDestroy {
          url: [this.attributes.url,
           Validators.compose([])],
     });
+
+    this.isLoading = true;
   }
 
   deleteAttribute() {
@@ -69,12 +78,48 @@ export class AddAttributeModalComponent implements OnInit, OnDestroy {
       }),
       finalize(() => {
         this.isLoading = false;
-
-
-
+        // tính sau 
       })
-    ).subscribe(this.attributeService.fetch);
+    ).subscribe(
+      //this.attributeService.fetch
+      );
     this.subscriptions.push(sb);
+  }
+
+  edit() {
+    const sbUpdate = this.attributeService.update(this.attributes, '').pipe(
+      tap(() => {
+        this.modal.close();
+      }),
+      catchError((errorMessage) => {
+        this.modal.dismiss(errorMessage);
+        return of(this.attributes);
+      }),
+    ).subscribe(res => this.attributes = res);
+    this.subscriptions.push(sbUpdate);
+  }
+
+  loadAttribute() {
+    if (!this.id) {
+      this.attributes = this.EMPTY_Attribute;
+      this.loadForm();
+    } else {
+      const sb = this.attributeService.getItemById(this.id, '/v1/attribute/by-id?id=').pipe(
+        first(),
+        catchError((errorMessage) => {
+          this.modal.dismiss(errorMessage);
+          return of(this.EMPTY_Attribute);
+        })
+      ).subscribe((att: any) => {
+        this.attributes = {
+          id: att.data?.id,
+          attributeName : att.data?.name,
+          url: att.data?.url
+        };
+        this.loadForm();
+      });
+      this.subscriptions.push(sb);
+    }
   }
 
   ngOnDestroy(): void {

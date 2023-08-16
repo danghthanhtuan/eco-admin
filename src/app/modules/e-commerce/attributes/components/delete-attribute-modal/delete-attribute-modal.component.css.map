@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "",
-    "sources": [
-        "delete-attribute-modal.component.scss"
-    ],
-    "names": [],
-    "file": "delete-attribute-modal.component.css"
-}

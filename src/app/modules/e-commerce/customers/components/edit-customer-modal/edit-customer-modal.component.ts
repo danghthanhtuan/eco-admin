@@ -53,7 +53,7 @@ export class EditCustomerModalComponent implements OnInit, OnDestroy {
       this.customer = EMPTY_CUSTOMER;
       this.loadForm();
     } else {
-      const sb = this.customersService.getItemById(this.id).pipe(
+      const sb = this.customersService.getItemById(this.id, '').pipe(
         first(),
         catchError((errorMessage) => {
           this.modal.dismiss(errorMessage);

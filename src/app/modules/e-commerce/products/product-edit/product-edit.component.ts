@@ -58,7 +58,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         // get id from URL
         this.id = Number(params.get('id'));
         if (this.id || this.id > 0) {
-          return this.productsService.getItemById(this.id);
+          return this.productsService.getItemById(this.id, '');
         }
         return of(EMPTY_PRODUCT);
       }),
@@ -134,7 +134,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-    const sbUpdate = this.productsService.update(this.product).pipe(
+    const sbUpdate = this.productsService.update(this.product, '').pipe(
       tap(() => this.router.navigate(['/ecommerce/products'])),
       catchError((errorMessage) => {
         console.error('UPDATE ERROR', errorMessage);

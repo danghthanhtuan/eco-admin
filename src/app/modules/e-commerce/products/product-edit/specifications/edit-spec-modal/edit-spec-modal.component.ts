@@ -44,7 +44,7 @@ export class EditSpecModalComponent implements OnInit, OnDestroy {
       this.spec.carId = this.productId;
       this.loadForm();
     } else {
-      const sb = this.specsService.getItemById(this.id).pipe(
+      const sb = this.specsService.getItemById(this.id, '').pipe(
         first(),
         catchError((errorMessage) => {
           this.modal.dismiss(errorMessage);
@@ -77,7 +77,7 @@ export class EditSpecModalComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-    const sbUpdate = this.specsService.update(this.spec).pipe(
+    const sbUpdate = this.specsService.update(this.spec, '').pipe(
       tap(() => {
         this.modal.close();
       }),

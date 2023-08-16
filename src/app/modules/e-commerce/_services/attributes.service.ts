@@ -7,14 +7,15 @@ import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { baseFilter } from '../../../_fake/fake-helpers/http-extenstions';
 import { exhaustMap, map, mergeMap } from 'rxjs/operators';
+import { Router } from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
   })
   export class AttributesService extends TableService<Attribute> {
     API_URL = `${environment.apiUrl}`;
-    constructor(@Inject(HttpClient) http) {
-      super(http);
+    constructor(@Inject(HttpClient) http, @Inject(Router) router ) {
+      super(http, router);
     }
 
      // READ

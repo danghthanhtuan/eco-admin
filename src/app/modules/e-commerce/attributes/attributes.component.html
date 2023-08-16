@@ -125,9 +125,9 @@
             <td>{{ att.name }}</td>
             <td>
               <a
-                title="Edit product"
-                class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-                [routerLink]="'/ecommerce/product/edit/' + att.id"
+                title="Edit attribute"
+                class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"               
+                (click)="addAttribute(att.id)"
               >
                 <span
                   [inlineSVG]="
@@ -139,7 +139,7 @@
                 </span>
               </a>
               <a
-                title="Delete product"
+                title="Delete attribute"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
                 (click)="delete(att.id)"
               >

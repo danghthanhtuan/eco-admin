@@ -47,7 +47,7 @@ export class EditRemarkModalComponent implements OnInit, OnDestroy {
       this.remark.carId = this.productId;
       this.loadForm();
     } else {
-      const sb = this.remarksService.getItemById(this.id).pipe(
+      const sb = this.remarksService.getItemById(this.id, '').pipe(
         first(),
         catchError((errorMessage) => {
           this.modal.dismiss(errorMessage);

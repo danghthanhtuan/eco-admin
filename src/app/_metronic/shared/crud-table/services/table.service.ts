@@ -1,6 +1,6 @@
 // tslint:disable:variable-name
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
+import { HttpClient, HttpErrorResponse, HttpEvent, HttpHandler, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { BehaviorSubject, Observable, of, Subscription, throwError } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs/operators';
 import { PaginatorState } from '../models/paginator.model';
 import { ITableState, TableResponseModel } from '../models/table.model';
@@ -8,6 +8,7 @@ import { BaseModel } from '../models/base.model';
 import { SortState } from '../models/sort.model';
 import { GroupingState } from '../models/grouping.model';
 import { environment } from '../../../../../environments/environment';
+import { Router } from '@angular/router';
 
 const DEFAULT_STATE: ITableState = {
   filter: {},
@@ -32,12 +33,11 @@ export abstract class TableService<T> {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Access-Control-Allow-Headers': 'Content-Type',
-        'Authorization' : this.getToken()
+        'Authorization' : 'Bearer ' + this.getToken()
     }),
   };
 
   getToken(){
-    debugger;
     var token = '';
     if(localStorage.getItem(`${environment.appVersion}-${environment.USERDATA_KEY}`)){
       var auth: any = JSON.parse(localStorage.getItem(`${environment.appVersion}-${environment.USERDATA_KEY}`));
@@ -80,10 +80,12 @@ export abstract class TableService<T> {
   }
 
   protected http: HttpClient;
+  protected router: Router;
   // API URL has to be overrided
   API_URL = `${environment.apiUrl}`;
-  constructor(http: HttpClient) {
+  constructor(http: HttpClient,router: Router) {
     this.http = http;
+    this.router = router;
   }
 
   // CREATE
@@ -93,6 +95,7 @@ export abstract class TableService<T> {
     this._errorMessage.next('');
     return this.http.post<BaseModel>(this.API_URL + endpoint, item).pipe(
       catchError(err => {
+        this.handleAuthError(err);
         this._errorMessage.next(err);
         console.error('CREATE ITEM', err);
         return of({ id: undefined });
@@ -109,7 +112,8 @@ export abstract class TableService<T> {
     arr.push(item);
     this._errorMessage.next('');
     return this.http.post<BaseModel>(this.API_URL + endpoint, JSON.stringify(arr), this.httpOptions).pipe(
-      catchError(err => {
+      catchError(err => { 
+        this.handleAuthError(err);
         this._errorMessage.next(err);
         console.error('CREATE ITEM', err);
         return of({ id: undefined });
@@ -131,10 +135,10 @@ export abstract class TableService<T> {
     );
   }
 
-  getItemById(id: number): Observable<BaseModel> {
+  getItemById(id: number, endpoint: string): Observable<BaseModel> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
-    const url = `${this.API_URL}/${id}`;
+    const url = `${this.API_URL}${endpoint}${id}`;
     return this.http.get<BaseModel>(url).pipe(
       catchError(err => {
         this._errorMessage.next(err);
@@ -146,7 +150,7 @@ export abstract class TableService<T> {
   }
 
   // UPDATE
-  update(item: BaseModel): Observable<any> {
+  update(item: BaseModel, endpoint: string): Observable<any> {
     const url = `${this.API_URL}/${item.id}`;
     this._isLoading$.next(true);
     this._errorMessage.next('');
@@ -180,9 +184,10 @@ export abstract class TableService<T> {
   delete(id: any, endpoint: string): Observable<any> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
-    const url = `${this.API_URL}/${endpoint}/${id}`;
-    return this.http.delete(url).pipe(
+    const url = `${this.API_URL}/${endpoint}${id}`;
+    return this.http.delete(url, this.httpOptions).pipe(
       catchError(err => {
+        this.handleAuthError(err);
         this._errorMessage.next(err);
         console.error('DELETE ITEM', id, err);
         return of({});
@@ -266,4 +271,23 @@ export abstract class TableService<T> {
     const newState = Object.assign(this._tableState$.value, patch);
     this._tableState$.next(newState);
   }
+
+
+  private handleAuthError(err: HttpErrorResponse): Observable<any> {
+    //handle your auth error or rethrow
+    debugger;
+    if (err.status === 401 || err.status === 403) {
+        //navigate /delete cookies or whatever
+        this.router.navigateByUrl(`/auth/login`);
+        // if you've caught / handled the error, you don't want to rethrow it unless you also want downstream consumers to have to handle it as well.
+        return of(err.message); // or EMPTY may be appropriate here
+    }
+    return throwError(err);
+  }
+  // intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  //   // Clone the request to add the new header.
+  //       const authReq = req.clone({headers: req.headers.set(Cookie.tokenKey, Cookie.getToken())});
+  //       // catch the error, make specific functions for catching specific errors and you can chain through them with more catch operators
+  //       return next.handle(authReq).pipe(catchError(x=> this.handleAuthError(x))); //here use an arrow function, otherwise you may get "Cannot read property 'navigate' of undefined" on angular 4.4.2/net core 2/webpack 2.70
+  //   }
 }

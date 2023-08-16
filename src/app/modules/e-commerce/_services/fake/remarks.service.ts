@@ -6,14 +6,15 @@ import { TableService, TableResponseModel, ITableState } from '../../../../_metr
 import { baseFilter } from '../../../../_fake/fake-helpers/http-extenstions';
 import { environment } from '../../../../../environments/environment';
 import { ProductRemark } from '../../_models/product-remark.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RemarksService extends TableService<ProductRemark> implements OnDestroy {
   API_URL = `${environment.apiUrl}/productRemarks`;
-  constructor(@Inject(HttpClient) http) {
-    super(http);
+  constructor(@Inject(HttpClient) http, @Inject(Router) router) {
+    super(http, router);
   }
 
   // READ

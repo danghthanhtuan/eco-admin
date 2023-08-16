@@ -22,8 +22,8 @@ const DEFAULT_STATE: ITableState = {
 })
 export class CustomersService extends TableService<Customer> implements OnDestroy {
   API_URL = `${environment.apiUrl}/customers`;
-  constructor(@Inject(HttpClient) http) {
-    super(http);
+  constructor(@Inject(HttpClient) http,@Inject(Router) router) {
+    super(http, router);
   }
 
   // READ

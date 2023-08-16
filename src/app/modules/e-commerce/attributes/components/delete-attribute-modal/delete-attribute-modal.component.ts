@@ -8,7 +8,7 @@ import { AttributesService } from '../../../_services/attributes.service';
 @Component({
   selector: 'app-delete-attribute-modal',
   templateUrl: './delete-attribute-modal.component.html',
-  styleUrls: ['./delete-attribute-modal.component.scss']
+  styleUrls: []
 })
 export class DeleteAttributeModalComponent implements OnInit, OnDestroy {
 
@@ -23,7 +23,7 @@ export class DeleteAttributeModalComponent implements OnInit, OnDestroy {
 
   deleteAttribute() {
     this.isLoading = true;
-    const sb = this.attributeService.delete(this.id, '').pipe(
+    const sb = this.attributeService.delete(this.id, 'v1/attribute?id=').pipe(
       delay(1000), // Remove it from your code (just for showing loading)
       tap(() => this.modal.close()),
       catchError((err) => {
