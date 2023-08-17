@@ -4,17 +4,18 @@ import { of, Subscription } from 'rxjs';
 import { catchError, delay, finalize, first, tap } from 'rxjs/operators';
 import { AttributesService } from '../../../_services/attributes.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Attribute } from '../../../_models/attribute.model';
+import { Attribute, AttributeValue } from '../../../_models/attribute.model';
 import { SwalService, TYPE } from 'src/app/modules/common/alter.service';
 import { CommonModule } from '@angular/common';  
+import { AttributeValueService } from '../../../_services/attribute-value.service';
 
 @Component({
-  selector: 'app-add-attribute-modal',
-  templateUrl: './add-attribute-modal.component.html',
+  selector: 'app-add-attribute-value-modal',
+  templateUrl: './add-attribute-value-modal.component.html',
   styleUrls: []
 })
-export class AddAttributeModalComponent implements OnInit, OnDestroy {
-  EMPTY_Attribute : any = {
+export class AddAttributeValueModalComponent implements OnInit, OnDestroy {
+  EMPTY_Attribute_Value : any = {
     id: undefined,
     attributeName : '',
     url: ''
@@ -22,28 +23,31 @@ export class AddAttributeModalComponent implements OnInit, OnDestroy {
 
   formGroup: FormGroup;
   @Input() id: number;
-  attributes: Attribute = {
+  @Input() listAttributes: any;
+  attributeValue: AttributeValue = {
     id: undefined,
-    attributeName : '',
-    url: ''
+    name : '',
+    url: '',
+    nameExtra : '',
+    attributeId : undefined
   };
   isLoading = false;
   subscriptions: Subscription[] = [];
 
-  constructor(private attributeService: AttributesService, public modal: NgbActiveModal,
+  constructor(private attributeValueService: AttributeValueService, public modal: NgbActiveModal,
     private fb: FormBuilder,private srvAlter: SwalService) { }
    
   ngOnInit(): void {
     
-    this.loadAttribute();
+    this.loadAttributeValue();
   }
 
   loadForm() {
     this.formGroup = this.fb.group({
-      attributeName: [this.attributes.attributeName,
+      attributeValueName: [this.attributeValue.name,
          Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(50)])],
-         url: [this.attributes.url,
-          Validators.compose([])],
+         url: [this.attributeValue.url,  Validators.compose([])],
+         attributeId: [this.attributeValue.attributeId,  Validators.compose([Validators.required])]
     });
 
     this.isLoading = true;
@@ -51,7 +55,7 @@ export class AddAttributeModalComponent implements OnInit, OnDestroy {
 
   deleteAttribute() {
     this.isLoading = true;
-    const sb = this.attributeService.delete(this.id, '').pipe(
+    const sb = this.attributeValueService.delete(this.id, '').pipe(
       delay(1000), // Remove it from your code (just for showing loading)
       tap(() => this.modal.close()),
       catchError((err) => {
@@ -66,9 +70,17 @@ export class AddAttributeModalComponent implements OnInit, OnDestroy {
     this.subscriptions.push(sb);
   }
 
-  AddAttribute() {
+  AddAttributeValue() {
     this.isLoading = true;
-    const sb = this.attributeService.createArr(this.attributes, '/v1/attribute').pipe(
+    var modelPost : any = {
+      attributeID : this.attributeValue.attributeId,
+      attributeValuesRequest : [{
+        attributeValueName : this.attributeValue.name,
+        url :this.attributeValue.url,
+      }]
+
+    }
+    const sb = this.attributeValueService.create(modelPost, '/v1/attribute/value').pipe(
       delay(500), // Remove it from your code (just for showing loading)
       tap(() =>
       //  this.modal.close() thêm thành công thêm nữa ko close
@@ -76,13 +88,14 @@ export class AddAttributeModalComponent implements OnInit, OnDestroy {
       ),
       catchError((err) => {
         this.modal.dismiss(err);
+        this.srvAlter.toast(TYPE.ERROR, "Thêm không thành công!", false);
         return of(undefined);
       }),
       finalize(() => {
         //this.isLoading = false;
         // tính sau 
         this.srvAlter.toast(TYPE.SUCCESS, "Thêm thành công!", false);
-        this.attributeService.fetch();
+        this.attributeValueService.fetch();
       })
     ).subscribe(
      
@@ -92,34 +105,36 @@ export class AddAttributeModalComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-    const sbUpdate = this.attributeService.update(this.attributes, '/v1/attribute').pipe(
+    const sbUpdate = this.attributeValueService.update(this.attributeValue, '/v1/attribute').pipe(
       tap(() => {
         this.modal.close();
       }),
       catchError((errorMessage) => {
         this.modal.dismiss(errorMessage);
-        return of(this.attributes);
+        return of(this.attributeValue);
       }),
-    ).subscribe(res => this.attributes = res);
+    ).subscribe(res => this.attributeValue = res);
     this.subscriptions.push(sbUpdate);
   }
 
-  loadAttribute() {
+  loadAttributeValue() {
     if (!this.id) {
-      this.attributes = this.EMPTY_Attribute;
+      this.attributeValue = this.EMPTY_Attribute_Value;
       this.loadForm();
     } else {
-      const sb = this.attributeService.getItemById(this.id, '/v1/attribute/by-id?id=').pipe(
+      const sb = this.attributeValueService.getItemById(this.id, '/v1/attribute/by-id?id=').pipe(
         first(),
         catchError((errorMessage) => {
           this.modal.dismiss(errorMessage);
-          return of(this.EMPTY_Attribute);
+          return of(this.EMPTY_Attribute_Value);
         })
       ).subscribe((att: any) => {
-        this.attributes = {
+        this.attributeValue = {
           id: att.data?.id,
-          attributeName : att.data?.name,
-          url: att.data?.url ?? ''
+          name : att.data?.name,
+          url: att.data?.url ?? '',
+          attributeId: att.data?.attributeId ?? 0,
+          nameExtra : att.data?.nameExtra ?? ''
         };
         this.loadForm();
       });
@@ -132,18 +147,26 @@ export class AddAttributeModalComponent implements OnInit, OnDestroy {
   }
 
   save() {
+  
     this.prepareAttribute();
-    if (this.attributes.id) {
+    debugger;
+    if (this.formGroup.invalid) {
+     // this.formGroup.;
+      return;
+    }
+
+    if (this.attributeValue.id) {
       this.edit();
     } else {
-      this.AddAttribute();
+      this.AddAttributeValue();
     }
   }
 
   private prepareAttribute() {
     const formData = this.formGroup.value;
-    this.attributes.attributeName = formData.attributeName;
-    this.attributes.url = formData.url;
+    this.attributeValue.name = formData.attributeValueName;
+    this.attributeValue.url = formData.url;
+    this.attributeValue.attributeId = formData.attributeId;
   }
 
   // helpers for View

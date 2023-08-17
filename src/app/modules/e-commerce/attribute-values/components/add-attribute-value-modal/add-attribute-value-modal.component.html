@@ -6,7 +6,7 @@
 </ng-container>
 
 <div class="modal-header">
-  <div class="modal-title h4">Attribute Add</div>
+  <div class="modal-title h4">Attribute Value Add</div>
 </div>
 <div class="modal-body">
   <!-- <ng-container *ngIf="isLoading">
@@ -17,51 +17,44 @@
     <form action="#" class="form form-label-right" [formGroup]="formGroup">
       <div class="form-group row">
         <div class="col-lg-6">
-          <label class="form-label">Nhập tên thuộc tính</label>
-          <input
-            type="text"
-            class="form-control form-control-lg form-control-solid"
-            name="attributeName"
-            placeholder="Name"
-            autocomplete="off"
-            [class.is-invalid]="isControlInvalid('attributeName')"
-            [class.is-valid]="isControlValid('attributeName')"
-            formControlName="attributeName"
-          />
-          <div class="valid-feedback" *ngIf="isControlValid('attributeName')">
+          <label>Chọn Attribute để thêm giá trị</label>
+          <select class="form-control" name="attributeId" placeholder="Filter by Status" formControlName="attributeId">
+            <!-- <option value="">All</option> -->
+            <ng-container *ngFor="let att of listAttributes">
+              <option value="{{att.id}}" selected>{{att.name}}</option>
+            </ng-container>
+          </select>
+          <div class="invalid-feedback" *ngIf="controlHasError('required', 'attributeId')">
+            Attribute là bắt buộc!
+          </div>
+        </div>
+
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-6">
+          <label class="form-label">Nhập giá trị cho Attribute</label>
+          <input type="text" class="form-control form-control-lg form-control-solid" name="attributeValueName"
+            placeholder="attributeValueName" autocomplete="off"
+            [class.is-invalid]="isControlInvalid('attributeValueName')"
+            [class.is-valid]="isControlValid('attributeValueName')" formControlName="attributeValueName" />
+          <div class="valid-feedback" *ngIf="isControlValid('attributeValueName')">
             Tên thuộc tính hợp lệ
           </div>
-          <div
-            class="invalid-feedback"
-            *ngIf="controlHasError('required', 'attributeName')"
-          >
+          <div class="invalid-feedback" *ngIf="controlHasError('required', 'attributeValueName')">
             Tên thuộc tính bắt buộc
           </div>
-          <div
-            class="invalid-feedback"
-            *ngIf="controlHasError('minlength', 'attributeName')"
-          >
+          <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'attributeValueName')">
             Phải hiều hơn 1 ký tự
           </div>
-          <div
-            class="invalid-feedback"
-            *ngIf="controlHasError('maxlength', 'attributeName')"
-          >
+          <div class="invalid-feedback" *ngIf="controlHasError('maxlength', 'attributeValueName')">
             Tối đa 100 ký tự
           </div>
         </div>
         <div class="col-lg-6">
           <label class="form-label">Nhập url (redirect trang mong muốn)</label>
-          <input
-            type="text"
-            class="form-control form-control-lg form-control-solid"
-            name="url"
-            placeholder="url"
-            autocomplete="off"
-            [class.is-invalid]="isControlInvalid('url')"
-            [class.is-valid]="isControlValid('url')"
-            formControlName="url"
-          />
+          <input type="text" class="form-control form-control-lg form-control-solid" name="url" placeholder="url"
+            autocomplete="off" [class.is-invalid]="isControlInvalid('url')" [class.is-valid]="isControlValid('url')"
+            formControlName="url" />
           <!-- <div class="valid-feedback" *ngIf="isControlValid('url')">
             Url hợp lệ
           </div> -->
@@ -84,11 +77,11 @@
           Url đa 100 ký tự
           </div> -->
         </div>
-      </div>  
+      </div>
     </form>
-    
+
   </ng-container>
- 
+
 </div>
 
 <div class="modal-footer">

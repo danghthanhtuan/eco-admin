@@ -93,7 +93,7 @@ export abstract class TableService<T> {
   create(item: BaseModel, endpoint: string): Observable<BaseModel> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
-    return this.http.post<BaseModel>(this.API_URL + endpoint, item).pipe(
+    return this.http.post<BaseModel>(this.API_URL + endpoint, JSON.stringify(item), this.httpOptions).pipe(
       catchError(err => {
         this.handleAuthError(err);
         this._errorMessage.next(err);
@@ -281,7 +281,6 @@ export abstract class TableService<T> {
 
   private handleAuthError(err: HttpErrorResponse): Observable<any> {
     //handle your auth error or rethrow
-    debugger;
     if (err.status === 401 || err.status === 403) {
         //navigate /delete cookies or whatever
         this.router.navigateByUrl(`/auth/login`);

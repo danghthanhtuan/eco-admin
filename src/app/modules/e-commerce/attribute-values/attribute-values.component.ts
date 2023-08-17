@@ -2,7 +2,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, finalize, tap } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductsService } from '../_services';
 import {
@@ -19,6 +19,8 @@ import {
   ISearchView,
 } from '../../../_metronic/shared/crud-table';
 import { AttributesService } from '../_services/attributes.service';
+import { AttributeValueService } from '../_services/attribute-value.service';
+import { AddAttributeValueModalComponent } from './components/add-attribute-value-modal/add-attribute-value-modal.component';
 
 // import { DeleteProductsModalComponent } from './components/delete-products-modal/delete-products-modal.component';
 // import { UpdateProductsStatusModalComponent } from './components/update-products-status-modal/update-products-status-modal.component';
@@ -27,7 +29,7 @@ import { AttributesService } from '../_services/attributes.service';
 @Component({
   selector: 'app-attribute-values',
   templateUrl: './attribute-values.component.html',
-  styleUrls: ['./attribute-values.component.scss'],
+  styleUrls: [],
 })
 export class AttributeValuesComponent
   implements
@@ -49,24 +51,25 @@ export class AttributeValuesComponent
   filterGroup: FormGroup;
   searchGroup: FormGroup;
   private subscriptions: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
-
+  listAttributes : any = [];
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
     //public productsService: ProductsService,
-    public attributeService : AttributesService
+    public attributeValueService : AttributeValueService
   ) { }
 
   // angular lifecircle hooks
   ngOnInit(): void {
+    this.getListAttribute();
     this.filterForm();
     this.searchForm();
-    this.attributeService.fetch();
-    const sb = this.attributeService.isLoading$.subscribe(res => this.isLoading = res);
+    this.attributeValueService.fetch();
+    const sb = this.attributeValueService.isLoading$.subscribe(res => this.isLoading = res);
     this.subscriptions.push(sb);
-    this.grouping = this.attributeService.grouping;
-    this.paginator = this.attributeService.paginator;
-    this.sorting = this.attributeService.sorting;
+    this.grouping = this.attributeValueService.grouping;
+    this.paginator = this.attributeValueService.paginator;
+    //this.sorting = this.attributeValueService.sorting;
     //this.attributeService.fetch();
   }
 
@@ -74,15 +77,25 @@ export class AttributeValuesComponent
     this.subscriptions.forEach((sb) => sb.unsubscribe());
   }
 
+  getListAttribute(){
+    this.attributeValueService.getAllAttribute()
+    .subscribe(
+      (res: any) => {
+        this.listAttributes = res;
+      }
+    )
+    //.subscribe();
+  }
+
   // filtration
   filterForm() {
     this.filterGroup = this.fb.group({
-      status: [''],
+      attribute: [''],
       condition: [''],
       searchTerm: [''],
     });
     this.subscriptions.push(
-      this.filterGroup.controls.status.valueChanges.subscribe(() =>
+      this.filterGroup.controls.attribute.valueChanges.subscribe(() =>
         this.filter()
       )
     );
@@ -93,16 +106,16 @@ export class AttributeValuesComponent
 
   filter() {
     const filter = {};
-    const status = this.filterGroup.get('status').value;
-    if (status) {
-      filter['status'] = status;
+    const attribute = this.filterGroup.get('attribute').value;
+    if (attribute) {
+      filter['attribute'] = attribute;
     }
 
-    const condition = this.filterGroup.get('condition').value;
-    if (condition) {
-      filter['condition'] = condition;
-    }
-    this.attributeService.patchState({ filter });
+    // const condition = this.filterGroup.get('condition').value;
+    // if (condition) {
+    //   filter['condition'] = condition;
+    // }
+    this.attributeValueService.patchState({ filter });
   }
 
   // search
@@ -116,7 +129,7 @@ export class AttributeValuesComponent
   The user can type quite quickly in the input box, and that could trigger a lot of server requests. With this operator,
   we are limiting the amount of server requests emitted to a maximum of one every 150ms
   */
-        debounceTime(150),
+        debounceTime(500),
         distinctUntilChanged()
       )
       .subscribe((val) => this.search(val));
@@ -124,7 +137,7 @@ export class AttributeValuesComponent
   }
 
   search(searchTerm: string) {
-    this.attributeService.patchState({ searchTerm });
+    this.attributeValueService.patchState({ searchTerm });
   }
 
   // sorting
@@ -137,12 +150,12 @@ export class AttributeValuesComponent
     } else {
       sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
     }
-    this.attributeService.patchState({ sorting });
+    this.attributeValueService.patchState({ sorting });
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.attributeService.patchState({ paginator });
+    this.attributeValueService.patchState({ paginator });
   }
   // actions
   
@@ -155,14 +168,15 @@ export class AttributeValuesComponent
   //   );
   // }
 
-  // addAttribute(id: number) {
-  //   const modalRef = this.modalService.open(AddAttributeModalComponent, {size: 'xl'});
-  //   modalRef.componentInstance.id = id;
-  //   modalRef.result.then(
-  //     () => this.attributeService.fetch(),
-  //     () => { }
-  //   );
-  // }
+  addAttributeValue(id: number) {
+    const modalRef = this.modalService.open(AddAttributeValueModalComponent, {size: 'xl'});
+    modalRef.componentInstance.id = id;
+    modalRef.componentInstance.listAttributes = this.listAttributes;
+    modalRef.result.then(
+      () => this.attributeValueService.fetch(),
+      () => { }
+    );
+  }
 
   // deleteSelected() {
   //   const modalRef = this.modalService.open(DeleteAttributeModalComponent);

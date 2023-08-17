@@ -1,54 +1,43 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Thuộc tính sản phẩm</h3>
+      <h3 class="card-label">Giá trị thuộc tính sản phẩm</h3>
     </div>
     <div class="card-toolbar">
       <a
         type="button"
         class="btn btn-primary"
-     
-        >New Attribute</a>
+        (click)="addAttributeValue(undefined)" 
+        >New Attribute Value</a>
       <!--    (click)="addAttribute(undefined)" -->
     </div>
   </div>
   <div class="card-body">
     <!-- begin: Filtration form -->
-    <!-- <div class="form form-label-right">
+     <div class="form form-label-right">
       <div class="form-group row">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
           <div class="row" [formGroup]="filterGroup">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
               <select
                 class="form-control"
-                name="status"
+                name="attribute"
                 placeholder="Filter by Status"
-                formControlName="status"
-              >
+                formControlName="attribute"
+              >            
                 <option value="">All</option>
-                <option value="1">Selling</option>
-                <option value="2">Sold</option></select
+                <ng-container *ngFor="let att of listAttributes">
+                  <option value="{{att.id}}" selected>{{att.name}}</option>
+                </ng-container>
+              </select
               ><small class="form-text text-muted"
-                ><b>Filter</b> by Status</small
+                ><b>Filter</b> Attribute</small
               >
             </div>
-            <div class="col-lg-6">
-              <select
-                class="form-control"
-                placeholder="Filter by Contition"
-                name="condition"
-                formControlName="condition"
-              >
-                <option value="">All</option>
-                <option value="1">New</option>
-                <option value="2">Used</option></select
-              ><small class="form-text text-muted"
-                ><b>Filter</b> by Condition</small
-              >
-            </div>
+            
           </div>
         </div>
-        <div class="col-lg-2" [formGroup]="searchGroup">
+        <div class="col-lg-3" [formGroup]="searchGroup">
           <input
             type="text"
             class="form-control"
@@ -57,11 +46,11 @@
             value=""
             formControlName="searchTerm"
           /><small class="form-text text-muted"
-            ><b>Search</b> in all fields</small
+            ><b>Search</b> Attribute Value</small
           >
         </div>
       </div>
-    </div> -->
+    </div> 
     <!-- end: Filtration form -->
 
     <!-- begin: Grouping -->
@@ -70,7 +59,6 @@
         <div
           class="row align-items-center form-group-actions margin-top-20 margin-bottom-20"
         >
-          
         </div>
       </div>
     </ng-container>
@@ -106,11 +94,17 @@
               [activeDirection]="sorting.direction"
               (sort)="sort($event)"
             ></app-sort-icon> -->
+          </th>  
+          <th>
+            Url
+          </th>  
+          <th>
+            Name Extra
           </th>       
           <th>ACTIONS</th>
         </thead>
         <tbody>
-          <tr *ngFor="let att of attributeService.items$ | async">
+          <tr *ngFor="let att of attributeValueService.items$ | async">
             <!-- <td class="selection-cell">
               <label class="checkbox checkbox-single"
                 ><input
@@ -123,6 +117,8 @@
             </td> -->
             <td>{{ att.id }}</td>
             <td>{{ att.name }}</td>
+            <td>{{ att.url }}</td>
+            <td>{{ att.nameExtra }}</td>
             <td>
               <a
                 title="Edit attribute"
