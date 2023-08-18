@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { catchError, delay, finalize, first, tap } from 'rxjs/operators';
 import { AttributesService } from '../../../_services/attributes.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Attribute, AttributeValue } from '../../../_models/attribute.model';
 import { SwalService, TYPE } from 'src/app/modules/common/alter.service';
 import { CommonModule } from '@angular/common';  
@@ -149,9 +149,9 @@ export class AddAttributeValueModalComponent implements OnInit, OnDestroy {
   save() {
   
     this.prepareAttribute();
-    debugger;
-    if (this.formGroup.invalid) {
-     // this.formGroup.;
+    if (!this.formGroup.valid) {
+      debugger;
+      this.validateAllFormFields(this.formGroup);
       return;
     }
 
@@ -188,5 +188,16 @@ export class AddAttributeValueModalComponent implements OnInit, OnDestroy {
   isControlTouched(controlName): boolean {
     const control = this.formGroup.controls[controlName];
     return control.dirty || control.touched;
+  }
+
+  validateAllFormFields(formGroup: FormGroup) {         //{1}
+    Object.keys(formGroup.controls).forEach(field => {  //{2}
+      const control = formGroup.get(field);             //{3}
+      if (control instanceof FormControl) {             //{4}
+        control.markAsTouched({ onlySelf: true });
+      } else if (control instanceof FormGroup) {        //{5}
+        this.validateAllFormFields(control);            //{6}
+      }
+    });
   }
 }
