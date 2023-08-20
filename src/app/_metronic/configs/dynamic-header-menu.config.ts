@@ -312,6 +312,10 @@ export const DynamicHeaderMenuConfig = {
               page: '/ecommerce/attribute/values'
             },
             {
+              title: 'Trademarks',
+              page: '/ecommerce/trademarks'
+            },
+            {
               title: 'Categories',
               page: '/ecommerce/categories'
             },

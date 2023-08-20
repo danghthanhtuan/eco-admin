@@ -6,15 +6,15 @@
 </ng-container>
 
 <div class="modal-header">
-  <div class="modal-title h4">Attribute Value Delete</div>
+  <div class="modal-title h4">Trademarks Delete</div>
 </div>
 <div class="modal-body">
   <ng-container *ngIf="isLoading">
-    <span>Attribute Value is deleting...</span>
+    <span>Trademarks is deleting...</span>
   </ng-container>
 
   <ng-container *ngIf="!isLoading">
-    <span>Attribute này có {{totalUseAttributeValue}} lần đang sử dụng. Bạn muốn xoá?</span>
+    <span>Bạn muốn xoá?</span>
   </ng-container>
 </div>
 
@@ -23,7 +23,7 @@
     <button type="button" class="btn btn-light btn-elevate mr-1" (click)="modal.dismiss()">
       Cancel
     </button>&nbsp;
-    <button type="button" class="btn btn-primary btn-elevate" (click)="deleteAttributeValue()">
+    <button type="button" class="btn btn-primary btn-elevate" (click)="deleteTrademarks()">
       Delete
     </button>
   </div>

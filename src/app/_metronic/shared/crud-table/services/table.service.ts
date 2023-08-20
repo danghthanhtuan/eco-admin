@@ -227,7 +227,7 @@ export abstract class TableService<T> {
   delete(id: any, endpoint: string): Observable<any> {
     this._isLoading$.next(true);
     this._errorMessage.next('');
-    const url = `${this.API_URL}/${endpoint}${id}`;
+    const url = `${this.API_URL}${endpoint}${id}`;
     return this.http.delete(url, this.httpOptions).pipe(
       catchError(err => {
         this.handleAuthError(err);

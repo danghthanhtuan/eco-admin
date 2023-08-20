@@ -8,6 +8,10 @@ import { ProductEditComponent } from './products/product-edit/product-edit.compo
 import { AttributesComponent } from './attributes/attributes.component';
 import { AttributeValuesComponent } from './attribute-values/attribute-values.component';
 import { CategoryComponent } from './categories/categories.component';
+import { SlidesComponent } from './slides/slides.component';
+import { TrademarksComponent } from './trademarks/trademarks.component';
+import { FiltersComponent } from './filters/filters.component';
+import { FilterValuesComponent } from './filter-values/filter-values.component';
 
 const routes: Routes = [
   {
@@ -26,6 +30,23 @@ const routes: Routes = [
         path: 'categories',
         component: CategoryComponent,
       },
+      {
+        path: 'slides',
+        component: SlidesComponent,
+      }, 
+      {
+        path: 'filter',
+        component: FiltersComponent,
+      },
+      {
+        path: 'filter/values',
+        component: FilterValuesComponent,
+      },
+      {
+        path: 'trademarks',
+        component: TrademarksComponent,
+      },
+
       {
         path: 'customers',
         component: CustomersComponent,

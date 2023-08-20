@@ -299,6 +299,18 @@ export const DynamicAsideMenuConfig = {
           page: '/ecommerce/attribute/values'
         },
         {
+          title: 'Trademarks',
+          page: '/ecommerce/trademarks'
+        },
+        {
+          title: 'Filter',
+          page: '/ecommerce/filter'
+        },
+        {
+          title: 'FilterValues',
+          page: '/ecommerce/filter/values'
+        },
+        {
           title: 'Categories',
           page: '/ecommerce/categories'
         },

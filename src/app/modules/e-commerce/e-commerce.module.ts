@@ -37,6 +37,17 @@ import { AddAttributeValueModalComponent } from './attribute-values/components/a
 import { DeleteAttributeValueModalComponent } from './attribute-values/components/delete-attribute-value-modal/delete-attribute-value-modal.component';
 import { CategoryComponent } from './categories/categories.component';
 import { AddCategoriesModalComponent } from './categories/components/add-categories-modal/add-categories-modal.component';
+import { SlidesComponent } from './slides/slides.component';
+import { AddSlidesModalComponent } from './slides/components/add-slides-modal.component';
+import { DeleteSlidesModalComponent } from './slides/components/delete-slides-modal.component';
+import { TrademarksComponent } from './trademarks/trademarks.component';
+import { DeleteTrademarksModalComponent } from './trademarks/components/delete-trademarks-modal.component';
+import { AddTrademarksModalComponent } from './trademarks/components/add-trademarks-modal.component';
+import { FiltersComponent } from './filters/filters.component';
+import { DeleteFilterModalComponent } from './filters/components/delete-filter-modal/delete-filter-modal.component';
+import { AddFilterModalComponent } from './filters/components/add-filter-modal/add-filter-modal.component';
+import { FilterValuesComponent } from './filter-values/filter-values.component';
+import { AddFilterValueModalComponent } from './filter-values/components/add-filter-value-modal.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +81,18 @@ import { AddCategoriesModalComponent } from './categories/components/add-categor
     AddAttributeValueModalComponent,
     DeleteAttributeValueModalComponent,
     CategoryComponent,
-    AddCategoriesModalComponent
+    AddCategoriesModalComponent,
+    SlidesComponent,
+    AddSlidesModalComponent,
+    DeleteSlidesModalComponent,
+    TrademarksComponent,
+    DeleteTrademarksModalComponent,
+    AddTrademarksModalComponent,
+    FiltersComponent,
+    AddFilterModalComponent,
+    DeleteFilterModalComponent,
+    FilterValuesComponent,
+    AddFilterValueModalComponent
   ],
   imports: [
     CommonModule,
