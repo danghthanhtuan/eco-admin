@@ -37,7 +37,15 @@ export abstract class TableService<T> {
         'Authorization' : 'Bearer ' + this.getToken()
     }),
   };
-
+  httpOptionsFormData = {
+    headers: new HttpHeaders({
+        //'Content-Type': 'multipart/form-data',
+        //'Accept': '*/*',
+       // 'Access-Control-Allow-Headers': 'Content-Type',
+        'Authorization' : 'Bearer ' + this.getToken()
+    }),
+  };
+  
   getToken(){
     var token = '';
     if(localStorage.getItem(`${environment.appVersion}-${environment.USERDATA_KEY}`)){
@@ -125,6 +133,22 @@ export abstract class TableService<T> {
     );
   }
 
+  // CREATE
+  // server should return the object with ID
+  createWithImage(fromdata: FormData, endpoint: string): Observable<BaseModel> {
+    this._isLoading$.next(true);
+    this._errorMessage.next('');
+    return this.http.post<BaseModel>(this.API_URL + endpoint, fromdata, this.httpOptionsFormData).pipe(
+      catchError(err => {
+        this.handleAuthError(err);
+        this._errorMessage.next(err);
+        console.error('CREATE ITEM', err);
+        return of({ id: undefined });
+      }),
+      finalize(() => this._isLoading$.next(false))
+    );
+  }
+
   // READ (Returning filtered list of entities)
   find(tableState: ITableState): Observable<TableResponseModel<T>> {
     const url = this.API_URL + '/find';
@@ -163,6 +187,21 @@ export abstract class TableService<T> {
         this._errorMessage.next(err);
         console.error('UPDATE ITEM', item, err);
         return of(item);
+      }),
+      finalize(() => this._isLoading$.next(false))
+    );
+  }
+
+  updateWithImage(fromdata: FormData, endpoint: string): Observable<any> {
+    const url = `${this.API_URL}${endpoint}`;
+    this._isLoading$.next(true);
+    this._errorMessage.next('');
+    return this.http.put(url, fromdata, this.httpOptionsFormData).pipe(
+      catchError(err => {
+        this.handleAuthError(err);
+        this._errorMessage.next(err);
+        console.error('UPDATE ITEM', err);
+        return of(null);
       }),
       finalize(() => this._isLoading$.next(false))
     );

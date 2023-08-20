@@ -105,9 +105,16 @@ export class AddAttributeValueModalComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-    const sbUpdate = this.attributeValueService.update(this.attributeValue, '/v1/attribute').pipe(
+    var modelUpdate : any = {
+      attributeValueID : this.attributeValue.id,
+      attributeValueName : this.attributeValue.name,
+      url : this.attributeValue.url
+    };
+
+    const sbUpdate = this.attributeValueService.update( modelUpdate, '/v1/attribute/value').pipe(
       tap(() => {
         this.modal.close();
+        this.srvAlter.toast(TYPE.SUCCESS, "Cập nhật thành công!", false);
       }),
       catchError((errorMessage) => {
         this.modal.dismiss(errorMessage);
@@ -122,7 +129,7 @@ export class AddAttributeValueModalComponent implements OnInit, OnDestroy {
       this.attributeValue = this.EMPTY_Attribute_Value;
       this.loadForm();
     } else {
-      const sb = this.attributeValueService.getItemById(this.id, '/v1/attribute/by-id?id=').pipe(
+      const sb = this.attributeValueService.getItemById(this.id, '/v1/attribute/value/by-id?attributeId=').pipe(
         first(),
         catchError((errorMessage) => {
           this.modal.dismiss(errorMessage);
@@ -150,7 +157,6 @@ export class AddAttributeValueModalComponent implements OnInit, OnDestroy {
   
     this.prepareAttribute();
     if (!this.formGroup.valid) {
-      debugger;
       this.validateAllFormFields(this.formGroup);
       return;
     }

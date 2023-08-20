@@ -1,40 +1,39 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Giá trị thuộc tính sản phẩm</h3>
+      <h3 class="card-label">Danh mục sản phẩm</h3>
     </div>
     <div class="card-toolbar">
       <a
         type="button"
         class="btn btn-primary"
-        (click)="addAttributeValue(undefined)" 
-        >New Attribute Value</a>
-      <!--    (click)="addAttribute(undefined)" -->
+        (click)="addCategories(undefined)"
+        >New Categories</a>
+      <!--   (click)="addAttribute(undefined)" -->
     </div>
   </div>
   <div class="card-body">
     <!-- begin: Filtration form -->
-     <div class="form form-label-right">
+    <div class="form form-label-right">
       <div class="form-group row">
         <div class="col-lg-3">
           <div class="row" [formGroup]="filterGroup">
             <div class="col-lg-12">
               <select
                 class="form-control"
-                name="attribute"
+                name="categoryParent"
                 placeholder="Filter by Status"
-                formControlName="attribute"
+                formControlName="categoryParent"
               >            
                 <option value="">All</option>
-                <ng-container *ngFor="let att of listAttributes">
-                  <option value="{{att.id}}" selected>{{att.name}}</option>
+                <ng-container *ngFor="let cate of listCategoryParent">
+                  <option value="{{cate.id}}" selected>{{cate.categoryName}}</option>
                 </ng-container>
               </select
               ><small class="form-text text-muted"
-                ><b>Filter</b> Attribute</small
+                ><b>Filter</b> by Categories Parent</small
               >
-            </div>
-            
+            </div>           
           </div>
         </div>
         <div class="col-lg-3" [formGroup]="searchGroup">
@@ -46,11 +45,11 @@
             value=""
             formControlName="searchTerm"
           /><small class="form-text text-muted"
-            ><b>Search</b> Attribute Value</small
+            ><b>Search</b> in Name fields</small
           >
         </div>
       </div>
-    </div> 
+    </div>
     <!-- end: Filtration form -->
 
     <!-- begin: Grouping -->
@@ -59,6 +58,7 @@
         <div
           class="row align-items-center form-group-actions margin-top-20 margin-bottom-20"
         >
+          
         </div>
       </div>
     </ng-container>
@@ -87,24 +87,25 @@
             ></app-sort-icon> -->
           </th>
           <th>
-            Name
+            Category Name
             <!-- <app-sort-icon
               column="manufacture"
               [activeColumn]="sorting.column"
               [activeDirection]="sorting.direction"
               (sort)="sort($event)"
             ></app-sort-icon> -->
-          </th>  
+          </th>
           <th>
-            Url
+            SeoKeyword
           </th>  
-          <th>
-            Name Extra
-          </th>       
+          <th>SeoTitle</th>    
+          <th>SeoDescription</th> 
+          <th>ImageUrl</th> 
+          <th>Content</th>    
           <th>ACTIONS</th>
         </thead>
         <tbody>
-          <tr *ngFor="let att of attributeValueService.items$ | async">
+          <tr *ngFor="let att of categoriesService.items$ | async">
             <!-- <td class="selection-cell">
               <label class="checkbox checkbox-single"
                 ><input
@@ -116,16 +117,24 @@
               </label>
             </td> -->
             <td>{{ att.id }}</td>
-            <td>{{ att.name }}</td>
-            <td>{{ att.url }}</td>
-            <td>{{ att.nameExtra }}</td>
+            <td>{{ att.categoryName }}</td>
+            <td>{{ att.seoKeyword }}</td>
+            <td>{{ att.seoTitle }}</td>
+            <td>{{ att.seoDescription }}</td>
+            <td>
+              <div class="symbol symbol-40 symbol-light-success mr-5"><span class="symbol-label"><img alt=""
+                    [src]="urlImage + att.imageUrl" class="h-75 align-self-end"></span></div>
+
+            </td>
+            <td>{{ att.content }}</td>
             <td>
               <a
                 title="Edit attribute"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"               
-                (click)="addAttributeValue(att.id)" 
-        
-              >   
+                (click)="addCategories(att.id)"
+              >
+<!--   (click)="addAttribute(att.id)" -->
+
                 <span
                   [inlineSVG]="
                     './assets/media/svg/icons/Communication/Write.svg'
@@ -138,9 +147,9 @@
               <a
                 title="Delete attribute"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
-                (click)="delete(att.id)"
+               
               >
-              <!--   -->
+              <!-- --(click)="delete(product.id)" -->
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
                   cacheSVG="true"

@@ -2,7 +2,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, finalize, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ProductsService } from '../_services';
 import {
@@ -18,25 +18,25 @@ import {
   IGroupingView,
   ISearchView,
 } from '../../../_metronic/shared/crud-table';
-import { AttributesService } from '../_services/attributes.service';
-import { AttributeValueService } from '../_services/attribute-value.service';
-import { AddAttributeValueModalComponent } from './components/add-attribute-value-modal/add-attribute-value-modal.component';
-import { DeleteAttributeValueModalComponent } from './components/delete-attribute-value-modal/delete-attribute-value-modal.component';
-
+import { CategoriesService } from '../_services/categories.service';
+import { environment } from 'src/environments/environment';
+import { AddCategoriesModalComponent } from './components/add-categories-modal/add-categories-modal.component';
+// import { DeleteAttributeModalComponent } from './components/delete-attribute-modal/delete-attribute-modal.component';
+// import { AddAttributeModalComponent } from './components/add-attribute-modal/add-attribute-modal.component';
 // import { DeleteProductsModalComponent } from './components/delete-products-modal/delete-products-modal.component';
 // import { UpdateProductsStatusModalComponent } from './components/update-products-status-modal/update-products-status-modal.component';
 // import { FetchProductsModalComponent } from './components/fetch-products-modal/fetch-products-modal.component';
 
 @Component({
-  selector: 'app-attribute-values',
-  templateUrl: './attribute-values.component.html',
+  selector: 'app-attributes',
+  templateUrl: './categories.component.html',
   styleUrls: [],
 })
-export class AttributeValuesComponent
+export class CategoryComponent
   implements
   OnInit,
   OnDestroy,
-  // IDeleteAction,
+ // IDeleteAction,
   // IDeleteSelectedAction,
   // IFetchSelectedAction,
   // IUpdateStatusForSelectedAction,
@@ -52,25 +52,26 @@ export class AttributeValuesComponent
   filterGroup: FormGroup;
   searchGroup: FormGroup;
   private subscriptions: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
-  listAttributes : any = [];
+  public urlImage = environment.urlImage;
+  listCategoryParent : any = [];
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
     //public productsService: ProductsService,
-    public attributeValueService : AttributeValueService
+    public categoriesService : CategoriesService
   ) { }
 
   // angular lifecircle hooks
   ngOnInit(): void {
-    this.getListAttribute();
+    this.getListCategoryParent();
     this.filterForm();
     this.searchForm();
-    this.attributeValueService.fetch();
-    const sb = this.attributeValueService.isLoading$.subscribe(res => this.isLoading = res);
+    this.categoriesService.fetch();
+    const sb = this.categoriesService.isLoading$.subscribe(res => this.isLoading = res);
     this.subscriptions.push(sb);
-    this.grouping = this.attributeValueService.grouping;
-    this.paginator = this.attributeValueService.paginator;
-    //this.sorting = this.attributeValueService.sorting;
+    this.grouping = this.categoriesService.grouping;
+    this.paginator = this.categoriesService.paginator;
+    this.sorting = this.categoriesService.sorting;
     //this.attributeService.fetch();
   }
 
@@ -78,11 +79,11 @@ export class AttributeValuesComponent
     this.subscriptions.forEach((sb) => sb.unsubscribe());
   }
 
-  getListAttribute(){
-    this.attributeValueService.getAllAttribute()
+  getListCategoryParent(){
+    this.categoriesService.getAllCategory()
     .subscribe(
       (res: any) => {
-        this.listAttributes = res;
+        this.listCategoryParent = res;
       }
     )
     //.subscribe();
@@ -91,12 +92,12 @@ export class AttributeValuesComponent
   // filtration
   filterForm() {
     this.filterGroup = this.fb.group({
-      attribute: [''],
+      categoryParent: [''],
       condition: [''],
       searchTerm: [''],
     });
     this.subscriptions.push(
-      this.filterGroup.controls.attribute.valueChanges.subscribe(() =>
+      this.filterGroup.controls.categoryParent.valueChanges.subscribe(() =>
         this.filter()
       )
     );
@@ -107,16 +108,16 @@ export class AttributeValuesComponent
 
   filter() {
     const filter = {};
-    const attribute = this.filterGroup.get('attribute').value;
-    if (attribute) {
-      filter['attribute'] = attribute;
+    const categoryParent = this.filterGroup.get('categoryParent').value;
+    if (categoryParent) {
+      filter['categoryParent'] = categoryParent;
     }
 
     // const condition = this.filterGroup.get('condition').value;
     // if (condition) {
     //   filter['condition'] = condition;
     // }
-    this.attributeValueService.patchState({ filter });
+    this.categoriesService.patchState({ filter });
   }
 
   // search
@@ -130,7 +131,7 @@ export class AttributeValuesComponent
   The user can type quite quickly in the input box, and that could trigger a lot of server requests. With this operator,
   we are limiting the amount of server requests emitted to a maximum of one every 150ms
   */
-        debounceTime(500),
+        debounceTime(150),
         distinctUntilChanged()
       )
       .subscribe((val) => this.search(val));
@@ -138,7 +139,7 @@ export class AttributeValuesComponent
   }
 
   search(searchTerm: string) {
-    this.attributeValueService.patchState({ searchTerm });
+    this.categoriesService.patchState({ searchTerm });
   }
 
   // sorting
@@ -151,39 +152,39 @@ export class AttributeValuesComponent
     } else {
       sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
     }
-    this.attributeValueService.patchState({ sorting });
+    this.categoriesService.patchState({ sorting });
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.attributeValueService.patchState({ paginator });
+    this.categoriesService.patchState({ paginator });
   }
   // actions
   
-  delete(id: number) {
-    const modalRef = this.modalService.open(DeleteAttributeValueModalComponent, );
-    modalRef.componentInstance.id = id;
-    modalRef.result.then(
-      () => this.attributeValueService.fetch(),
-      () => { }
-    );
-  }
+  // delete(id: number) {
+  //   const modalRef = this.modalService.open(DeleteAttributeModalComponent, );
+  //   modalRef.componentInstance.id = id;
+  //   modalRef.result.then(
+  //     () => this.categoriesService.fetch(),
+  //     () => { }
+  //   );
+  // }
 
-  addAttributeValue(id: number) {
-    const modalRef = this.modalService.open(AddAttributeValueModalComponent, {size: 'xl'});
+  addCategories(id: number) {
+    const modalRef = this.modalService.open(AddCategoriesModalComponent, {size: 'xl'});
     modalRef.componentInstance.id = id;
-    modalRef.componentInstance.listAttributes = this.listAttributes;
+    modalRef.componentInstance.listCategoryParent = this.listCategoryParent;
     modalRef.result.then(
-      () => this.attributeValueService.fetch(),
+      () => this.categoriesService.fetch(),
       () => { }
     );
   }
 
   // deleteSelected() {
-  //   const modalRef = this.modalService.open(DeleteAttributeModalComponent);
+  //   const modalRef = this.modalService.open(DeleteCategoriesServiceModalComponent);
   //   modalRef.componentInstance.ids = this.grouping.getSelectedRows();
   //   modalRef.result.then(
-  //     () => this.attributeService.fetch(),
+  //     () => this.categoriesService.fetch(),
   //     () => { }
   //   );
   // }

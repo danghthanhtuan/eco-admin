@@ -34,6 +34,9 @@ import { DeleteAttributeModalComponent } from './attributes/components/delete-at
 import { AddAttributeModalComponent } from './attributes/components/add-attribute-modal/add-attribute-modal.component';
 import { AttributeValuesComponent } from './attribute-values/attribute-values.component';
 import { AddAttributeValueModalComponent } from './attribute-values/components/add-attribute-value-modal/add-attribute-value-modal.component';
+import { DeleteAttributeValueModalComponent } from './attribute-values/components/delete-attribute-value-modal/delete-attribute-value-modal.component';
+import { CategoryComponent } from './categories/categories.component';
+import { AddCategoriesModalComponent } from './categories/components/add-categories-modal/add-categories-modal.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +67,10 @@ import { AddAttributeValueModalComponent } from './attribute-values/components/a
     DeleteAttributeModalComponent,
     AddAttributeModalComponent,
     AttributeValuesComponent,
-    AddAttributeValueModalComponent
+    AddAttributeValueModalComponent,
+    DeleteAttributeValueModalComponent,
+    CategoryComponent,
+    AddCategoriesModalComponent
   ],
   imports: [
     CommonModule,

@@ -7,7 +7,8 @@ export const environment = {
   appVersion: 'v01',
   USERDATA_KEY: 'auth97',
   isMockEnabled: true,
-  apiUrl: 'https://thanhtuandang.bsite.net/api'
+  apiUrl: 'https://thanhtuandang.bsite.net/api',
+  urlImage: 'https://thanhtuandang.bsite.net/wwwroot/'
 };
 
 /*
