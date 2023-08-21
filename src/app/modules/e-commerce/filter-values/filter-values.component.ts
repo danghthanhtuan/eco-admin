@@ -19,6 +19,7 @@ import {
 } from '../../../_metronic/shared/crud-table';
 import { AttributeValueService } from '../_services/attribute-value.service';
 import { AddFilterValueModalComponent } from './components/add-filter-value-modal.component';
+import { FilterValueService } from '../_services/filter-value.service';
 
 // import { DeleteProductsModalComponent } from './components/delete-products-modal/delete-products-modal.component';
 // import { UpdateProductsStatusModalComponent } from './components/update-products-status-modal/update-products-status-modal.component';
@@ -49,24 +50,24 @@ export class FilterValuesComponent
   filterGroup: FormGroup;
   searchGroup: FormGroup;
   private subscriptions: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
-  listAttributes : any = [];
+  listFilters : any = [];
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
     //public productsService: ProductsService,
-    public attributeValueService : AttributeValueService
+    public filterValueService : FilterValueService
   ) { }
 
   // angular lifecircle hooks
   ngOnInit(): void {
-    this.getListAttribute();
+    this.getListFilters();
     this.filterForm();
     this.searchForm();
-    this.attributeValueService.fetch();
-    const sb = this.attributeValueService.isLoading$.subscribe(res => this.isLoading = res);
+    this.filterValueService.fetch();
+    const sb = this.filterValueService.isLoading$.subscribe(res => this.isLoading = res);
     this.subscriptions.push(sb);
-    this.grouping = this.attributeValueService.grouping;
-    this.paginator = this.attributeValueService.paginator;
+    this.grouping = this.filterValueService.grouping;
+    this.paginator = this.filterValueService.paginator;
     //this.sorting = this.attributeValueService.sorting;
     //this.attributeService.fetch();
   }
@@ -75,11 +76,11 @@ export class FilterValuesComponent
     this.subscriptions.forEach((sb) => sb.unsubscribe());
   }
 
-  getListAttribute(){
-    this.attributeValueService.getAllAttribute()
+  getListFilters(){
+    this.filterValueService.getAllFiltres()
     .subscribe(
       (res: any) => {
-        this.listAttributes = res;
+        this.listFilters = res;
       }
     )
     //.subscribe();
@@ -88,12 +89,12 @@ export class FilterValuesComponent
   // filtration
   filterForm() {
     this.filterGroup = this.fb.group({
-      attribute: [''],
+      filterId: [''],
       condition: [''],
       searchTerm: [''],
     });
     this.subscriptions.push(
-      this.filterGroup.controls.attribute.valueChanges.subscribe(() =>
+      this.filterGroup.controls.filterId.valueChanges.subscribe(() =>
         this.filter()
       )
     );
@@ -104,16 +105,16 @@ export class FilterValuesComponent
 
   filter() {
     const filter = {};
-    const attribute = this.filterGroup.get('attribute').value;
-    if (attribute) {
-      filter['attribute'] = attribute;
+    const filterId = this.filterGroup.get('filterId').value;
+    if (filterId) {
+      filter['filterId'] = filterId;
     }
 
     // const condition = this.filterGroup.get('condition').value;
     // if (condition) {
     //   filter['condition'] = condition;
     // }
-    this.attributeValueService.patchState({ filter });
+    this.filterValueService.patchState({ filter });
   }
 
   // search
@@ -135,7 +136,7 @@ export class FilterValuesComponent
   }
 
   search(searchTerm: string) {
-    this.attributeValueService.patchState({ searchTerm });
+    this.filterValueService.patchState({ searchTerm });
   }
 
   // sorting
@@ -148,12 +149,12 @@ export class FilterValuesComponent
     } else {
       sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
     }
-    this.attributeValueService.patchState({ sorting });
+    this.filterValueService.patchState({ sorting });
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.attributeValueService.patchState({ paginator });
+    this.filterValueService.patchState({ paginator });
   }
   // actions
   
@@ -169,9 +170,9 @@ export class FilterValuesComponent
   addFilterValue(id: number) {
     const modalRef = this.modalService.open(AddFilterValueModalComponent, {size: 'xl'});
     modalRef.componentInstance.id = id;
-    modalRef.componentInstance.listAttributes = this.listAttributes;
+    modalRef.componentInstance.listFilters = this.listFilters;
     modalRef.result.then(
-      () => this.attributeValueService.fetch(),
+      () => this.filterValueService.fetch(),
       () => { }
     );
   }

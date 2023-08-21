@@ -6,7 +6,7 @@
 </ng-container>
 
 <div class="modal-header">
-  <div class="modal-title h4">Attribute Add</div>
+  <div class="modal-title h4">Thêm Bộ lọc</div>
 </div>
 <div class="modal-body">
   <!-- <ng-container *ngIf="isLoading">
@@ -21,41 +21,42 @@
           <input
             type="text"
             class="form-control form-control-lg form-control-solid"
-            name="attributeName"
+            name="displayText"
             placeholder="Name"
             autocomplete="off"
-            [class.is-invalid]="isControlInvalid('attributeName')"
-            [class.is-valid]="isControlValid('attributeName')"
-            formControlName="attributeName"
+            [class.is-invalid]="isControlInvalid('displayText')"
+            [class.is-valid]="isControlValid('displayText')"
+            formControlName="displayText"
           />
-          <div class="valid-feedback" *ngIf="isControlValid('attributeName')">
+          <div class="valid-feedback" *ngIf="isControlValid('displayText')">
             Tên thuộc tính hợp lệ
           </div>
           <div
             class="invalid-feedback"
-            *ngIf="controlHasError('required', 'attributeName')"
+            *ngIf="controlHasError('required', 'displayText')"
           >
             Tên thuộc tính bắt buộc
           </div>
           <div
             class="invalid-feedback"
-            *ngIf="controlHasError('minlength', 'attributeName')"
+            *ngIf="controlHasError('minlength', 'displayText')"
           >
             Phải hiều hơn 1 ký tự
           </div>
           <div
             class="invalid-feedback"
-            *ngIf="controlHasError('maxlength', 'attributeName')"
+            *ngIf="controlHasError('maxlength', 'displayText')"
           >
             Tối đa 100 ký tự
           </div>
         </div>
         <div class="col-lg-6">
           <label class="form-label">Chọn loại</label>
-          <!-- <mat-radio-group [(ngModel)]="align">
-            <mat-radio-button class="example-margin" value="start">Start</mat-radio-button>
-            <mat-radio-button class="example-margin" value="end">End</mat-radio-button>
-          </mat-radio-group> -->
+          <br>
+          <mat-radio-group formControlName="typeSearch" >
+            <mat-radio-button class="example-margin" value="0">Text</mat-radio-button>
+            <mat-radio-button class="example-margin" value="1">Số tiền</mat-radio-button>
+          </mat-radio-group>
 
           <!-- <input
             type="text"
@@ -89,7 +90,21 @@
           Url đa 100 ký tự
           </div> -->
         </div>
-      </div>  
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-4">
+          <label class="form-label">Sort Order</label>
+          <input type="number" class="form-control form-control-lg form-control-solid" name="sortOrder"
+            placeholder="sortOrder" autocomplete="off"
+            [class.is-invalid]="isControlInvalid('sortOrder')"
+            [class.is-valid]="isControlValid('sortOrder')" formControlName="sortOrder" />
+          <div class="valid-feedback" *ngIf="isControlValid('sortOrder')">
+            Sort Order hợp lệ
+          </div>
+          
+        </div>
+
+      </div>
     </form>
     
   </ng-container>

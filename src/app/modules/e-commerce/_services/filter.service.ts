@@ -6,6 +6,7 @@ import { Observable, of } from "rxjs";
 import { exhaustMap, map, mergeMap } from 'rxjs/operators';
 import { Router } from "@angular/router";
 import { Filter } from "../_models/filter.model";
+import { baseFilter } from "src/app/_fake/fake-helpers/http-extenstions";
 
 @Injectable({
     providedIn: 'root'
@@ -21,10 +22,10 @@ import { Filter } from "../_models/filter.model";
     return this.http.get<any>(this.API_URL + '/v1/filters/all').pipe(
       mergeMap((response: any) => {
         var res :  Filter[] = response.data
-        //const filteredResult = baseFilter(res, tableState);
+        const filteredResult = baseFilter(res, tableState);
         const result: TableResponseModel<Filter> = {
-          items: res,
-          total: res.length
+          items: filteredResult.items,
+          total: filteredResult.total
         };
         return of<TableResponseModel<Filter>>(<TableResponseModel<Filter>> result);
       })

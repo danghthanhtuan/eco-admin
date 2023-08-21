@@ -19,7 +19,8 @@ export class AddFilterModalComponent implements OnInit, OnDestroy {
   EMPTY_Filter: any = {
     id: undefined,
     displayText: '',
-    typeSearch: 0
+    typeSearch: '0',
+    sortOrder: 1
   }
 
   formGroup: FormGroup;
@@ -27,24 +28,25 @@ export class AddFilterModalComponent implements OnInit, OnDestroy {
   filter: Filter = {
     id: undefined,
     displayText: '',
-    typeSearch: 0
+    typeSearch: '0',
+    sortOrder: 1
   };
   isLoading = false;
   subscriptions: Subscription[] = [];
-
   constructor(private filterService: FiltersService, public modal: NgbActiveModal,
     private fb: FormBuilder, private srvAlter: SwalService) { }
 
   ngOnInit(): void {
 
-    this.loadAttribute();
+    this.loadFilters();
   }
 
   loadForm() {
     this.formGroup = this.fb.group({
-      attributeName: [this.filter.displayText,
+      displayText: [this.filter.displayText,
       Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(100)])],
-      typeSearch: [this.filter.typeSearch, Validators.compose([])],
+      typeSearch: [this.filter.typeSearch],
+      sortOrder: [this.filter.sortOrder]
     });
 
     this.isLoading = true;
@@ -69,7 +71,7 @@ export class AddFilterModalComponent implements OnInit, OnDestroy {
 
   AddFilter() {
     this.isLoading = true;
-    const sb = this.filterService.createArr(this.filter, '/v1/filter').pipe(
+    const sb = this.filterService.createArr(this.filter, '/v1/filters').pipe(
       delay(500), // Remove it from your code (just for showing loading)
       tap((res: any) => {
         this.modal.close()
@@ -105,12 +107,12 @@ export class AddFilterModalComponent implements OnInit, OnDestroy {
     this.subscriptions.push(sbUpdate);
   }
 
-  loadAttribute() {
+  loadFilters() {
     if (!this.id) {
       this.filter = this.EMPTY_Filter;
       this.loadForm();
     } else {
-      const sb = this.filterService.getItemById(this.id, '/v1/filter/by-id?id=').pipe(
+      const sb = this.filterService.getItemById(this.id, '/v1/filters/by-id?id=').pipe(
         first(),
         catchError((errorMessage) => {
           this.modal.dismiss(errorMessage);
@@ -143,8 +145,9 @@ export class AddFilterModalComponent implements OnInit, OnDestroy {
 
   private prepareAttribute() {
     const formData = this.formGroup.value;
-    // this.filter.attributeName = formData.attributeName;
-    // this.attributes.url = formData.url;
+    this.filter.typeSearch = formData.typeSearch;
+    this.filter.displayText = formData.displayText;
+    this.filter.sortOrder = formData.sortOrder;
   }
 
   // helpers for View

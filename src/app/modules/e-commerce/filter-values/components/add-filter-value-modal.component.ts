@@ -14,21 +14,30 @@ import { FilterValue } from '../../_models/filter.model';
   styleUrls: []
 })
 export class AddFilterValueModalComponent implements OnInit, OnDestroy {
-  EMPTY_Attribute_Value : any = {
+  EMPTY_Filter_Value : any = {
     id: undefined,
-    attributeName : '',
-    url: ''
+    filterValueId: undefined,
+    filterId : undefined,
+    filterValueDisplayText: '',
+    sortOrder : 1,
+    filterSearchKey: '',
+    minPrice : 0,
+    maxPrice: 0
   }
 
   formGroup: FormGroup;
   @Input() id: number;
-  @Input() listAttributes: any;
-  attributeValue: FilterValue = {
+  @Input() listFilters: any;
+
+  filterValue: FilterValue = {
     id: undefined,
-    name : '',
-    url: '',
-    nameExtra : '',
-    attributeId : undefined
+    filterValueId: undefined,
+    filterId : undefined,
+    filterValueDisplayText: '',
+    sortOrder : 1,
+    filterSearchKey: '',
+    minPrice : 0,
+    maxPrice: 0
   };
   isLoading = false;
   subscriptions: Subscription[] = [];
@@ -43,10 +52,10 @@ export class AddFilterValueModalComponent implements OnInit, OnDestroy {
 
   loadForm() {
     this.formGroup = this.fb.group({
-      attributeValueName: [this.attributeValue.name,
-         Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(50)])],
-         url: [this.attributeValue.url,  Validators.compose([])],
-         attributeId: [this.attributeValue.attributeId,  Validators.compose([Validators.required])]
+      // attributeValueName: [this.attributeValue.name,
+      //    Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(50)])],
+      //    url: [this.attributeValue.url,  Validators.compose([])],
+      //    attributeId: [this.attributeValue.attributeId,  Validators.compose([Validators.required])]
     });
 
     this.isLoading = true;
@@ -69,79 +78,78 @@ export class AddFilterValueModalComponent implements OnInit, OnDestroy {
     this.subscriptions.push(sb);
   }
 
-  AddAttributeValue() {
+  AddFilterValue() {
     this.isLoading = true;
-    var modelPost : any = {
-      attributeID : this.attributeValue.attributeId,
-      attributeValuesRequest : [{
-        attributeValueName : this.attributeValue.name,
-        url :this.attributeValue.url,
-      }]
+    // var modelPost : any = {
+    //   attributeID : this.attributeValue.attributeId,
+    //   attributeValuesRequest : [{
+    //     attributeValueName : this.attributeValue.name,
+    //     url :this.attributeValue.url,
+    //   }]
 
-    }
-    const sb = this.filterValueService.create(modelPost, '/v1/filter/value').pipe(
-      delay(500), // Remove it from your code (just for showing loading)
-      tap(() =>
-      //  this.modal.close() thêm thành công thêm nữa ko close
-      {}
-      ),
-      catchError((err) => {
-        this.modal.dismiss(err);
-        this.srvAlter.toast(TYPE.ERROR, "Thêm không thành công!", false);
-        return of(undefined);
-      }),
-      finalize(() => {
-        //this.isLoading = false;
-        // tính sau 
-        this.srvAlter.toast(TYPE.SUCCESS, "Thêm thành công!", false);
-        this.filterValueService.fetch();
-      })
-    ).subscribe(
+    // }
+    // const sb = this.filterValueService.create(modelPost, '/v1/filter/value').pipe(
+    //   delay(500), // Remove it from your code (just for showing loading)
+    //   tap(() =>
+    //   //  this.modal.close() thêm thành công thêm nữa ko close
+    //   {}
+    //   ),
+    //   catchError((err) => {
+    //     this.modal.dismiss(err);
+    //     this.srvAlter.toast(TYPE.ERROR, "Thêm không thành công!", false);
+    //     return of(undefined);
+    //   }),
+    //   finalize(() => {
+    //     //this.isLoading = false;
+    //     // tính sau 
+    //     this.srvAlter.toast(TYPE.SUCCESS, "Thêm thành công!", false);
+    //     this.filterValueService.fetch();
+    //   })
+    // ).subscribe(
      
       
-      );
-    this.subscriptions.push(sb);
+    //   );
+    // this.subscriptions.push(sb);
   }
 
   edit() {
-    var modelUpdate : any = {
-      attributeValueID : this.attributeValue.id,
-      attributeValueName : this.attributeValue.name,
-      url : this.attributeValue.url
-    };
+    // var modelUpdate : any = {
+    //   attributeValueID : this.attributeValue.id,
+    //   attributeValueName : this.attributeValue.name,
+    //   url : this.attributeValue.url
+    // };
 
-    const sbUpdate = this.filterValueService.update( modelUpdate, '/v1/filter/value').pipe(
-      tap(() => {
-        this.modal.close();
-        this.srvAlter.toast(TYPE.SUCCESS, "Cập nhật thành công!", false);
-      }),
-      catchError((errorMessage) => {
-        this.modal.dismiss(errorMessage);
-        return of(this.attributeValue);
-      }),
-    ).subscribe(res => this.attributeValue = res);
-    this.subscriptions.push(sbUpdate);
+    // const sbUpdate = this.filterValueService.update( modelUpdate, '/v1/filter/value').pipe(
+    //   tap(() => {
+    //     this.modal.close();
+    //     this.srvAlter.toast(TYPE.SUCCESS, "Cập nhật thành công!", false);
+    //   }),
+    //   catchError((errorMessage) => {
+    //     this.modal.dismiss(errorMessage);
+    //     return of(this.attributeValue);
+    //   }),
+    // ).subscribe(res => this.attributeValue = res);
+    // this.subscriptions.push(sbUpdate);
   }
 
   loadAttributeValue() {
     if (!this.id) {
-      this.attributeValue = this.EMPTY_Attribute_Value;
+      this.filterValue = this.EMPTY_Filter_Value;
       this.loadForm();
     } else {
-      const sb = this.filterValueService.getItemById(this.id, '/v1/filter/value/by-id?Id=').pipe(
+      const sb = this.filterValueService.getItemById(this.id, '/v1/filters/value/by-id?Id=').pipe(
         first(),
         catchError((errorMessage) => {
           this.modal.dismiss(errorMessage);
-          return of(this.EMPTY_Attribute_Value);
+          return of(this.EMPTY_Filter_Value);
         })
       ).subscribe((att: any) => {
-        this.attributeValue = {
-          id: att.data?.id,
-          name : att.data?.name,
-          url: att.data?.url ?? '',
-          attributeId: att.data?.attributeId ?? 0,
-          nameExtra : att.data?.nameExtra ?? ''
-        };
+        // this.attributeValue = {
+        //   id: att.data?.id,
+        //   name : att.data?.name,
+        //   url: att.data?.url ?? '',
+        //   nameExtra : att.data?.nameExtra ?? ''
+        // };
         this.loadForm();
       });
       this.subscriptions.push(sb);
@@ -160,18 +168,17 @@ export class AddFilterValueModalComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.attributeValue.id) {
+    if (this.filterValue.filterValueId) {
       this.edit();
     } else {
-      this.AddAttributeValue();
+      this.AddFilterValue();
     }
   }
 
   private prepareAttribute() {
     const formData = this.formGroup.value;
-    this.attributeValue.name = formData.attributeValueName;
-    this.attributeValue.url = formData.url;
-    this.attributeValue.attributeId = formData.attributeId;
+    // this.attributeValue.name = formData.attributeValueName;
+    // this.attributeValue.url = formData.url;
   }
 
   // helpers for View

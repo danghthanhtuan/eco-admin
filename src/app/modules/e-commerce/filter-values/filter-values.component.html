@@ -8,7 +8,7 @@
         type="button"
         class="btn btn-primary"
         (click)="addFilterValue(undefined)" 
-        >New Giá trị bộ lọc</a>
+        >Thêm Giá trị bộ lọc</a>
       <!--    (click)="addAttribute(undefined)" -->
     </div>
   </div>
@@ -21,13 +21,13 @@
             <div class="col-lg-12">
               <select
                 class="form-control"
-                name="attribute"
+                name="filterId"
                 placeholder="Filter by Status"
-                formControlName="attribute"
+                formControlName="filterId"
               >            
                 <option value="">All</option>
-                <ng-container *ngFor="let att of listAttributes">
-                  <option value="{{att.id}}" selected>{{att.name}}</option>
+                <ng-container *ngFor="let f of listFilters">
+                  <option value="{{f.id}}" selected>{{f.displayText}}</option>
                 </ng-container>
               </select
               ><small class="form-text text-muted"
@@ -46,7 +46,7 @@
             value=""
             formControlName="searchTerm"
           /><small class="form-text text-muted"
-            ><b>Search</b> Attribute Value</small
+            ><b>Search</b> Name</small
           >
         </div>
       </div>
@@ -87,7 +87,7 @@
             ></app-sort-icon> -->
           </th>
           <th>
-            Name
+            Display Text
             <!-- <app-sort-icon
               column="manufacture"
               [activeColumn]="sorting.column"
@@ -96,15 +96,24 @@
             ></app-sort-icon> -->
           </th>  
           <th>
-            Url
-          </th>  
+            FilterValue Search Key
+          </th> 
           <th>
-            Name Extra
-          </th>       
+            MinPrice
+          </th> 
+          <th>
+            MaxPrice
+          </th> 
+          <th>
+            TextExtra
+          </th> 
+          <th>
+            SortOrder
+          </th>         
           <th>ACTIONS</th>
         </thead>
         <tbody>
-          <tr *ngFor="let att of attributeValueService.items$ | async">
+          <tr *ngFor="let att of filterValueService.items$ | async">
             <!-- <td class="selection-cell">
               <label class="checkbox checkbox-single"
                 ><input
@@ -115,10 +124,13 @@
                 <span></span>
               </label>
             </td> -->
-            <td>{{ att.id }}</td>
-            <td>{{ att.name }}</td>
-            <td>{{ att.url }}</td>
-            <td>{{ att.nameExtra }}</td>
+            <td>{{ att.filterValueID }}</td>
+            <td>{{ att.filterValueDisplayText }}</td>
+            <td>{{ att.filterSearchKey }}</td>
+            <td>{{ att.minPrice }}</td>
+            <td>{{ att.maxPrice }}</td>
+            <td>{{ att.filterValueDisplayTextExtra }}</td>
+            <td>{{ att.sortOrder }}</td>
             <td>
               <a
                 title="Edit attribute"

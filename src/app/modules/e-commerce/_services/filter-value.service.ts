@@ -1,11 +1,8 @@
 import { Inject, Injectable } from "@angular/core";
-import { Product } from "../_models/product.model";
 import { ITableState, TableResponseModel, TableService } from "src/app/_metronic/shared/crud-table";
-import { Attribute, AttributeValue } from "../_models/attribute.model";
 import { environment } from "src/environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
-import { baseFilter } from '../../../_fake/fake-helpers/http-extenstions';
 import { exhaustMap, map, mergeMap } from 'rxjs/operators';
 import { Router } from "@angular/router";
 import { FilterValue } from "../_models/filter.model";
@@ -21,12 +18,12 @@ import { FilterValue } from "../_models/filter.model";
 
      // READ
   find(tableState: ITableState): Observable<TableResponseModel<FilterValue>> {
-    var attribute = tableState.filter['attribute'] ?? '0';
+    var filterId = tableState.filter['filterId'] ?? '0';
     var nameSearch = tableState.searchTerm ?? '';
     var page = tableState.paginator.page ?? 1;
     var pageSize = tableState.paginator.pageSize ?? 10; 
-    var querys = '?AttributeID=' + attribute + '&Name=' + nameSearch + '&Page=' + page + '&PageSize=' + pageSize;
-    return this.http.get<any>(this.API_URL + '/v1/attribute/value/paging' + querys).pipe(
+    var querys = '?FilterID=' + filterId + '&Name=' + nameSearch + '&Page=' + page + '&PageSize=' + pageSize;
+    return this.http.get<any>(this.API_URL + '/v1/filters/value/paging' + querys).pipe(
       mergeMap((response: any) => {
         var res :  FilterValue[] = response.data;
         //const filteredResult = baseFilter(res, tableState);
@@ -39,8 +36,8 @@ import { FilterValue } from "../_models/filter.model";
     );
   }
 
-  getAllAttribute(): Observable<any> {
-    return this.http.get<any>(this.API_URL + '/v1/attribute/all').pipe(
+  getAllFiltres(): Observable<any> {
+    return this.http.get<any>(this.API_URL + '/v1/filters/all').pipe(
       mergeMap((response: any) => {
         return of<any>(<any> response.data);
       })

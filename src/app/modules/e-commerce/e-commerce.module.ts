@@ -48,6 +48,7 @@ import { DeleteFilterModalComponent } from './filters/components/delete-filter-m
 import { AddFilterModalComponent } from './filters/components/add-filter-modal/add-filter-modal.component';
 import { FilterValuesComponent } from './filter-values/filter-values.component';
 import { AddFilterValueModalComponent } from './filter-values/components/add-filter-value-modal.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -103,7 +104,8 @@ import { AddFilterValueModalComponent } from './filter-values/components/add-fil
     InlineSVGModule,
     CRUDTableModule,
     NgbModalModule,
-    NgbDatepickerModule
+    NgbDatepickerModule,
+    MatRadioModule
   ],
   entryComponents: [
     DeleteCustomerModalComponent,
