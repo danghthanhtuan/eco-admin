@@ -7,8 +7,8 @@
 
 <div class="modal-header">
   <!-- <div class="modal-title h4"> Add</div> -->
-  <ng-container *ngIf="attributeValue.id">Edit</ng-container>
-  <ng-container *ngIf="!attributeValue.id">Create</ng-container>
+  <ng-container *ngIf="filterValue.id">Edit</ng-container>
+  <ng-container *ngIf="!filterValue.id">Create</ng-container>
   Attribute Value
 </div>
 <div class="modal-body">
@@ -21,9 +21,9 @@
       <div class="form-group row">
         <div class="col-lg-6">
           <label>Chọn Attribute để thêm giá trị</label>
-          <select [attr.disabled]="attributeValue.id ? '' : null" class="form-control" name="attributeId" placeholder="Filter by Status" formControlName="attributeId">
+          <select [attr.disabled]="filterValue.id ? '' : null" class="form-control" name="attributeId" placeholder="Filter by Status" formControlName="attributeId">
             <!-- <option value="">All</option> -->
-            <ng-container *ngFor="let att of listAttributes">
+            <ng-container *ngFor="let att of listFilters">
               <option value="{{att.id}}" selected>{{att.name}}</option>
             </ng-container>
           </select>
