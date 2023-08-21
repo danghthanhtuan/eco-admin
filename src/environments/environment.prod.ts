@@ -1,8 +1,8 @@
 export const environment = {
-  production: true,
-  appVersion: 'v726demo1',
-  USERDATA_KEY: 'authf649fc9a5f55',
+  production: false,
+  appVersion: 'v01',
+  USERDATA_KEY: 'auth97',
   isMockEnabled: true,
-  //apiUrl: 'api'
-  apiUrl: 'https://localhost:5001/api'
+  apiUrl: 'https://thanhtuandang.bsite.net/api',
+  urlImage: 'https://thanhtuandang.bsite.net/wwwroot/'
 };
