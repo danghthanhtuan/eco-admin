@@ -9,7 +9,7 @@
   <!-- <div class="modal-title h4"> Add</div> -->
   <ng-container *ngIf="filterValue.id">Edit</ng-container>
   <ng-container *ngIf="!filterValue.id">Create</ng-container>
-  Attribute Value
+  Filter Value
 </div>
 <div class="modal-body">
   <!-- <ng-container *ngIf="isLoading">
@@ -20,44 +20,44 @@
     <form action="#" class="form form-label-right" [formGroup]="formGroup">
       <div class="form-group row">
         <div class="col-lg-6">
-          <label>Chọn Attribute để thêm giá trị</label>
-          <select [attr.disabled]="filterValue.id ? '' : null" class="form-control" name="attributeId" placeholder="Filter by Status" formControlName="attributeId">
+          <label>Chọn Filter để thêm giá trị</label>
+          <select (change)="onChange($event.target.value)" [attr.disabled]="filterValue.id ? '' : null" class="form-control" name="filterId" placeholder="Filter by Status" formControlName="filterId">
             <!-- <option value="">All</option> -->
             <ng-container *ngFor="let att of listFilters">
-              <option value="{{att.id}}" selected>{{att.name}}</option>
+              <option value="{{att.id}}" selected>{{att.displayText}}</option>
             </ng-container>
           </select>
-          <div class="invalid-feedback" *ngIf="controlHasError('required', 'attributeId')">
-            Attribute là bắt buộc!
+          <div class="invalid-feedback"  *ngIf="controlHasError('required', 'filterId')">
+            Filter là bắt buộc!
           </div>
         </div>
 
       </div>
       <div class="form-group row">
         <div class="col-lg-6">
-          <label class="form-label">Nhập giá trị cho Attribute</label>
-          <input type="text" class="form-control form-control-lg form-control-solid" name="attributeValueName"
-            placeholder="attributeValueName" autocomplete="off"
-            [class.is-invalid]="isControlInvalid('attributeValueName')"
-            [class.is-valid]="isControlValid('attributeValueName')" formControlName="attributeValueName" />
-          <div class="valid-feedback" *ngIf="isControlValid('attributeValueName')">
-            Tên thuộc tính hợp lệ
+          <label class="form-label">Nhập giá trị cho Filter</label>
+          <input type="text" class="form-control form-control-lg form-control-solid" name="filterValueDisplayText"
+            placeholder="filterValueDisplayText" autocomplete="off"
+            [class.is-invalid]="isControlInvalid('filterValueDisplayText')"
+            [class.is-valid]="isControlValid('filterValueDisplayText')" formControlName="filterValueDisplayText" />
+          <div class="valid-feedback" *ngIf="isControlValid('filterValueDisplayText')">
+            Tên hiện thị tìm kiếm hợp lệ
           </div>
-          <div class="invalid-feedback" *ngIf="controlHasError('required', 'attributeValueName')">
-            Tên thuộc tính bắt buộc
+          <div class="invalid-feedback" *ngIf="controlHasError('required', 'filterValueDisplayText')">
+            Tên hiện thị tìm kiếm bắt buộc
           </div>
-          <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'attributeValueName')">
+          <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'filterValueDisplayText')">
             Phải hiều hơn 1 ký tự
           </div>
-          <div class="invalid-feedback" *ngIf="controlHasError('maxlength', 'attributeValueName')">
-            Tối đa 100 ký tự
+          <div class="invalid-feedback" *ngIf="controlHasError('maxlength', 'filterValueDisplayText')">
+            Tối đa 50 ký tự
           </div>
         </div>
         <div class="col-lg-6">
-          <label class="form-label">Nhập url (redirect trang mong muốn)</label>
-          <input type="text" class="form-control form-control-lg form-control-solid" name="url" placeholder="url"
-            autocomplete="off" [class.is-invalid]="isControlInvalid('url')" [class.is-valid]="isControlValid('url')"
-            formControlName="url" />
+          <label class="form-label">Nhập từ khoá tìm kiếm (chỉ loại tìm kiếm theo text)</label>
+          <input  [attr.disabled]="typeSearchKey ? '' : null"  type="text" class="form-control form-control-lg form-control-solid" name="filterSearchKey" placeholder="filterSearchKey"
+            autocomplete="off" [class.is-invalid]="isControlInvalid('filterSearchKey')" [class.is-valid]="isControlValid('filterSearchKey')"
+            formControlName="filterSearchKey" />
           <!-- <div class="valid-feedback" *ngIf="isControlValid('url')">
             Url hợp lệ
           </div> -->
@@ -79,6 +79,28 @@
           >
           Url đa 100 ký tự
           </div> -->
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-lg-4">
+          <label class="form-label">Sort Order</label>
+          <input type="number" class="form-control form-control-lg form-control-solid" name="sortOrder" placeholder="sortOrder"
+          autocomplete="off" [class.is-invalid]="isControlInvalid('sortOrder')" [class.is-valid]="isControlValid('sortOrder')"
+          formControlName="sortOrder" />
+        </div>
+        <div class="col-lg-4">
+          <label class="form-label">Min Price (chỉ loại tìm kiếm theo số tiền)</label>
+          <input  [attr.disabled]="!typeSearchKey ? '' : null" type="number" class="form-control form-control-lg form-control-solid" name="minPrice" placeholder="minPrice"
+            autocomplete="off" [class.is-invalid]="isControlInvalid('minPrice')" [class.is-valid]="isControlValid('minPrice')"
+            formControlName="minPrice" />
+
+        </div>
+        <div class="col-lg-4">
+          <label class="form-label">Max Price (chỉ loại tìm kiếm theo số tiền)</label>
+          <input  [attr.disabled]="!typeSearchKey ? '' : null" type="number" class="form-control form-control-lg form-control-solid" name="maxPrice" placeholder="maxPrice"
+            autocomplete="off" [class.is-invalid]="isControlInvalid('maxPrice')" [class.is-valid]="isControlValid('maxPrice')"
+            formControlName="maxPrice" />
+
         </div>
       </div>
     </form>
