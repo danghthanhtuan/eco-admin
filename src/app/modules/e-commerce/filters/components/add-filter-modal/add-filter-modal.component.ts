@@ -37,7 +37,6 @@ export class AddFilterModalComponent implements OnInit, OnDestroy {
     private fb: FormBuilder, private srvAlter: SwalService) { }
 
   ngOnInit(): void {
-
     this.loadFilters();
   }
 
@@ -95,8 +94,14 @@ export class AddFilterModalComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-    const sbUpdate = this.filterService.update(this.filter, '/v1/attribute').pipe(
-      tap(() => {
+    var modelUpdate :any = {
+      filterId : this.filter.id,
+        displayText : this.filter.displayText,
+        sortOrder : this.filter.sortOrder
+    }
+    const sbUpdate = this.filterService.update(modelUpdate, '/v1/filters').pipe(
+      tap((res: any) => {
+        this.checkSuccessEditOrAdd(res, "Cập nhật")
         this.modal.close();
       }),
       catchError((errorMessage) => {
@@ -112,18 +117,19 @@ export class AddFilterModalComponent implements OnInit, OnDestroy {
       this.filter = this.EMPTY_Filter;
       this.loadForm();
     } else {
-      const sb = this.filterService.getItemById(this.id, '/v1/filters/by-id?id=').pipe(
+      const sb = this.filterService.getItemById(this.id, '/v1/filters/by-id?filterId=').pipe(
         first(),
         catchError((errorMessage) => {
           this.modal.dismiss(errorMessage);
           return of(this.EMPTY_Filter);
         })
       ).subscribe((att: any) => {
-        // this.filter = {
-        //   id: att.data?.id,
-        //   attributeName : att.data?.name,
-        //   url: att.data?.url ?? ''
-        // };
+        this.filter = {
+          id: att.data?.id,
+          displayText : att.data?.displayText,
+          typeSearch: att.data?.typeSearch ?? '0',
+          sortOrder : 1
+        };
         this.loadForm();
       });
       this.subscriptions.push(sb);
