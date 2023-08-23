@@ -25,7 +25,6 @@ import { Trademarks } from "../_models/trademarks.model";
     // var querys = '?AttributeID=' + attribute + '&Name=' + nameSearch + '&Page=' + page + '&PageSize=' + pageSize;
     return this.http.get<any>(this.API_URL + '/v1/trademark/limit?limit=100').pipe(
       mergeMap((response: any) => {
-        debugger;
         var res :  Trademarks[] = response.data;
         //const filteredResult = baseFilter(res, tableState);
         const result: TableResponseModel<Trademarks> = {

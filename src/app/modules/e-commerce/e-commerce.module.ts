@@ -49,6 +49,7 @@ import { AddFilterModalComponent } from './filters/components/add-filter-modal/a
 import { FilterValuesComponent } from './filter-values/filter-values.component';
 import { AddFilterValueModalComponent } from './filter-values/components/add-filter-value-modal.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { TransactionsComponent } from './transactions/transactions.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,9 @@ import { MatRadioModule } from '@angular/material/radio';
     AddFilterModalComponent,
     DeleteFilterModalComponent,
     FilterValuesComponent,
-    AddFilterValueModalComponent
+    AddFilterValueModalComponent,
+
+    TransactionsComponent
   ],
   imports: [
     CommonModule,

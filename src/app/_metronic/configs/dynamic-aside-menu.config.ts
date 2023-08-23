@@ -313,7 +313,13 @@ export const DynamicAsideMenuConfig = {
         {
           title: 'Categories',
           page: '/ecommerce/categories'
-        },
+        }
+        ,
+        {
+          title: 'Transactions',
+          page: '/ecommerce/transactions'
+        }
+        ,
         {
           title: 'Customers',
           page: '/ecommerce/customers'

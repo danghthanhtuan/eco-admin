@@ -25,7 +25,7 @@ export class DeleteAttributeModalComponent implements OnInit, OnDestroy {
 
   deleteAttribute() {
     this.isLoading = true;
-    const sb = this.attributeService.delete(this.id, 'v1/attribute?id=').pipe(
+    const sb = this.attributeService.delete(this.id, '/v1/attribute?id=').pipe(
       delay(500), // Remove it from your code (just for showing loading)
       tap(() => this.modal.close()),
       catchError((err) => {

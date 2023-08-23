@@ -97,7 +97,10 @@
           </th>
           <th>
             Type Search
-          </th>     
+          </th> 
+           <th>
+            Sort Order
+          </th>      
           <th>ACTIONS</th>
         </thead>
         <tbody>
@@ -105,7 +108,7 @@
             <td>{{ f.id }}</td>
             <td>{{ f.displayText }}</td>
             <td>{{ f.typeSearch == "0" ? "Text" : "Số tiền"}}</td>
-           
+            <td>{{ f.sortOrder }}</td>
            
             <td>
                <a

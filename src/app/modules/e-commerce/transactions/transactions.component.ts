@@ -18,20 +18,18 @@ import {
   ISearchView,
 } from '../../../_metronic/shared/crud-table';
 import { environment } from 'src/environments/environment';
-import { FiltersService } from '../_services/filter.service';
-import { DeleteFilterModalComponent } from './components/delete-filter-modal/delete-filter-modal.component';
-import { AddFilterModalComponent } from './components/add-filter-modal/add-filter-modal.component';
+import { TransactionsService } from '../_services/transactions.service';
 
 @Component({
-  selector: 'app-filters',
-  templateUrl: './filters.component.html',
+  selector: 'app-transactions',
+  templateUrl: './transactions.component.html',
   styleUrls: [],
 })
-export class FiltersComponent
+export class TransactionsComponent
   implements
   OnInit,
   OnDestroy,
- // IDeleteAction,
+  // IDeleteAction,
   // IDeleteSelectedAction,
   // IFetchSelectedAction,
   // IUpdateStatusForSelectedAction,
@@ -48,23 +46,22 @@ export class FiltersComponent
   searchGroup: FormGroup;
   private subscriptions: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
   public urlImage = environment.urlImage;
-  listCategoryParent : any = [];
+  listCategoryParent: any = [];
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
-    public filterService : FiltersService
+    public transactionService: TransactionsService
   ) { }
 
   // angular lifecircle hooks
   ngOnInit(): void {
-   // this.getListCategoryParent();
     this.filterForm();
     this.searchForm();
-    this.filterService.fetch();
-    const sb = this.filterService.isLoading$.subscribe(res => this.isLoading = res);
+    this.transactionService.fetch();
+    const sb = this.transactionService.isLoading$.subscribe(res => this.isLoading = res);
     this.subscriptions.push(sb);
-    this.grouping = this.filterService.grouping;
-    this.paginator = this.filterService.paginator;
+    this.grouping = this.transactionService.grouping;
+    this.paginator = this.transactionService.paginator;
     // this.sorting = this.tradeService.sorting;
     //this.attributeService.fetch();
   }
@@ -76,54 +73,63 @@ export class FiltersComponent
   // filtration
   filterForm() {
     this.filterGroup = this.fb.group({
-      categoryParent: [''],
-      condition: [''],
-      searchTerm: [''],
+      status: [''],
+      searchPhone: [''],
+      searchOrderCode: ['']
     });
     this.subscriptions.push(
-      this.filterGroup.controls.categoryParent.valueChanges.subscribe(() =>
+      this.filterGroup.controls.status.valueChanges.subscribe(() =>
         this.filter()
       )
     );
     this.subscriptions.push(
-      this.filterGroup.controls.condition.valueChanges.subscribe(() => this.filter())
+      this.filterGroup.controls.searchPhone.valueChanges.subscribe(() => this.filter())
+    );
+    this.subscriptions.push(
+      this.filterGroup.controls.searchOrderCode.valueChanges.subscribe(() => this.filter())
     );
   }
 
   filter() {
+    debugger;
     const filter = {};
-    const categoryParent = this.filterGroup.get('categoryParent').value;
-    if (categoryParent) {
-      filter['categoryParent'] = categoryParent;
+    const status = this.filterGroup.get('status').value;
+    if (status) {
+      filter['status'] = status;
     }
 
-    // const condition = this.filterGroup.get('condition').value;
-    // if (condition) {
-    //   filter['condition'] = condition;
-    // }
-    this.filterService.patchState({ filter });
+    const searchPhone = this.filterGroup.get('searchPhone').value;
+    if (searchPhone) {
+      filter['searchPhone'] = searchPhone;
+    }
+
+    const searchOrderCode = this.filterGroup.get('searchOrderCode').value;
+    if (searchOrderCode) {
+      filter['searchOrderCode'] = searchOrderCode;
+    }
+
+    this.transactionService.patchState({ filter });
   }
 
   // search
   searchForm() {
     this.searchGroup = this.fb.group({
       searchTerm: [''],
+      searchPhone: [''],
+      searchOrderCode: [''],
     });
     const searchEvent = this.searchGroup.controls.searchTerm.valueChanges
       .pipe(
-        /*
-  The user can type quite quickly in the input box, and that could trigger a lot of server requests. With this operator,
-  we are limiting the amount of server requests emitted to a maximum of one every 150ms
-  */
-        debounceTime(150),
+        debounceTime(550),
         distinctUntilChanged()
       )
       .subscribe((val) => this.search(val));
+
     this.subscriptions.push(searchEvent);
   }
 
   search(searchTerm: string) {
-    this.filterService.patchState({ searchTerm });
+    this.transactionService.patchState({ searchTerm });
   }
 
   // sorting
@@ -136,33 +142,55 @@ export class FiltersComponent
     } else {
       sorting.direction = sorting.direction === 'asc' ? 'desc' : 'asc';
     }
-    this.filterService.patchState({ sorting });
+    this.transactionService.patchState({ sorting });
   }
 
   // pagination
   paginate(paginator: PaginatorState) {
-    this.filterService.patchState({ paginator });
-  }
-  // actions
-  
-  delete(id: number) {
-    const modalRef = this.modalService.open(DeleteFilterModalComponent, );
-    modalRef.componentInstance.id = id;
-    modalRef.result.then(
-      () => this.filterService.fetch(),
-      () => { }
-    );
+    this.transactionService.patchState({ paginator });
   }
 
-  addFilters(id: number) {
-    const modalRef = this.modalService.open(AddFilterModalComponent, {size: 'xl'});
-    modalRef.componentInstance.id = id;
-   // modalRef.componentInstance.listCategoryParent = this.listCategoryParent;
-    modalRef.result.then(
-      () => this.filterService.fetch(),
-      () => { }
-    );
+  getStatusName(status: number) {
+    switch (status) {
+      case 1: {
+        return "Mới";
+      }
+      case 2: {
+        return "Đang xử lý";
+      }
+      case 3: {
+        return "Đang giao";
+      }
+      case 4: {
+        return "Hoàn thành";
+      }
+      case 5: {
+        return "Đã huỷ";
+      }
+      default: ""
+    }
   }
+
+  // actions
+
+  // delete(id: number) {
+  //   const modalRef = this.modalService.open(DeleteTrademarksModalComponent, );
+  //   modalRef.componentInstance.id = id;
+  //   modalRef.result.then(
+  //     () => this.tradeService.fetch(),
+  //     () => { }
+  //   );
+  // }
+
+  // addTrademarks(id: number) {
+  //   const modalRef = this.modalService.open(AddTrademarksModalComponent, {size: 'xl'});
+  //   modalRef.componentInstance.id = id;
+  //  // modalRef.componentInstance.listCategoryParent = this.listCategoryParent;
+  //   modalRef.result.then(
+  //     () => this.tradeService.fetch(),
+  //     () => { }
+  //   );
+  // }
 
   // deleteSelected() {
   //   const modalRef = this.modalService.open(DeleteCategoriesServiceModalComponent);

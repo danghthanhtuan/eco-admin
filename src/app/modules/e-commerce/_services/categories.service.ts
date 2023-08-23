@@ -1,7 +1,5 @@
 import { Inject, Injectable } from "@angular/core";
-import { Product } from "../_models/product.model";
 import { ITableState, TableResponseModel, TableService } from "src/app/_metronic/shared/crud-table";
-import { Attribute, AttributeValue } from "../_models/attribute.model";
 import { environment } from "src/environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";

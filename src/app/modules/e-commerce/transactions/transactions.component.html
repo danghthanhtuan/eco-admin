@@ -1,37 +1,39 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Giá trị Bộ lọc sản phẩm</h3>
+      <h3 class="card-label">Danh sách đơn hàng</h3>
     </div>
     <div class="card-toolbar">
-      <a
+      <!-- <a
         type="button"
         class="btn btn-primary"
-        (click)="addFilterValue(undefined)" 
-        >Thêm Giá trị bộ lọc</a>
-      <!--    (click)="addAttribute(undefined)" -->
+       
+        >New Trademarks</a> -->
+      <!--   (click)="addAttribute(undefined)" -->
     </div>
   </div>
   <div class="card-body">
     <!-- begin: Filtration form -->
-     <div class="form form-label-right">
+    <div class="form form-label-right">
       <div class="form-group row">
         <div class="col-lg-3">
           <div class="row" [formGroup]="filterGroup">
             <div class="col-lg-12">
               <select
                 class="form-control"
-                name="filterId"
+                name="status"
                 placeholder="Filter by Status"
-                formControlName="filterId"
+                formControlName="status"
               >            
                 <option value="">All</option>
-                <ng-container *ngFor="let f of listFilters">
-                  <option value="{{f.id}}" selected>{{f.displayText}}</option>
-                </ng-container>
+                  <option value="1" >Mới</option>
+                  <option value="2" >Đang xử lý</option>
+                  <option value="3" >Đang giao hàng</option>
+                  <option value="4" >Hoàn thành</option>
+                  <option value="5" >Đã huỷ</option>
               </select
               ><small class="form-text text-muted"
-                ><b>Filter</b> Bộ lọc</small
+                ><b>Filter</b> Status</small
               >
             </div>
             
@@ -44,21 +46,42 @@
             name="searchText"
             placeholder="Search"
             value=""
-            formControlName="searchTerm"
-          /><small class="form-text text-muted"
+            formControlName="searchTerm"/><small class="form-text text-muted"
+            ><b>Search</b> Name</small
+          >
+        </div>
+        <div class="col-lg-3" [formGroup]="searchGroup">
+          <input
+            type="text"
+            class="form-control"
+            name="searchPhone"
+            placeholder="searchPhone"
+            value=""
+            formControlName="searchPhone"/><small class="form-text text-muted"
+            ><b>Search</b> Phone</small
+          >
+        </div>
+        <div class="col-lg-3" [formGroup]="searchGroup">
+          <input
+            type="text"
+            class="form-control"
+            name="searchOrderCode"
+            placeholder="searchOrderCode"
+            value=""
+            formControlName="searchOrderCode"/><small class="form-text text-muted"
             ><b>Search</b> Name</small
           >
         </div>
       </div>
     </div> 
     <!-- end: Filtration form -->
-
     <!-- begin: Grouping -->
     <ng-container *ngIf="grouping.getSelectedRowsCount()">
       <div class="form">
         <div
           class="row align-items-center form-group-actions margin-top-20 margin-bottom-20"
         >
+          
         </div>
       </div>
     </ng-container>
@@ -78,66 +101,35 @@
             ></label>
           </th> -->
           <th>
-            (ID)
-            <!-- <app-sort-icon
-              column="VINCode"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon> -->
+            TransactionID
           </th>
           <th>
-            Display Text
-            <!-- <app-sort-icon
-              column="manufacture"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon> -->
+            OrderCode
+          </th>
+          <th>
+            ShippingName
           </th>  
-          <th>
-            FilterValue Search Key
-          </th> 
-          <th>
-            MinPrice
-          </th> 
-          <th>
-            MaxPrice
-          </th> 
-          <th>
-            TextExtra
-          </th> 
-          <th>
-            SortOrder
-          </th>         
+          <th>ShippingPhone</th>   
+          <th>totalAmount</th>
+          <th>status</th>  
           <th>ACTIONS</th>
         </thead>
         <tbody>
-          <tr *ngFor="let att of filterValueService.items$ | async">
-            <!-- <td class="selection-cell">
-              <label class="checkbox checkbox-single"
-                ><input
-                  type="checkbox"
-                  (click)="grouping.selectRow(att.id)"
-                  [checked]="grouping.isRowSelected(att.id)"
-                />
-                <span></span>
-              </label>
-            </td> -->
-            <td>{{ att.filterValueID }}</td>
-            <td>{{ att.filterValueDisplayText }}</td>
-            <td>{{ att.filterSearchKey }}</td>
-            <td>{{ att.minPrice }}</td>
-            <td>{{ att.maxPrice }}</td>
-            <td>{{ att.filterValueDisplayTextExtra }}</td>
-            <td>{{ att.filterValueSortOrder }}</td>
+          <tr *ngFor="let tran of transactionService.items$ | async">
+            <td>{{ tran.transactionID }}</td>
+            <td>{{ tran.orderCode }}</td>
+            <td>{{ tran.shippingName }}</td>
+            <td>{{ tran.shippingPhone }}</td>
+            <td>{{ tran.totalAmount | currency: "VND" }}</td>
+            <td>{{ getStatusName(tran.status) }}</td>
+
             <td>
               <a
                 title="Edit attribute"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"               
-                (click)="addFilterValue(att.filterValueID)" 
-        
-              >   
+                
+              >
+              <!-- (click)="addSlides(slide.id)" -->
                 <span
                   [inlineSVG]="
                     './assets/media/svg/icons/Communication/Write.svg'
@@ -147,19 +139,18 @@
                 >
                 </span>
               </a>
-              <a
+              <!-- <a
                 title="Delete attribute"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
-                (click)="delete(att.id)"
+               
               >
-              <!--   -->
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
                   cacheSVG="true"
                   class="svg-icon svg-icon-md svg-icon-danger"
                 >
                 </span>
-              </a>
+              </a> -->
             </td>
           </tr>
         </tbody>

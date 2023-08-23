@@ -41,7 +41,6 @@ import { baseFilter } from "src/app/_fake/fake-helpers/http-extenstions";
   find(tableState: ITableState): Observable<TableResponseModel<Slide>> {
     return this.http.get<any>(this.API_URL + '/v1/slides/limit?limit=100').pipe(
       mergeMap((response: any) => {
-        debugger;
         var res :  Slide[] = response.data
         //const filteredResult = baseFilter(res, tableState);
         const result: TableResponseModel<Slide> = {

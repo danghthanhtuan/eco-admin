@@ -46,7 +46,7 @@ export class AddFilterValueModalComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,private srvAlter: SwalService) { }
    
   ngOnInit(): void {
-    this.loadAttributeValue();
+    this.loadFilterValue();
   }
 
   loadForm() {
@@ -93,7 +93,6 @@ export class AddFilterValueModalComponent implements OnInit, OnDestroy {
       }]
 
     }
-    debugger;
     const sb = this.filterValueService.create(modelPost, '/v1/filters/value').pipe(
       delay(500), // Remove it from your code (just for showing loading)
       tap(() =>
@@ -119,43 +118,51 @@ export class AddFilterValueModalComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-    // var modelUpdate : any = {
-    //   attributeValueID : this.attributeValue.id,
-    //   attributeValueName : this.attributeValue.name,
-    //   url : this.attributeValue.url
-    // };
+    var modelPut : any = {
+      filterValueID : this.filterValue.filterValueId,
+      filterSearchKey : this.filterValue.filterSearchKey,
+      filterValueDisplayText :this.filterValue.filterValueDisplayText,
+      sortOrder :this.filterValue.sortOrder,
+      minPrice :this.filterValue.minPrice,
+      maxPrice :this.filterValue.maxPrice
+    }
 
-    // const sbUpdate = this.filterValueService.update( modelUpdate, '/v1/filter/value').pipe(
-    //   tap(() => {
-    //     this.modal.close();
-    //     this.srvAlter.toast(TYPE.SUCCESS, "Cập nhật thành công!", false);
-    //   }),
-    //   catchError((errorMessage) => {
-    //     this.modal.dismiss(errorMessage);
-    //     return of(this.attributeValue);
-    //   }),
-    // ).subscribe(res => this.attributeValue = res);
-    // this.subscriptions.push(sbUpdate);
+    const sbUpdate = this.filterValueService.update( modelPut, '/v1/filters/value').pipe(
+      tap(( res: any) => {
+        this.modal.close();
+        this.checkSuccessEditOrAdd(res, "Cập nhật");
+      }),
+      catchError((errorMessage) => {
+        this.modal.dismiss(errorMessage);
+        return of(this.filterValue);
+      }),
+    ).subscribe(res => this.filterValue = res);
+    this.subscriptions.push(sbUpdate);
   }
 
-  loadAttributeValue() {
+  loadFilterValue() {
     if (!this.id) {
       this.filterValue = this.EMPTY_Filter_Value;
       this.loadForm();
     } else {
-      const sb = this.filterValueService.getItemById(this.id, '/v1/filters/value/by-id?Id=').pipe(
+      const sb = this.filterValueService.getItemById(this.id, '/v1/filters/value/by-id?filterValueId=').pipe(
         first(),
         catchError((errorMessage) => {
           this.modal.dismiss(errorMessage);
           return of(this.EMPTY_Filter_Value);
         })
       ).subscribe((att: any) => {
-        // this.attributeValue = {
-        //   id: att.data?.id,
-        //   name : att.data?.name,
-        //   url: att.data?.url ?? '',
-        //   nameExtra : att.data?.nameExtra ?? ''
-        // };
+        this.filterValue = {
+          filterValueId: att.data?.filterValueID,
+          filterId : att.data?.filterID,
+          filterSearchKey: att.data?.filterSearchKey ?? '',
+          sortOrder : att.data?.filterValueSortOrder,
+          minPrice: att.data?.minPrice,
+          maxPrice :  att.data?.maxPrice,
+          id : undefined,
+          filterValueDisplayText :  att.data?.filterValueDisplayText
+        };
+        this.typeSearchKey = att.data?.typeSearch;
         this.loadForm();
       });
       this.subscriptions.push(sb);
@@ -169,8 +176,6 @@ export class AddFilterValueModalComponent implements OnInit, OnDestroy {
   onChange(value : string){
     var item = this.listFilters.filter(
       f => f.id == value);
-
-      debugger;
     if(item)
     {
       this.typeSearchKey = item[0].typeSearch;
@@ -178,7 +183,6 @@ export class AddFilterValueModalComponent implements OnInit, OnDestroy {
   }
 
   save() {
-  debugger;
     this.prepareAttribute();
     if (!this.formGroup.valid) {
       this.validateAllFormFields(this.formGroup);
@@ -234,4 +238,13 @@ export class AddFilterValueModalComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  checkSuccessEditOrAdd(res: any, action : string){
+    if(res && res.statusCode === 200 && res.errorCode == 0){
+      this.srvAlter.toast(TYPE.SUCCESS, action + " thành công!", false);
+
+    }else{
+      this.srvAlter.toast(TYPE.ERROR, action + " không thành công!", false);
+    }
+  };
 }

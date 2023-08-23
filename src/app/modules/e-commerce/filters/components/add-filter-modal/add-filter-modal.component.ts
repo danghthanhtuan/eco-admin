@@ -2,11 +2,8 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { catchError, delay, finalize, first, tap } from 'rxjs/operators';
-import { AttributesService } from '../../../_services/attributes.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Attribute } from '../../../_models/attribute.model';
 import { SwalService, TYPE } from 'src/app/modules/common/alter.service';
-import { CommonModule } from '@angular/common';
 import { Filter } from '../../../_models/filter.model';
 import { FiltersService } from '../../../_services/filter.service';
 
@@ -127,7 +124,7 @@ export class AddFilterModalComponent implements OnInit, OnDestroy {
         this.filter = {
           id: att.data?.id,
           displayText : att.data?.displayText,
-          typeSearch: att.data?.typeSearch ?? '0',
+          typeSearch: att.data?.typeSearch.toString(),
           sortOrder : 1
         };
         this.loadForm();

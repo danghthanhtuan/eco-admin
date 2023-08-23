@@ -12,6 +12,7 @@ import { SlidesComponent } from './slides/slides.component';
 import { TrademarksComponent } from './trademarks/trademarks.component';
 import { FiltersComponent } from './filters/filters.component';
 import { FilterValuesComponent } from './filter-values/filter-values.component';
+import { TransactionsComponent } from './transactions/transactions.component';
 
 const routes: Routes = [
   {
@@ -46,7 +47,11 @@ const routes: Routes = [
         path: 'trademarks',
         component: TrademarksComponent,
       },
-
+      {
+        path: 'transactions',
+        component: TransactionsComponent,
+      },
+      
       {
         path: 'customers',
         component: CustomersComponent,
