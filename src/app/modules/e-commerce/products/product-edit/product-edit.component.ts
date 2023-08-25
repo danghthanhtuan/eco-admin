@@ -3,39 +3,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, Subscription } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
-import { Product, ProductUpdate } from '../../_models/product.model';
-import { ProductsService } from '../../_services/products.service';
+import { Product } from '../../_models/product.model';
+import { ProductsService } from '../../_services';
 
 const EMPTY_PRODUCT: Product = {
-  id: 0,
-  productCode: "",
-  productName: "",
-  categoryId: 0,
-  description: "",
-  partnerID: 0,
-  isNew: 0,
-  isHot: 0,
-  viewCount: 0,
-  content: "",
+  id: undefined,
+  model: '',
+  manufacture: 'Pontiac',
+  modelYear: 2020,
+  mileage: 0,
+  description: '',
+  color: 'Red',
   price: 0,
-  promotionPrice: 0,
-  video: "",
-  status: 0,
-  seoAlias: "",
-  seoKeyword: "",
-  stock: 0,
-  imageUrl: "",
-  rateDiscount: 0,
-  guarantee: 0,
-  productNameSlug: "",
-  seoDescription: "",
-  seoTitle: "",
-  countRate: 0,
-  rate: 0,
-  createdDate: "",
-  updatedDate: "",
-  updatedUser: "",
-  createdUser: ""
+  condition: 1,
+  status: 1,
+  VINCode: '',
 };
 
 @Component({
@@ -84,11 +66,12 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         this.errorMessage = errorMessage;
         return of(undefined);
       }),
-    ).subscribe((res: any) => {
+    ).subscribe((res: Product) => {
       if (!res) {
         this.router.navigate(['/products'], { relativeTo: this.route });
       }
-      this.product = res.data ?? EMPTY_PRODUCT;
+
+      this.product = res;
       this.previous = Object.assign({}, res);
       this.loadForm();
     });
@@ -99,37 +82,30 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     if (!this.product) {
       return;
     }
+
     this.formGroup = this.fb.group({
-      // mileage: [this.product.stock, Validators.compose([
-      //   Validators.required,
-      //   Validators.minLength(1),
-      //   Validators.min(0),
-      //   Validators.maxLength(100),
-      //   Validators.max(1000000)
-      // ])],
-      productCode:[this.product.productCode, Validators.required],
-      productName:[this.product.productName, Validators.required],
-      seoTitle:[this.product.seoTitle],
-      partnerID:[this.product.partnerID],
-      categoryId:[this.product.categoryId],
-      isNew:[this.product.isNew],
-      isHot:[this.product.isHot],
-      viewCount:[this.product.viewCount],
-      content:[this.product.content],
+      model: [this.product.model, Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(100)])],
+      manufacture: [this.product.manufacture],
+      modelYear: [this.product.modelYear, Validators.compose([
+        Validators.required,
+        Validators.minLength(1),
+        Validators.min(1900),
+        Validators.maxLength(4),
+        Validators.max(2023)
+      ])],
+      mileage: [this.product.mileage, Validators.compose([
+        Validators.required,
+        Validators.minLength(1),
+        Validators.min(0),
+        Validators.maxLength(100),
+        Validators.max(1000000)
+      ])],
+      color: [this.product.color],
       price: [this.product.price],
-      promotionPrice: [this.product.promotionPrice],
-      video: [this.product.video],
-      status: [this.product.status],
-      seoAlias: [this.product.seoAlias],
-      seoKeyword: [this.product.seoKeyword],
-      seoDescription: [this.product.seoDescription],
-      stock: [this.product.stock],
-      rateDiscount: [this.product.rateDiscount],
-      countRate: [this.product.countRate],
-      guarantee: [this.product.guarantee],
-      productNameSlug: [this.product.productNameSlug],
       description: [this.product.description],
-      // VINCode: [this.product.productCode, Validators.required]
+      status: [this.product.status],
+      condition: [this.product.condition],
+      VINCode: [this.product.VINCode, Validators.required]
     });
   }
 
@@ -158,26 +134,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-    const proUp : ProductUpdate = {
-      ProductId : this.product.id,
-      ProductCode : this.product.productCode,
-      ProductName : this.product.productName,
-      CategoryId  : this.product.categoryId,
-      Description : this.product.description,
-      PartnerID : this.product.partnerID,
-      IsNew : this.product.partnerID,
-      IsHot : this.product.isHot,
-      Content : this.product.content,
-      Price : this.product.price,
-      PromotionPrice  : this.product.promotionPrice,
-      Video : this.product.video,
-      Images : this.product.productImages,
-      Stock : this.product.stock,
-      AttributeValueIds:this.product.productAttributes,
-      Status : this.product.status,
-      id:0
-    };
-    const sbUpdate = this.productsService.update(proUp, '').pipe(
+    const sbUpdate = this.productsService.update(this.product, '').pipe(
       tap(() => this.router.navigate(['/ecommerce/products'])),
       catchError((errorMessage) => {
         console.error('UPDATE ERROR', errorMessage);

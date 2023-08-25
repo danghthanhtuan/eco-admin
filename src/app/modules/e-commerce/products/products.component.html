@@ -1,14 +1,14 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Danh mục sản phẩm</h3>
+      <h3 class="card-label">Products list</h3>
     </div>
     <div class="card-toolbar">
       <a
         type="button"
         class="btn btn-primary"
         routerLink="/ecommerce/product/add"
-        ><i class="fa fa-plus" aria-hidden="true"></i> Thêm sản phẩm</a
+        >New Product</a
       >
     </div>
   </div>
@@ -123,8 +123,8 @@
                 [checked]="grouping.checkAreAllRowsSelected()" /><span></span
             ></label>
           </th>
-          <th style="font-weight: bold;">
-            Mã SP
+          <th>
+            VIN CODE (ID)
             <app-sort-icon
               column="VINCode"
               [activeColumn]="sorting.column"
@@ -133,7 +133,7 @@
             ></app-sort-icon>
           </th>
           <th>
-            Tên sản phẩm
+            MANUFACTURE
             <app-sort-icon
               column="manufacture"
               [activeColumn]="sorting.column"
@@ -142,7 +142,7 @@
             ></app-sort-icon>
           </th>
           <th>
-            Loại SP
+            MODEL
             <app-sort-icon
               column="model"
               [activeColumn]="sorting.column"
@@ -151,7 +151,25 @@
             ></app-sort-icon>
           </th>
           <th>
-            Giá
+            YEAR
+            <app-sort-icon
+              column="modelYear"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th>
+            COLOR
+            <app-sort-icon
+              column="color"
+              [activeColumn]="sorting.column"
+              [activeDirection]="sorting.direction"
+              (sort)="sort($event)"
+            ></app-sort-icon>
+          </th>
+          <th>
+            PRICE
             <app-sort-icon
               column="price"
               [activeColumn]="sorting.column"
@@ -160,7 +178,7 @@
             ></app-sort-icon>
           </th>
           <th>
-            Còn tồn
+            STATUS
             <app-sort-icon
               column="status"
               [activeColumn]="sorting.column"
@@ -169,7 +187,7 @@
             ></app-sort-icon>
           </th>
           <th>
-            Tình trạng
+            CONDITION
             <app-sort-icon
               column="condition"
               [activeColumn]="sorting.column"
@@ -177,7 +195,7 @@
               (sort)="sort($event)"
             ></app-sort-icon>
           </th>
-          <th>Hành động</th>
+          <th>ACTIONS</th>
         </thead>
         <tbody>
           <tr *ngFor="let product of productsService.items$ | async">
@@ -185,36 +203,39 @@
               <label class="checkbox checkbox-single"
                 ><input
                   type="checkbox"
-                  (click)="grouping.selectRow(product.categoryId)"
-                  [checked]="grouping.isRowSelected(product.categoryId)"
+                  (click)="grouping.selectRow(product.id)"
+                  [checked]="grouping.isRowSelected(product.id)"
                 />
                 <span></span>
               </label>
             </td>
-            <td>{{ product.productCode }}</td>
-            <td><span title="{{product.productName}}">
-              <ng-container *ngIf="product.productName.length > 30">{{ product.productName.substring(0,30)}}...</ng-container>
-              <ng-container *ngIf="product.productName.length < 30">{{ product.productName}}</ng-container>
-            </span></td>
+            <td>{{ product.VINCode }}</td>
+            <td>{{ product.manufacture }}</td>
+            <td>{{ product.model }}</td>
+            <td>{{ product.modelYear }}</td>
             <td>
-              <span [style.color]="product.color">Màn hình</span>
+              <span [style.color]="product.color">{{ product.color }}</span>
             </td>
-            <td>{{ product.price | currency: "VND"}}</td>
+            <td>$ {{ product.price }}</td>
             <td>
               <span
                 class="label label-lg label-inline"
-                [class.label-light-primary]="product.status > 0"
-                [class.label-light-danger]="product.status < 0"
-              >{{product.stock}}
+                [class.label-light-success]="product.status === 1"
+                [class.label-light-primary]="product.status === 2"
+              >
+                <ng-container *ngIf="product.status === 1"
+                  >Selling</ng-container
+                >
+                <ng-container *ngIf="product.status === 2">Sold</ng-container>
               </span>
             </td>
             <td>
-              <ng-container *ngIf="product.status === 0">Hàng mới</ng-container>
-              <ng-container *ngIf="product.condition === 0">Hàng cũ</ng-container>
+              <ng-container *ngIf="product.condition === 1">NEW</ng-container>
+              <ng-container *ngIf="product.condition === 2">USED</ng-container>
             </td>
             <td>
               <a
-                title="Chỉnh sửa"
+                title="Edit product"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
                 [routerLink]="'/ecommerce/product/edit/' + product.id"
               >

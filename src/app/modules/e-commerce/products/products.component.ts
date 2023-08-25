@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProductsService } from '../_services';
 import {
   GroupingState,
   PaginatorState,
@@ -21,7 +22,6 @@ import { DeleteProductModalComponent } from './components/delete-product-modal/d
 import { DeleteProductsModalComponent } from './components/delete-products-modal/delete-products-modal.component';
 import { UpdateProductsStatusModalComponent } from './components/update-products-status-modal/update-products-status-modal.component';
 import { FetchProductsModalComponent } from './components/fetch-products-modal/fetch-products-modal.component';
-import { ProductsService } from '../_services/products.service';
 
 @Component({
   selector: 'app-products',

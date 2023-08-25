@@ -14,7 +14,7 @@
 
   <div class="card-header">
     <div class="card-title">
-      <!-- <h3 class="card-label">
+      <h3 class="card-label">
         <ng-container *ngIf="product">
           {{ id ? "Edit" : "New" }} product
           <span *ngIf="product && product.id"
@@ -23,13 +23,13 @@
           >
         </ng-container>
         {{ product?.manufacture }}
-      </h3> -->
+      </h3>
     </div>
     <div class="card-toolbar">
-      <a type="button" class="btn btn-danger" routerLink="/ecommerce/products">
-        <i class="fa fa-arrow-left"></i>Quay lại
+      <a type="button" class="btn btn-light" routerLink="/ecommerce/products">
+        <i class="fa fa-arrow-left"></i>Back
       </a>
-      <button class="btn btn-primary ml-2" (click)="reset()">
+      <button class="btn btn-secondary ml-2" (click)="reset()">
         <i class="fa fa-redo"></i>Reset
       </button>
     </div>
@@ -44,7 +44,7 @@
           [attr.aria-selected]="activeTabId === tabs.BASIC_TAB"
           [class.active]="activeTabId === tabs.BASIC_TAB"
         >
-          Thông tin sản phẩm
+          Basic info
         </a>
       </li>
       <li
@@ -87,111 +87,43 @@
         >
           <div class="form-group row">
             <div class="col-lg-4">
-              <label>Mã sản phẩm</label>
+              <label>Enter Model</label>
               <input
                 type="text"
                 class="form-control form-control-lg form-control-solid"
                 autocomplete="off"
-                placeholder="Mã sản phẩm"
-                name="productCode"
-                formControlName="productCode"
+                placeholder="Model"
+                name="model"
+                [class.is-invalid]="isControlInvalid('model')"
+                [class.is-valid]="isControlValid('model')"
+                formControlName="model"
               />
-              <!-- <div class="feedback" *ngIf="!isControlTouched('productCode')">
-                <b>Mã sản phẩm</b> không được bỏ trống
+              <div class="feedback" *ngIf="!isControlTouched('model')">
+                Please enter <b>Model</b>
               </div>
-              <div class="valid-feedback" *ngIf="isControlValid('productCode')">
+              <div class="valid-feedback" *ngIf="isControlValid('model')">
                 Model was entered correct
               </div>
               <div
                 class="invalid-feedback"
-                *ngIf="controlHasError('required', 'productCode')"
+                *ngIf="controlHasError('required', 'model')"
               >
-                Mã sản phẩm không được bỏ trống
+                Model is required
               </div>
               <div
                 class="invalid-feedback"
-                *ngIf="controlHasError('minlength', 'productCode')"
+                *ngIf="controlHasError('minlength', 'model')"
               >
-                Mã sản phẩm ít nhất 3 ký tự
-              </div> -->
-              <!-- <div
+                Model should have at least 3 symbols
+              </div>
+              <div
                 class="invalid-feedback"
-                *ngIf="controlHasError('maxLength', 'productName')"
+                *ngIf="controlHasError('maxLength', 'model')"
               >
                 Model should have maximum 100 symbols
-              </div> -->
+              </div>
             </div>
             <div class="col-lg-4">
-              <label>Tên sản phẩm</label>
-              <input
-                type="text"
-                class="form-control form-control-lg form-control-solid"
-                autocomplete="off"
-                placeholder="Tên sản phẩm"
-                name="productName"
-                formControlName="productName"
-              />
-              <!-- <div class="feedback" *ngIf="!isControlTouched('productName')">
-                <b>Tên sản phẩm</b> không được bỏ trống
-              </div>
-              <div class="valid-feedback" *ngIf="isControlValid('productName')">
-                Model was entered correct
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('required', 'productName')"
-              >
-                Tên sản phẩm không được bỏ trống
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('minlength', 'productName')"
-              >
-                Tên sản phẩm ít nhất 3 ký tự
-              </div> -->
-              <!-- <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('maxLength', 'productName')"
-              >
-                Model should have maximum 100 symbols
-              </div> -->
-            </div>
-            <div class="col-lg-4">
-              <label>Tiêu đề SEO</label>
-              <input
-                type="text"
-                class="form-control form-control-lg form-control-solid"
-                autocomplete="off"
-                placeholder="Tên sản phẩm"
-                name="seoTitle"
-                formControlName="seoTitle"
-              />
-              <!-- <div class="feedback" *ngIf="!isControlTouched('productName')">
-                <b>Tên sản phẩm</b> không được bỏ trống
-              </div>
-              <div class="valid-feedback" *ngIf="isControlValid('productName')">
-                Model was entered correct
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('required', 'productName')"
-              >
-                Tên sản phẩm không được bỏ trống
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('minlength', 'productName')"
-              >
-                Tên sản phẩm ít nhất 3 ký tự
-              </div> -->
-              <!-- <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('maxLength', 'productName')"
-              >
-                Model should have maximum 100 symbols
-              </div> -->
-            </div>
-            <!-- <div class="col-lg-4">
               <label>Select Manufacture</label>
               <select
                 class="form-control form-control-lg form-control-solid"
@@ -226,8 +158,8 @@
                 <option value="Toyota">Toyota</option>
               </select>
               <div class="feedback">Please select <b>Color</b></div>
-            </div> -->
-            <!-- <div class="col-lg-4">
+            </div>
+            <div class="col-lg-4">
               <label>Enter Model year</label>
               <input
                 type="number"
@@ -274,126 +206,24 @@
               >
                 Model year should have maximum 100 symbols
               </div>
-            </div> -->
-          </div>
-          <div  class="form-group row">
-            <div class="col-lg-4">
-              <label>Mã danh mục</label>
-              <input
-                type="number"
-                class="form-control form-control-lg form-control-solid"
-                placeholder="categoryId"
-                name="categoryId"
-                formControlName="categoryId"
-              />
-              <!-- <div class="feedback" *ngIf="!isControlTouched('mileage')">
-                Please enter <b>Mileage</b>
-              </div>
-              <div class="valid-feedback" *ngIf="isControlValid('mileage')">
-                Mileage was entered correct
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('required', 'mileage')"
-              >
-                Mileage is required
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('minlength', 'mileage')"
-              >
-                Mileage should have at least 1 symbol
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('maxLength', 'mileage')"
-              >
-                Mileage year should have maximum 100 symbols
-              </div> -->
-            </div>
-            <div class="col-lg-4">
-              <label>partnerID</label>
-              <input
-                type="number"
-                class="form-control form-control-lg form-control-solid"
-                placeholder="partnerID"
-                name="partnerID"
-                formControlName="partnerID"
-              />
-              <!-- <div class="feedback" *ngIf="!isControlTouched('mileage')">
-                Please enter <b>Mileage</b>
-              </div>
-              <div class="valid-feedback" *ngIf="isControlValid('mileage')">
-                Mileage was entered correct
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('required', 'mileage')"
-              >
-                Mileage is required
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('minlength', 'mileage')"
-              >
-                Mileage should have at least 1 symbol
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('maxLength', 'mileage')"
-              >
-                Mileage year should have maximum 100 symbols
-              </div> -->
-            </div>
-            <div class="col-lg-4">
-              <label>Mới</label>
-              <input
-                type="number"
-                class="form-control form-control-lg form-control-solid"
-                placeholder="isNew"
-                name="isNew"
-                formControlName="isNew"
-              />
-              <!-- <div class="feedback" *ngIf="!isControlTouched('mileage')">
-                Please enter <b>Mileage</b>
-              </div>
-              <div class="valid-feedback" *ngIf="isControlValid('mileage')">
-                Mileage was entered correct
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('required', 'mileage')"
-              >
-                Mileage is required
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('minlength', 'mileage')"
-              >
-                Mileage should have at least 1 symbol
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('maxLength', 'mileage')"
-              >
-                Mileage year should have maximum 100 symbols
-              </div> -->
             </div>
           </div>
           <div class="form-group row">
             <div class="col-lg-4">
-              <label>isHot</label>
+              <label>Enter Mileage</label>
               <input
                 type="number"
                 class="form-control form-control-lg form-control-solid"
-                placeholder="isHot"
-                name="isHot"
-                formControlName="isHot"
+                placeholder="Mileage"
+                name="mileage"
+                [class.is-invalid]="isControlInvalid('mileage')"
+                [class.is-valid]="isControlValid('mileage')"
+                formControlName="mileage"
               />
-              <!-- <div class="feedback" *ngIf="!isControlTouched('isHot')">
+              <div class="feedback" *ngIf="!isControlTouched('mileage')">
                 Please enter <b>Mileage</b>
               </div>
-              <div class="valid-feedback" *ngIf="isControlValid('isHot')">
+              <div class="valid-feedback" *ngIf="isControlValid('mileage')">
                 Mileage was entered correct
               </div>
               <div
@@ -413,205 +243,102 @@
                 *ngIf="controlHasError('maxLength', 'mileage')"
               >
                 Mileage year should have maximum 100 symbols
-              </div> -->
+              </div>
             </div>
             <div class="col-lg-4">
-              <label>viewCount</label>
-              <input
-                type="number"
+              <label>Select Color</label>
+              <select
                 class="form-control form-control-lg form-control-solid"
-                name="viewCount"
-                formControlName="viewCount"
-              />
+                name="color"
+                formControlName="color"
+              >
+                <option value="Red">Red</option>
+                <option value="CadetBlue">CadetBlue</option>
+                <option value="Eagle">Eagle</option>
+                <option value="Gold">Gold</option>
+                <option value="LightSlateGrey">LightSlateGrey</option>
+                <option value="RoyalBlue">RoyalBlue</option>
+                <option value="Crimson">Crimson</option>
+                <option value="Blue">Blue</option>
+                <option value="Sienna">Sienna</option>
+                <option value="Indigo">Indigo</option>
+                <option value="Green">Green</option>
+                <option value="Violet">Violet</option>
+                <option value="GoldenRod">GoldenRod</option>
+                <option value="OrangeRed">OrangeRed</option>
+                <option value="Khaki">Khaki</option>
+                <option value="Teal">Teal</option>
+                <option value="Purple">Purple</option>
+                <option value="Orange">Orange</option>
+                <option value="Pink">Pink</option>
+                <option value="Black">Black</option>
+                <option value="DarkTurquoise">DarkTurquoise</option>
+              </select>
+              <div class="feedback">Please select <b>Color</b></div>
             </div>
             <div class="col-lg-4">
-              <label>Giá tiền(VND)</label>
+              <label>Enter Price ($)</label>
               <input
                 type="number"
                 class="form-control form-control-lg form-control-solid"
                 autocomplete="off"
-                placeholder="Giá tiền"
+                placeholder="Price"
                 name="price"
+                [class.is-invalid]="isControlInvalid('price')"
+                [class.is-valid]="isControlValid('price')"
                 formControlName="price"
               />
+              <div class="feedback" *ngIf="!isControlTouched('price')">
+                Please enter <b>Price</b>
+              </div>
+              <div class="valid-feedback" *ngIf="isControlValid('price')">
+                Price was entered correct
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="controlHasError('required', 'price')"
+              >
+                Price is required
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="controlHasError('minlength', 'price')"
+              >
+                Price should have at least 3 symbols
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="controlHasError('maxLength', 'price')"
+              >
+                Price should have maximum 100 symbols
+              </div>
             </div>
           </div>
           <div class="form-group row">
             <div class="col-lg-4">
-              <label>Giá khuyến mãi</label>
-              <input
-                type="number"
-                class="form-control form-control-lg form-control-solid"
-                placeholder="Giá khuyến mãi"
-                name="promotionPrice"
-                formControlName="promotionPrice"
-              />
-              <!-- <div class="feedback" *ngIf="!isControlTouched('mileage')">
-                Please enter <b>Mileage</b>
-              </div>
-              <div class="valid-feedback" *ngIf="isControlValid('mileage')">
-                Mileage was entered correct
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('required', 'mileage')"
-              >
-                Mileage is required
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('minlength', 'mileage')"
-              >
-                Mileage should have at least 1 symbol
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('maxLength', 'mileage')"
-              >
-                Mileage year should have maximum 100 symbols
-              </div> -->
-            </div>
-            <div class="col-lg-4">
-              <label>Video</label>
-              <input
-                class="form-control form-control-lg form-control-solid"
-                name="video"
-                formControlName="video"
-              />
-            </div>
-            <div class="col-lg-4">
-              <label>Status</label>
-              <input
-                type="status"
-                class="form-control form-control-lg form-control-solid"
-                autocomplete="off"
-                placeholder="Status"
-                name="status"
-                formControlName="status"
-              />
-            </div>
-          </div>
-          <div class="form-group">
-              <label>Nội dung</label>
-              <textarea
-                type="textarea"
-                class="form-control form-control-lg form-control-solid"
-                placeholder="content"
-                name="content"
-                formControlName="content"
-                style="height: 100px;"
-              ></textarea>
-              <!-- <div class="feedback" *ngIf="!isControlTouched('mileage')">
-                Please enter <b>Mileage</b>
-              </div>
-              <div class="valid-feedback" *ngIf="isControlValid('mileage')">
-                Mileage was entered correct
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('required', 'mileage')"
-              >
-                Mileage is required
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('minlength', 'mileage')"
-              >
-                Mileage should have at least 1 symbol
-              </div>
-              <div
-                class="invalid-feedback"
-                *ngIf="controlHasError('maxLength', 'mileage')"
-              >
-                Mileage year should have maximum 100 symbols
-              </div> -->
-          </div>
-      
-          <div class="form-group row">
-            <div class="col-lg-4">
-              <label>seoAlias</label>
+              <label>Enter VIN code</label>
               <input
                 type="text"
                 class="form-control form-control-lg form-control-solid"
                 autocomplete="off"
-                placeholder="seoAlias"
-                name="seoAlias"
-                formControlName="seoAlias"
+                placeholder="VIN Code"
+                name="VINCode"
+                [class.is-invalid]="isControlInvalid('VINCode')"
+                [class.is-valid]="isControlValid('VINCode')"
+                formControlName="VINCode"
               />
-            </div>
-            <div class="col-lg-4">
-              <label>seoKeyword</label>
-              <input
-                class="form-control form-control-lg form-control-solid"
-                name="seoKeyword"
-                formControlName="seoKeyword"
-              />
-            </div>
-            <div class="col-lg-4">
-              <label>stock</label>
-              <input
-                class="form-control form-control-lg form-control-solid"
-                name="stock"
-                formControlName="stock"
-              />
-            </div>
-          </div>
-          <div class="form-group">
-            <label>seoDescription</label>
-            <textarea
-              name="seoDescription"
-              class="form-control form-control-solid"
-              formControlName="seoDescription"
-            ></textarea>
-          </div>
-          <div class="form-group row">
-            <div class="col-lg-4">
-              <label>productNameSlug</label>
-              <input
-                type="text"
-                class="form-control form-control-lg form-control-solid"
-                autocomplete="off"
-                placeholder="productNameSlug"
-                name="productNameSlug"
-                formControlName="productNameSlug"
-              />
-            </div>
-            <!-- <div class="col-lg-4">
-              <label>productTags</label>
-              <input
-                type="text"
-                class="form-control form-control-lg form-control-solid"
-                autocomplete="off"
-                placeholder="productTags"
-                name="productTags"
-                formControlName="productTags"
-              />
-            </div> -->
-            <!-- <div class="col-lg-4">
-              <label>Select Condition</label>
-              <select
-                class="form-control form-control-lg form-control-solid"
-                name="condition"
-                formControlName="condition"
+              <div class="feedback" *ngIf="!isControlTouched('VINCode')">
+                Please enter <b>VIN code</b>
+              </div>
+              <div class="valid-feedback" *ngIf="isControlValid('VINCode')">
+                VIN code was entered correct
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="controlHasError('required', 'VINCode')"
               >
-                <option value="1">New</option>
-                <option value="2">Used</option>
-              </select>
-              <div class="feedback">Please select <b>Condition</b></div>
-            </div> -->
-          </div>
-          <!-- <div class="form-group row">
-            <div class="col-lg-4">
-              <label>Select Condition</label>
-              <select
-                class="form-control form-control-lg form-control-solid"
-                name="condition"
-                formControlName="condition"
-              >
-                <option value="1">New</option>
-                <option value="2">Used</option>
-              </select>
-              <div class="feedback">Please select <b>Condition</b></div>
+                VIN code is required
+              </div>
             </div>
             <div class="col-lg-4">
               <label>Select Status</label>
@@ -637,29 +364,28 @@
               </select>
               <div class="feedback">Please select <b>Condition</b></div>
             </div>
-          </div> -->
+          </div>
           <div class="form-group">
             <label>Description</label>
             <textarea
-            style="height: 200px;"
               name="description"
               class="form-control form-control-solid"
               formControlName="description"
             ></textarea>
           </div>
           <div class="float-right">
-            <button
-            type="submit"
-            class="btn btn-success font-weight-bold mr-2"
-            [disabled]="formGroup.invalid"
-          >
-            Lưu lại
-          </button>
             <a
-              class="btn btn-danger font-weight-bold mr-2"
+              class="btn btn-default font-weight-bold mr-2"
               routerLink="/ecommerce/products"
-              >Thoát</a
+              >Cancel</a
             >
+            <button
+              type="submit"
+              class="btn btn-primary font-weight-bold mr-2"
+              [disabled]="formGroup.invalid"
+            >
+              Save
+            </button>
           </div>
         </form>
       </div>
