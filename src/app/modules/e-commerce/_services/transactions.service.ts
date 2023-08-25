@@ -22,11 +22,9 @@ import { TransactionModel } from "../_models/transaction.model";
     debugger;
     var status = tableState.filter['status'] ?? '0';
     var nameSearch = tableState.searchTerm ?? '';
-    var searchPhone = tableState.filter['searchPhone'] ?? '';
-    var searchOrderCode = tableState.filter['searchOrderCode'] ?? '';
     var page = tableState.paginator.page ?? 1;
     var pageSize = tableState.paginator.pageSize ?? 10; 
-    var querys = '?Status=' + status + '&SearchKey=' + nameSearch + '&SearchPhone=' + searchPhone + '&searchOrderCode=' + searchOrderCode + '&Page=' + page + '&PageSize=' + pageSize;
+    var querys = '?Status=' + status + '&SearchKey=' + nameSearch + '&Page=' + page + '&PageSize=' + pageSize;
     return this.http.get<any>(this.API_URL + '/v1/payment/admin/paging' + querys).pipe(
       mergeMap((response: any) => {
         var res :  TransactionModel[] = response.data;

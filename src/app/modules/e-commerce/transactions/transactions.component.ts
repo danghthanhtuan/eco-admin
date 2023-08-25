@@ -74,20 +74,13 @@ export class TransactionsComponent
   filterForm() {
     this.filterGroup = this.fb.group({
       status: [''],
-      searchPhone: [''],
-      searchOrderCode: ['']
     });
     this.subscriptions.push(
       this.filterGroup.controls.status.valueChanges.subscribe(() =>
         this.filter()
       )
     );
-    this.subscriptions.push(
-      this.filterGroup.controls.searchPhone.valueChanges.subscribe(() => this.filter())
-    );
-    this.subscriptions.push(
-      this.filterGroup.controls.searchOrderCode.valueChanges.subscribe(() => this.filter())
-    );
+
   }
 
   filter() {
@@ -96,16 +89,6 @@ export class TransactionsComponent
     const status = this.filterGroup.get('status').value;
     if (status) {
       filter['status'] = status;
-    }
-
-    const searchPhone = this.filterGroup.get('searchPhone').value;
-    if (searchPhone) {
-      filter['searchPhone'] = searchPhone;
-    }
-
-    const searchOrderCode = this.filterGroup.get('searchOrderCode').value;
-    if (searchOrderCode) {
-      filter['searchOrderCode'] = searchOrderCode;
     }
 
     this.transactionService.patchState({ filter });
