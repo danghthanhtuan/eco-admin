@@ -1,6 +1,7 @@
 import { BaseModel } from '../../../_metronic/shared/crud-table';
 
 export interface Product extends BaseModel {
+  id:number,
   productCode: string,
   productName: string,
   categoryId: number,
@@ -33,7 +34,7 @@ export interface Product extends BaseModel {
   productImages?: []
 }
 export interface ProductUpdate extends BaseModel {
-    ProductId : string,
+    ProductId : number,
     ProductCode : string,
     ProductName : string,
     CategoryId  : number,

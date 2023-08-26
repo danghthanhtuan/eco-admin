@@ -170,12 +170,11 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       Content : this.product.content,
       Price : this.product.price,
       PromotionPrice  : this.product.promotionPrice,
-      Video : this.product.video,
+      Video : this.product.video??"",
       Images : this.product.productImages,
       Stock : this.product.stock,
       AttributeValueIds:this.product.productAttributes,
-      Status : this.product.status,
-      id:0
+      Status : this.product.status
     };
     const sbUpdate = this.productsService.update(proUp, '').pipe(
       tap(() => this.router.navigate(['/ecommerce/products'])),

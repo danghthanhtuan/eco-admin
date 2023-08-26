@@ -93,6 +93,13 @@ find(tableState: ITableState): Observable<TableResponseModel<Product>> {
     const url = `${this.API_URL}${AdminConfigs.urls.updateProduct}`;
     this._isLoading$.next(true);
     this._errorMessage.next('');
+    this.httpOptions = {
+      headers: new HttpHeaders({
+          'Content-Type': 'multipart/form-data',
+          'Accept': '*/*'
+      }),
+    };
+    debugger
     return this.http.put(url, JSON.stringify(item), this.httpOptions).pipe(
       catchError(err => {
         this.handleAuthError(err);
