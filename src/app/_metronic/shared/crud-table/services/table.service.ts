@@ -23,10 +23,10 @@ const DEFAULT_STATE: ITableState = {
 export abstract class TableService<T> {
   // Private fields
   private _items$ = new BehaviorSubject<T[]>([]);
-  private _isLoading$ = new BehaviorSubject<boolean>(false);
+  protected _isLoading$ = new BehaviorSubject<boolean>(false);
   private _isFirstLoading$ = new BehaviorSubject<boolean>(true);
   private _tableState$ = new BehaviorSubject<ITableState>(DEFAULT_STATE);
-  private _errorMessage = new BehaviorSubject<string>('');
+  protected _errorMessage = new BehaviorSubject<string>('');
   private _subscriptions: Subscription[] = [];
 
   httpOptions = {
@@ -318,7 +318,7 @@ export abstract class TableService<T> {
   }
 
 
-  private handleAuthError(err: HttpErrorResponse): Observable<any> {
+  protected handleAuthError(err: HttpErrorResponse): Observable<any> {
     //handle your auth error or rethrow
     if (err.status === 401 || err.status === 403) {
         //navigate /delete cookies or whatever

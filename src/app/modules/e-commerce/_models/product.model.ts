@@ -1,15 +1,53 @@
 import { BaseModel } from '../../../_metronic/shared/crud-table';
 
 export interface Product extends BaseModel {
-  id: number;
-  model: string;
-  manufacture: string;
-  modelYear: number;
-  mileage: number;
-  description: string;
-  color: string;
-  price: number;
-  condition: number;
-  status: number;
-  VINCode: string;
+  productCode: string,
+  productName: string,
+  categoryId: number,
+  description: string,
+  partnerID: number,
+  isNew: number,
+  isHot: number,
+  viewCount: number,
+  content: string,
+  price: number,
+  promotionPrice: number,
+  video: string,
+  status: number,
+  seoAlias: string,
+  seoKeyword: string,
+  stock: number,
+  imageUrl: string,
+  rateDiscount: number,
+  guarantee: number,
+  productNameSlug: string,
+  seoDescription: string,
+  seoTitle: string,
+  countRate: number,
+  rate: number,
+  createdDate: string,
+  updatedDate: string,
+  updatedUser: string,
+  createdUser: string,
+  productAttributes?: [],
+  productImages?: []
 }
+export interface ProductUpdate extends BaseModel {
+    ProductId : string,
+    ProductCode : string,
+    ProductName : string,
+    CategoryId  : number,
+    Description : string,
+    PartnerID : number,
+    IsNew : number,
+    IsHot : number,
+    Content : string,
+    Price : number,
+    PromotionPrice  :number,
+    Video : string,
+    Images? : [],
+    Stock : number,
+    AttributeValueIds?:[],
+    Status : number
+}
+
