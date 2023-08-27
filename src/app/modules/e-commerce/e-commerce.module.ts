@@ -50,6 +50,8 @@ import { FilterValuesComponent } from './filter-values/filter-values.component';
 import { AddFilterValueModalComponent } from './filter-values/components/add-filter-value-modal.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { TransactionsComponent } from './transactions/transactions.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { AddProductAttributeModalComponent } from './products/product-edit/product-attribute/add-product-attribute-modal.component';
 
 @NgModule({
   declarations: [
@@ -96,7 +98,8 @@ import { TransactionsComponent } from './transactions/transactions.component';
     FilterValuesComponent,
     AddFilterValueModalComponent,
 
-    TransactionsComponent
+    TransactionsComponent,
+    AddProductAttributeModalComponent
   ],
   imports: [
     CommonModule,
@@ -108,7 +111,8 @@ import { TransactionsComponent } from './transactions/transactions.component';
     CRUDTableModule,
     NgbModalModule,
     NgbDatepickerModule,
-    MatRadioModule
+    MatRadioModule,
+    AngularEditorModule 
   ],
   entryComponents: [
     DeleteCustomerModalComponent,

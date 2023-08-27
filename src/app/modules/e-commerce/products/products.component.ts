@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ProductsService } from '../_services';
+import { ProductsService } from '../_services/products.service';
 import {
   GroupingState,
   PaginatorState,
@@ -22,6 +22,7 @@ import { DeleteProductModalComponent } from './components/delete-product-modal/d
 import { DeleteProductsModalComponent } from './components/delete-products-modal/delete-products-modal.component';
 import { UpdateProductsStatusModalComponent } from './components/update-products-status-modal/update-products-status-modal.component';
 import { FetchProductsModalComponent } from './components/fetch-products-modal/fetch-products-modal.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-products',
@@ -48,7 +49,8 @@ export class ProductsComponent
   filterGroup: FormGroup;
   searchGroup: FormGroup;
   private subscriptions: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
-
+  urlImage = environment.urlImage;
+  public categories : any;
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
@@ -57,6 +59,7 @@ export class ProductsComponent
 
   // angular lifecircle hooks
   ngOnInit(): void {
+    this. getAllCategory();
     this.filterForm();
     this.searchForm();
     this.productsService.fetch();
@@ -65,7 +68,7 @@ export class ProductsComponent
     this.grouping = this.productsService.grouping;
     this.paginator = this.productsService.paginator;
     this.sorting = this.productsService.sorting;
-    this.productsService.fetch();
+    //this.productsService.fetch();
   }
 
   ngOnDestroy() {
@@ -76,7 +79,7 @@ export class ProductsComponent
   filterForm() {
     this.filterGroup = this.fb.group({
       status: [''],
-      condition: [''],
+      categoryId: [''],
       searchTerm: [''],
     });
     this.subscriptions.push(
@@ -85,7 +88,7 @@ export class ProductsComponent
       )
     );
     this.subscriptions.push(
-      this.filterGroup.controls.condition.valueChanges.subscribe(() => this.filter())
+      this.filterGroup.controls.categoryId.valueChanges.subscribe(() => this.filter())
     );
   }
 
@@ -96,9 +99,9 @@ export class ProductsComponent
       filter['status'] = status;
     }
 
-    const condition = this.filterGroup.get('condition').value;
-    if (condition) {
-      filter['condition'] = condition;
+    const categoryId = this.filterGroup.get('categoryId').value;
+    if (categoryId) {
+      filter['categoryId'] = categoryId;
     }
     this.productsService.patchState({ filter });
   }
@@ -179,5 +182,23 @@ export class ProductsComponent
       () => this.productsService.fetch(),
       () => { }
     );
+  }
+
+  getAllCategory(){
+    this.productsService.getAllCategories()
+    .subscribe(
+      (res: any) => {
+        this.categories = res;
+      }
+    )
+    //.subscribe();
+  }
+
+  getCategoryName(id : number){
+   var cate = this.categories?.find(cate => cate.id === id);
+   if(cate){
+    return cate.categoryName;
+   }
+   return "";
   }
 }

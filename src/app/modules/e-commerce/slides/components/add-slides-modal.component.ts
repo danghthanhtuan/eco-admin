@@ -162,7 +162,6 @@ export class AddSlidesModalComponent implements OnInit, OnDestroy {
 
   onFileChange(event) { 
     if (event.target.files.length > 0) {
-      debugger;
       const file = event.target.files[0];
       this.formGroup.get('imageUrl').setValue(file);;
 

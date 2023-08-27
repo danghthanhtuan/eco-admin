@@ -19,7 +19,6 @@ import { TransactionModel } from "../_models/transaction.model";
 
      // READ
   find(tableState: ITableState): Observable<TableResponseModel<TransactionModel>> {
-    debugger;
     var status = tableState.filter['status'] ?? '0';
     var nameSearch = tableState.searchTerm ?? '';
     var page = tableState.paginator.page ?? 1;

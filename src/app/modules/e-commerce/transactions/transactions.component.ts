@@ -84,7 +84,6 @@ export class TransactionsComponent
   }
 
   filter() {
-    debugger;
     const filter = {};
     const status = this.filterGroup.get('status').value;
     if (status) {

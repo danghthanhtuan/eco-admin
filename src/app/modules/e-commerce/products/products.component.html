@@ -1,14 +1,14 @@
 <div class="card card-custom gutter-b">
   <div class="card-header">
     <div class="card-title">
-      <h3 class="card-label">Products list</h3>
+      <h3 class="card-label">Danh mục sản phẩm</h3>
     </div>
     <div class="card-toolbar">
       <a
         type="button"
         class="btn btn-primary"
         routerLink="/ecommerce/product/add"
-        >New Product</a
+        ><i class="fa fa-plus" aria-hidden="true"></i> Thêm sản phẩm</a
       >
     </div>
   </div>
@@ -21,29 +21,33 @@
             <div class="col-lg-6">
               <select
                 class="form-control"
-                name="status"
-                placeholder="Filter by Status"
-                formControlName="status"
+                name="categoryId"
+                placeholder="Filter by Danh mục"
+                formControlName="categoryId"
               >
                 <option value="">All</option>
-                <option value="1">Selling</option>
-                <option value="2">Sold</option></select
+                <ng-container *ngFor="let cate of categories">
+                  <option value="{{cate.id}}" selected>{{cate.categoryName}}</option>
+                </ng-container>
+                
+
+                </select
               ><small class="form-text text-muted"
-                ><b>Filter</b> by Status</small
+                ><b>Filter</b> by Danh mục</small
               >
             </div>
             <div class="col-lg-6">
               <select
                 class="form-control"
                 placeholder="Filter by Contition"
-                name="condition"
-                formControlName="condition"
+                name="status"
+                formControlName="status"
               >
                 <option value="">All</option>
-                <option value="1">New</option>
-                <option value="2">Used</option></select
+                <option value="0">Đang bán</option>
+                <option value="1">Đã ẩn</option></select
               ><small class="form-text text-muted"
-                ><b>Filter</b> by Condition</small
+                ><b>Filter</b> by Status</small
               >
             </div>
           </div>
@@ -72,7 +76,7 @@
         >
           <div class="col-xl-12">
             <div class="form-group form-group-inline">
-              <div class="form-label form-label-no-wrap">
+              <!-- <div class="form-label form-label-no-wrap">
                 <label class="font-bold font-danger"
                   ><span
                     >Selected records count:
@@ -102,7 +106,7 @@
                 >
                   <i class="fa fa-sync-alt"></i> Update Status
                 </button>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -115,43 +119,28 @@
         class="table table-head-custom table-vertical-center overflow-hidden"
       >
         <thead>
-          <th class="selection-cell-header" data-row-selection="true">
+          <!-- <th class="selection-cell-header" data-row-selection="true">
             <label class="checkbox checkbox-single"
               ><input
                 type="checkbox"
                 (click)="grouping.selectAllRows()"
                 [checked]="grouping.checkAreAllRowsSelected()" /><span></span
             ></label>
+          </th> -->
+          <th style="font-weight: bold;">
+            Mã SP   
           </th>
           <th>
-            VIN CODE (ID)
-            <app-sort-icon
-              column="VINCode"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon>
+            Tên sản phẩm
           </th>
           <th>
-            MANUFACTURE
-            <app-sort-icon
-              column="manufacture"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon>
+            Loại SP
           </th>
           <th>
-            MODEL
-            <app-sort-icon
-              column="model"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon>
+            Giá
           </th>
           <th>
-            YEAR
+            Giá KM
             <app-sort-icon
               column="modelYear"
               [activeColumn]="sorting.column"
@@ -160,82 +149,58 @@
             ></app-sort-icon>
           </th>
           <th>
-            COLOR
-            <app-sort-icon
-              column="color"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon>
+            Hình ảnh
           </th>
           <th>
-            PRICE
-            <app-sort-icon
-              column="price"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon>
+            SP mới
           </th>
           <th>
-            STATUS
-            <app-sort-icon
-              column="status"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon>
+            Nổi bậc
           </th>
           <th>
-            CONDITION
-            <app-sort-icon
-              column="condition"
-              [activeColumn]="sorting.column"
-              [activeDirection]="sorting.direction"
-              (sort)="sort($event)"
-            ></app-sort-icon>
+           Tình trạng
           </th>
           <th>ACTIONS</th>
         </thead>
         <tbody>
           <tr *ngFor="let product of productsService.items$ | async">
-            <td class="selection-cell">
+            <!-- <td class="selection-cell">
               <label class="checkbox checkbox-single"
                 ><input
                   type="checkbox"
-                  (click)="grouping.selectRow(product.id)"
-                  [checked]="grouping.isRowSelected(product.id)"
+                  (click)="grouping.selectRow(product.categoryId)"
+                  [checked]="grouping.isRowSelected(product.categoryId)"
                 />
                 <span></span>
               </label>
-            </td>
-            <td>{{ product.VINCode }}</td>
-            <td>{{ product.manufacture }}</td>
-            <td>{{ product.model }}</td>
-            <td>{{ product.modelYear }}</td>
+            </td> -->
+            <td>{{ product.productCode }}</td>
+            <td><span title="{{product.productName}}">
+              <ng-container *ngIf="product.productName.length > 30">{{ product.productName.substring(0,30)}}...</ng-container>
+              <ng-container *ngIf="product.productName.length < 30">{{ product.productName}}</ng-container>
+            </span></td>
             <td>
-              <span [style.color]="product.color">{{ product.color }}</span>
+              <span >{{getCategoryName(product.categoryId)}}</span>
             </td>
-            <td>$ {{ product.price }}</td>
+            <td>{{ product.price | currency: "VND"}}</td>
+            <td>{{ product.promotionPrice| currency: "VND"}}</td>
             <td>
-              <span
-                class="label label-lg label-inline"
-                [class.label-light-success]="product.status === 1"
-                [class.label-light-primary]="product.status === 2"
-              >
-                <ng-container *ngIf="product.status === 1"
-                  >Selling</ng-container
-                >
-                <ng-container *ngIf="product.status === 2">Sold</ng-container>
-              </span>
+              <div class="symbol symbol-40 symbol-light-success mr-5"><span class="symbol-label"><img alt=""
+                    [src]="urlImage + product.imageUrl" class="h-75 align-self-end"></span></div>
             </td>
             <td>
-              <ng-container *ngIf="product.condition === 1">NEW</ng-container>
-              <ng-container *ngIf="product.condition === 2">USED</ng-container>
+              <ng-container *ngIf="product.isNew == 1">Mới</ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="product.isHot == 1">Nổi bậc</ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="product.status == 1">Đang ẩn</ng-container>
+              <ng-container *ngIf="product.status == 0">Đang bán</ng-container>
             </td>
             <td>
               <a
-                title="Edit product"
+                title="Chỉnh sửa"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
                 [routerLink]="'/ecommerce/product/edit/' + product.id"
               >

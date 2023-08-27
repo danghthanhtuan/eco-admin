@@ -46,5 +46,12 @@ import { Router } from "@angular/router";
     );
   }
 
+  getAllAttributeValue(): Observable<any> {
+    return this.http.get<any>(this.API_URL + '/v1/attribute/value/all').pipe(
+      mergeMap((response: any) => {
+        return of<any>(<any> response.data);
+      })
+    );
+  }
 }
   
