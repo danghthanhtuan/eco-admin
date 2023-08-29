@@ -4,17 +4,17 @@
     <div class="form-filtration">
       <div class="row align-items-center">
         <div class="col-md-2 margin-bottom-10-mobile">
-          <form [formGroup]="searchGroup">
+          <!-- <form [formGroup]="searchGroup">
             <div>
               <input type="text" class="form-control" name="searchText" placeholder="Search"
                 formControlName="searchTerm" />
               <small class="form-text text-muted"><b>Search</b> by VALUE</small></div>
-          </form>
+          </form> -->
         </div>
         <div class="col-md-6 margin-bottom-10-mobile"></div>
         <div class="col-md-4 text-right margin-bottom-10-mobile">
           <button type="button" class="btn btn-primary" (click)="create()">
-            Create new specification
+           Tạo mới hình ảnh (500x500)
           </button>
         </div>
       </div>
@@ -23,7 +23,7 @@
   <!-- end: Filtration form -->
 
   <!-- begin: Grouping -->
-  <ng-container *ngIf="grouping.getSelectedRowsCount()">
+  <!-- <ng-container *ngIf="grouping.getSelectedRowsCount()">
     <div class="form">
       <div class="row align-items-center form-group-actions margin-top-20 margin-bottom-20">
         <div class="col-xl-12">
@@ -46,55 +46,54 @@
         </div>
       </div>
     </div>
-  </ng-container>
+  </ng-container> -->
   <!-- end: Grouping -->
   <!-- begin:Table -->
   <div class="table-responsive angular-bootstrap-table">
     <table class="table table-head-custom table-vertical-center overflow-hidden">
       <thead>
-        <th class="selection-cell-header" data-row-selection="true">
+        <!-- <th class="selection-cell-header" data-row-selection="true">
           <label class="checkbox checkbox-single"><input type="checkbox" (click)="grouping.selectAllRows()"
               [checked]="grouping.checkAreAllRowsSelected()" /><span></span></label>
-        </th>
+        </th> -->
         <th>
           ID
-          <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
-            (sort)="sort($event)"></app-sort-icon>
+          
         </th>
         <th>
-          SPECIFICATION TYPE
-          <app-sort-icon column="specId" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
-            (sort)="sort($event)"></app-sort-icon>
+        Sắp xếp
+        
         </th>
         <th>
-          VALUE
-          <app-sort-icon column="value" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
-            (sort)="sort($event)"></app-sort-icon>
+          Hình Ảnh          
         </th>
         <th>ACTIONS</th>
       </thead>
       <tbody>
-        <tr *ngFor="let spec of specsService.items$ | async">
-          <td class="selection-cell">
+        <tr *ngFor="let image of specsService.items$ |async">
+          <!-- <td class="selection-cell">
             <label class="checkbox checkbox-single"><input type="checkbox" (click)="grouping.selectRow(spec.id)"
                 [checked]="grouping.isRowSelected(spec.id)" />
               <span></span>
             </label>
-          </td>
-          <td>{{ spec.id }}</td>
-          <td>{{ specs[spec.specId] }}</td>
-          <td>{{ spec.value }}</td>
+          </td> -->
+          <td>{{ image.id }}</td>
+          <td>{{ image.sortOrder }}</td>
           <td>
-            <button title="Edit spec" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
+            <div class="symbol symbol-40 symbol-light-success mr-5"><span class="symbol-label"><img alt=""
+                  [src]="urlImage + image.imageUrl" class="h-75 align-self-end"></span></div>
+          </td>
+          <td>
+            <!-- <button title="Edit spec" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
               (click)="edit(spec.id)">
               <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
                 class="svg-icon svg-icon-md svg-icon-primary">
               </span>
-            </button>
+            </button> -->
             <button title="Delete specification" class="btn btn-icon btn-light btn-hover-danger btn-sm"
-              (click)="delete(spec.id)">
-              <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
-                class="svg-icon svg-icon-md svg-icon-danger">
+              (click)="delete(image.id )">
+              <span 
+                class="fa fa-trash">
               </span>
             </button>
           </td>
@@ -103,6 +102,6 @@
     </table>
   </div>
   <!-- end: Table -->
-  <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator"
-    [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator>
+  <!-- <app-paginator class="d-flex justify-content-between align-items-center flex-wrap" [paginator]="paginator"
+    [isLoading]="isLoading" (paginate)="paginate($event)"></app-paginator> -->
 </div>

@@ -137,19 +137,6 @@ export class AddTrademarksModalComponent implements OnInit, OnDestroy {
           return of(this.EMPTY_Attribute_Value);
         })
       ).subscribe((att: any) => {
-        // this.slide = {
-        //   id:  att.data.id,
-          // categoryName : att.data.categoryName,
-          // status:  att.data.status,
-          // categoryParent : att.data.categoryParent,
-          // seoDescription : att.data.seoDescription ?? '',
-          // sortOrder : att.data.sortOrder,
-          // seoTitle : att.data.seoTitle ?? '',
-          // categoryTags : att.data.categoryTags ?? '',
-          // content :  att.data.content ?? '',
-          // imageUrl: att.data.imageUrl ?? '',
-          // seoKeyword: att.data.seoKeyword ?? ''
-        //};
         if(att.data.imageUrl && att.data.imageUrl !== ''){
           this.fileReview = this.urlImage + att.data.imageUrl;
         }

@@ -40,7 +40,8 @@ const EMPTY_PRODUCT: Product = {
   updatedUser: "",
   createdUser: "",
   productTags :"",
-  productAttributes : []
+  productAttributes : [],
+  productImages: []
 };
 @Injectable({
   providedIn: 'root'

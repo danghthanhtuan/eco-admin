@@ -10,6 +10,7 @@ import { SwalService, TYPE } from 'src/app/modules/common/alter.service';
 import { AddProductAttributeModalComponent } from './product-attribute/add-product-attribute-modal.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AttributeValueService } from '../../_services/attribute-value.service';
+import { ProductImageModalComponent } from './product-images-modal/product-image-modal.component';
 
 const EMPTY_PRODUCT: Product = {
   id: 0,
@@ -28,7 +29,7 @@ const EMPTY_PRODUCT: Product = {
   status: 0,
   seoAlias: "",
   seoKeyword: "",
-  stock: 0,
+  stock: 1,
   imageUrl: "",
   rateDiscount: 0,
   guarantee: 0,
@@ -42,7 +43,8 @@ const EMPTY_PRODUCT: Product = {
   updatedUser: "",
   createdUser: "",
   productTags: "",
-  productAttributes : [] 
+  productAttributes: [],
+  productImages: []
 };
 
 @Component({
@@ -64,30 +66,30 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   };
   activeTabId = this.tabs.BASIC_TAB; // 0 => Basic info | 1 => Remarks | 2 => Specifications
   private subscriptions: Subscription[] = [];
-  categories : any;
-  listAttributeValues  : any;
+  categories: any;
+  listAttributeValues: any;
   config: AngularEditorConfig = {
     editable: true,
-      spellcheck: true,
-      height: 'auto',
-      minHeight: '50',
-      maxHeight: 'auto',
-      width: 'auto',
-      minWidth: '0',
-      translate: 'yes',
-      enableToolbar: false,
-      showToolbar: true,
-      placeholder: 'Enter text here...',
-      defaultParagraphSeparator: '',
-      defaultFontName: '',
-      defaultFontSize: '',
-      fonts: [
-        {class: 'arial', name: 'Arial'},
-        {class: 'times-new-roman', name: 'Times New Roman'},
-        {class: 'calibri', name: 'Calibri'},
-        {class: 'comic-sans-ms', name: 'Comic Sans MS'}
-      ],
-      customClasses: [
+    spellcheck: true,
+    height: 'auto',
+    minHeight: '50',
+    maxHeight: 'auto',
+    width: 'auto',
+    minWidth: '0',
+    translate: 'yes',
+    enableToolbar: false,
+    showToolbar: true,
+    placeholder: '',
+    defaultParagraphSeparator: '',
+    defaultFontName: '',
+    defaultFontSize: '',
+    fonts: [
+      { class: 'arial', name: 'Arial' },
+      { class: 'times-new-roman', name: 'Times New Roman' },
+      { class: 'calibri', name: 'Calibri' },
+      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
+    ],
+    customClasses: [
       {
         name: 'quote',
         class: 'quote',
@@ -120,7 +122,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private srvAlter: SwalService,
     private modalService: NgbModal,
-    private attributeValueService :AttributeValueService
+    private attributeValueService: AttributeValueService
   ) { }
 
   ngOnInit(): void {
@@ -161,33 +163,29 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     }
 
     this.formGroup = this.fb.group({
-      productCode:[this.product.productCode, Validators.required],
-      productName:[this.product.productName,  Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(500)])],
-      seoTitle:[this.product.seoTitle, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(100)])],
-      productTags:[this.product.productTags],
-      categoryId:[this.product.categoryId],
-      isNew:[this.product.isNew],
-      isHot:[this.product.isHot],
-      //viewCount:[this.product.viewCount],
-      content:[this.product.content],
+      productCode: [this.product.productCode, Validators.required],
+      productName: [this.product.productName, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(500)])],
+      seoTitle: [this.product.seoTitle, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(100)])],
+      productTags: [this.product.productTags],
+      categoryId: [this.product.categoryId, Validators.compose([Validators.required, Validators.min(1)])],
+      isNew: [this.product.isNew],
+      isHot: [this.product.isHot],
+      content: [this.product.content],
       price: [this.product.price],
       promotionPrice: [this.product.promotionPrice],
       //video: [this.product.video],
       status: [this.product.status],
-      //seoAlias: [this.product.seoAlias],
       seoKeyword: [this.product.seoKeyword],
       seoDescription: [this.product.seoDescription],
-      stock: [this.product.stock],
-      //rateDiscount: [this.product.rateDiscount],
-      //countRate: [this.product.countRate],
+      stock: [this.product.stock , Validators.compose([Validators.required, Validators.min(1)])],
       guarantee: [this.product.guarantee],
-      //productNameSlug: [this.product.productNameSlug],
-      description: [this.product.description],
+      description: [this.product.description, Validators.compose([Validators.required,Validators.minLength(1), Validators.maxLength(4000)])],
     });
   }
 
   reset() {
     if (!this.previous) {
+      this.product = Object.assign({}, EMPTY_PRODUCT);
       return;
     }
 
@@ -197,6 +195,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
 
   save() {
     if (!this.formGroup.valid) {
+      this.formGroup.markAllAsTouched();
       this.validateAllFormFields(this.formGroup);
       return;
     }
@@ -211,35 +210,34 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   }
 
   edit() {
-   var attributeValueIds: number[] = this.product.productAttributes?.map(({ attributeValueID }) => attributeValueID);
-    const proUp : ProductUpdate = {
-      ProductId : this.id,
-      ProductCode : this.product.productCode,
-      ProductName : this.product.productName,
-      CategoryId  : this.product.categoryId,
-      Description : this.product.description,
-      IsNew : this.product.partnerID,
-      IsHot : this.product.isHot,
-      Content : this.product.content,
-      Price : this.product.price,
-      PromotionPrice  : this.product.promotionPrice,
-      Video : this.product.video,
-      Stock : this.product.stock,
+    var attributeValueIds: number[] = this.product.productAttributes?.map(({ attributeValueID }) => attributeValueID);
+    const proUp: ProductUpdate = {
+      ProductId: this.id,
+      ProductCode: this.product.productCode,
+      ProductName: this.product.productName,
+      CategoryId: this.product.categoryId,
+      Description: this.product.description,
+      IsNew: this.product.partnerID,
+      IsHot: this.product.isHot,
+      Content: this.product.content,
+      Price: this.product.price,
+      PromotionPrice: this.product.promotionPrice,
+      Video: this.product.video,
+      Stock: this.product.stock,
       AttributeValueIds: attributeValueIds,
-      Status : this.product.status,
-      guarantee : this.product.guarantee,
+      Status: this.product.status,
+      guarantee: this.product.guarantee,
       SeoDescription: this.product.seoDescription,
-      SeoKeyword :   this.product.seoKeyword,
-      SeoTitle : this.product.seoTitle,
-      ProductTags :  this.product.productTags.toString(),
-      id:0
+      SeoKeyword: this.product.seoKeyword,
+      SeoTitle: this.product.seoTitle,
+      ProductTags: this.product.productTags.toString(),
+      id: 0
     };
     const sbUpdate = this.productsService.update(proUp, '').pipe(
-      tap((res: any) =>
-      {
-        this.checkSuccessEditOrAdd(res, "Cập nhật");      
-      }   
-       ),
+      tap((res: any) => {
+        this.checkSuccessEditOrAdd(res, "Cập nhật");
+      }
+      ),
       catchError((errorMessage) => {
         console.error('UPDATE ERROR', errorMessage);
         return of(this.product);
@@ -252,10 +250,32 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   }
 
   create() {
-    const sbCreate = this.productsService.create(this.product, '').pipe(
-      tap(() => this.router.navigate(['/ecommerce/products'])),
+    var modelCreate = new FormData();
+    modelCreate.append('ProductCode', this.product.productCode);
+    modelCreate.append('ProductName', this.product.productName);
+    modelCreate.append('CategoryId', this.product.categoryId.toString());
+    modelCreate.append('Description', this.product.description);
+    modelCreate.append('IsNew', this.product.isNew.toString());
+    modelCreate.append('IsHot', this.product.isHot.toString());
+    modelCreate.append('Content', this.product.seoTitle);
+    modelCreate.append('Price', this.product.price.toString());
+    modelCreate.append('PromotionPrice', this.product.promotionPrice.toString());
+    modelCreate.append('Stock', this.product.stock.toString());
+    modelCreate.append('Guarantee', this.product.guarantee.toString());
+    modelCreate.append('ProductTags', this.product.productTags.toString());
+    modelCreate.append('SeoKeyword', this.product.seoKeyword.toString());
+    modelCreate.append('SeoDescription', this.product.seoDescription.toString());
+    modelCreate.append('SeoTitle', this.product.seoTitle.toString());
+   this.product.productAttributes?.forEach(element => {
+      modelCreate.append('AttributeValueIds', element.attributeValueID.toString());
+    });
+    const sbCreate = this.productsService.createWithImage(modelCreate, '/v1/Product').pipe(
+      tap((res: any) => {
+        this.checkSuccessEditOrAdd(res, 'Tạo sản phẩm');
+      //  this.router.navigate(['/ecommerce/products'])
+      }),
       catchError((errorMessage) => {
-        console.error('UPDATE ERROR', errorMessage);
+        console.error('Create ERROR', errorMessage);
         return of(this.product);
       })
     ).subscribe(res => this.product = res as Product);
@@ -266,53 +286,75 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     this.activeTabId = tabId;
   }
 
-  getCategoryName(id : number){
+  getCategoryName(id: number) {
     var cate = this.categories.find(cate => cate.id === id);
-    if(cate){
-     return cate.categoryName;
+    if (cate) {
+      return cate.categoryName;
     }
     return "";
-   }
+  }
 
-  getAllCategory(){
+  getAllCategory() {
     this.productsService.getAllCategories()
-    .subscribe(
-      (res: any) => {
-        this.categories = res;
-      }
-    )
+      .subscribe(
+        (res: any) => {
+          this.categories = res;
+        }
+      )
     //.subscribe();
   }
 
-  removeItemAtt(attValueId : number){
-    this.product.productAttributes?.forEach((item :any , index)=>{
-      if(item.attributeValueID == attValueId) this.product.productAttributes.splice(index, 1);
-  });
+  removeItemAtt(attValueId: number) {
+    this.product.productAttributes?.forEach((item: any, index) => {
+      if (item.attributeValueID == attValueId) this.product.productAttributes.splice(index, 1);
+    });
   }
 
   addProductAttribute() {
-    const modalRef = this.modalService.open(AddProductAttributeModalComponent, {size: 'lg'});
+    const modalRef = this.modalService.open(AddProductAttributeModalComponent, { size: 'lg' });
     modalRef.componentInstance.listAttributes = this.listAttributeValues;
     modalRef.componentInstance.add.subscribe(($value) => {
-     var item = this.product.productAttributes?.find((item :any , index)=>{
-        if(item.attributeValueID == $value) return item;
+      var item = this.product.productAttributes?.find((item: any, index) => {
+        if (item.attributeValueID == $value) return item;
       });
 
-      if(!item){
-        var itemSelected = this.listAttributeValues.find((item :any , index)=>{
-          if(item.id == $value) return item;
+      if (!item) {
+        var itemSelected = this.listAttributeValues.find((item: any, index) => {
+          if (item.id == $value) return item;
         });
         var itemAdd = {
-          attributeValueID : itemSelected.id,
-          attributeValueName : itemSelected.name,
-          attributeName : itemSelected.attributeName,
+          attributeValueID: itemSelected.id,
+          attributeValueName: itemSelected.name,
+          attributeName: itemSelected.attributeName,
         }
 
         this.product.productAttributes.push(itemAdd);
         this.srvAlter.toast(TYPE.SUCCESS, "Thêm thành công!", false);
-      } 
+      }
     })
   }
+
+  onFileAdd(event) { 
+    if (event.target.files.length > 0) {
+      debugger;
+      const file = event.target.files[0];
+      //this.formGroup.get('imageUrl').setValue(file);
+      var url : any ;
+      const reader = new FileReader();  reader.readAsDataURL(file);
+        reader.onload = e => url = reader.result;
+      
+
+
+        var itemAdd = {
+          sortOrder: 1,
+          imageUrl: file,
+          fileTmpURL: url,
+        }
+        this.product.productImages.push(itemAdd);    
+        this.srvAlter.toast(TYPE.SUCCESS, "Thêm thành công!", false); 
+    }
+  }
+
 
   validateAllFormFields(formGroup: FormGroup) {         //{1}
     Object.keys(formGroup.controls).forEach(field => {  //{2}
@@ -324,18 +366,18 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
 
-  getListAttribute(){
+
+  getListAttribute() {
     this.attributeValueService.getAllAttributeValue()
-    .subscribe(
-      (res: any) => {
-        this.listAttributeValues = res;
-      }
-    )
+      .subscribe(
+        (res: any) => {
+          this.listAttributeValues = res;
+        }
+      )
     //.subscribe();
   }
-  
+
   ngOnDestroy() {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
@@ -361,12 +403,15 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     return control.dirty || control.touched;
   }
 
-  checkSuccessEditOrAdd(res: any, action : string){
-    if(res && res.statusCode === 200 && res.errorCode == 0){
+  checkSuccessEditOrAdd(res: any, action: string) {
+    if (res && res.statusCode === 200 && res.errorCode == 0) {
       this.srvAlter.toast(TYPE.SUCCESS, action + " thành công!", false);
 
-    }else{
-      this.srvAlter.toast(TYPE.ERROR, action + " không thành công!", false);
+    } else {
+      if(res && res.statusCode === 400 ){
+        this.srvAlter.toast(TYPE.ERROR, res.errorMessage, false);
+      }else
+        this.srvAlter.toast(TYPE.ERROR, action + " không thành công!", false);
     }
   };
 }

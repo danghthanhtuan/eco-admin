@@ -22,11 +22,13 @@ import { DeleteSpecModalComponent } from './delete-spec-modal/delete-spec-modal.
 import { DeleteSpecsModalComponent } from './delete-specs-modal/delete-specs-modal.component';
 import { EditSpecModalComponent } from './edit-spec-modal/edit-spec-modal.component';
 import { FetchSpecsModalComponent } from './fetch-specs-modal/fetch-specs-modal.component';
+import { environment } from 'src/environments/environment';
+import { ProductImagesService } from '../../../_services/product-images.service';
 
 @Component({
   selector: 'app-specifications',
   templateUrl: './specifications.component.html',
-  styleUrls: ['./specifications.component.scss'],
+  styleUrls: [],
 })
 export class SpecificationsComponent
   implements
@@ -37,10 +39,11 @@ export class SpecificationsComponent
     IFetchSelectedAction,
     ISortView,
     IGroupingView,
-    ISearchView,
+   // ISearchView,
     IEditAction,
     ICreateAction {
   @Input() productId: number;
+  @Input() productImages: any;
   specs: string[] = SPECIFICATIONS_DICTIONARY;
   paginator: PaginatorState;
   sorting: SortState;
@@ -48,15 +51,14 @@ export class SpecificationsComponent
   isLoading: boolean;
   searchGroup: FormGroup;
   private subscriptions: Subscription[] = [];
-
+  urlImage = environment.urlImage;
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
-    public specsService: SpecificationsService
+    public specsService: ProductImagesService
   ) {}
 
   ngOnInit(): void {
-    this.searchForm();
     const sb = this.specsService.isLoading$.subscribe(
       (res) => (this.isLoading = res)
     );
@@ -65,33 +67,14 @@ export class SpecificationsComponent
     this.grouping = this.specsService.grouping;
     this.paginator = this.specsService.paginator;
     this.sorting = this.specsService.sorting;
-    this.specsService.fetch();
+    //this.specsService.fetch();
   }
 
   ngOnDestroy() {
     this.subscriptions.forEach((sb) => sb.unsubscribe());
   }
   //
-  searchForm() {
-    this.searchGroup = this.fb.group({
-      searchTerm: [''],
-    });
-    const searchEvent = this.searchGroup.controls.searchTerm.valueChanges
-      .pipe(
-        /*
-  The user can type quite quickly in the input box, and that could trigger a lot of server requests. With this operator,
-  we are limiting the amount of server requests emitted to a maximum of one every 150ms
-  */
-        debounceTime(150),
-        distinctUntilChanged()
-      )
-      .subscribe((val) => this.search(val));
-    this.subscriptions.push(searchEvent);
-  }
-
-  search(searchTerm: string) {
-    this.specsService.patchState({ searchTerm });
-  }
+ 
   // sorting
   sort(column: string) {
     const sorting = this.sorting;
@@ -137,7 +120,7 @@ export class SpecificationsComponent
   }
 
   edit(id: number): void {
-    const modalRef = this.modalService.open(EditSpecModalComponent);
+    const modalRef = this.modalService.open(EditSpecModalComponent, {size : 'lg'});
     modalRef.componentInstance.id = id;
     modalRef.componentInstance.productId = this.productId;
     modalRef.result.then(() =>

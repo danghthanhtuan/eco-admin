@@ -52,9 +52,13 @@
           <div class="form-group row">
             <div class="col-lg-4">
               <label>Mã sản phẩm</label>
-              <input [attr.disabled]="true" type="text" class="form-control form-control-lg form-control-solid"
-                style=" background-color: #dcd5d5 !important;" autocomplete="off" placeholder="Mã sản phẩm"
-                name="productCode" formControlName="productCode" />
+              <input [attr.disabled]="id ? 'true' : null" type="text"
+                class="form-control form-control-lg form-control-solid" style=" background-color: #dcd5d5 !important;"
+                autocomplete="off" placeholder="Mã sản phẩm" [class.is-invalid]="isControlInvalid('productCode')"
+                [class.is-valid]="isControlValid('productCode')" name="productCode" formControlName="productCode" />
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'productCode')">
+                Mã sản phẩm không được bỏ trống
+              </div>
             </div>
             <div class="col-lg-4">
               <label>Tên sản phẩm</label>
@@ -77,11 +81,18 @@
             <div class="col-lg-4">
               <label>Danh mục</label>
               <select class="form-control" name="categoryId" placeholder="Filter by Danh mục"
+                [class.is-invalid]="isControlInvalid('categoryId')" [class.is-valid]="isControlValid('categoryId')"
                 formControlName="categoryId">
                 <ng-container *ngFor="let cate of categories">
                   <option value="{{cate.id}}" selected>{{cate.categoryName}}</option>
                 </ng-container>
               </select>
+              <div class="invalid-feedback" *ngIf="controlHasError('required', 'categoryId')">
+                Danh mục không được bỏ trống
+              </div>
+              <div class="invalid-feedback" *ngIf="controlHasError('min', 'categoryId')">
+                Danh mục không được bỏ trống
+              </div>
             </div>
 
           </div>
@@ -127,7 +138,15 @@
             </div>
             <div class="col-lg-3">
               <label>Số lượng</label>
-              <input class="form-control form-control-lg form-control-solid" name="stock" formControlName="stock" />
+              <input type="number" class="form-control form-control-lg form-control-solid" name="stock"
+                formControlName="stock" [class.is-invalid]="isControlInvalid('stock')"
+                [class.is-valid]="isControlValid('stock')" />
+              <div class="valid-feedback" *ngIf="isControlValid('stock')">
+                Stock không hợp lệ
+              </div>
+              <div class="valid-feedback" *ngIf="controlHasError('min', 'stock')">
+                Lớn hơn 0
+              </div>
             </div>
             <div class="col-lg-3">
               <label>Mới</label>
@@ -168,17 +187,8 @@
               <label>Thuộc tính sản phẩm</label>
               <table class="table table-head-custom table-vertical-center overflow-hidden">
                 <thead>
-                  <!-- <th class="selection-cell-header" data-row-selection="true">
-                  <label class="checkbox checkbox-single"
-                    ><input
-                      type="checkbox"
-                      (click)="grouping.selectAllRows()"
-                      [checked]="grouping.checkAreAllRowsSelected()" /><span></span
-                  ></label>
-                </th> -->
                   <th>
                     (ID)
-
                   </th>
                   <th>
                     Tên
@@ -190,16 +200,6 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let att of product.productAttributes">
-                    <!-- <td class="selection-cell">
-                    <label class="checkbox checkbox-single"
-                      ><input
-                        type="checkbox"
-                        (click)="grouping.selectRow(att.id)"
-                        [checked]="grouping.isRowSelected(att.id)"
-                      />
-                      <span></span>
-                    </label>
-                  </td> -->
                     <td>{{ att.attributeValueID }}</td>
                     <td>{{ att.attributeValueName }}</td>
                     <td>{{ att.attributeName + ' - ' + att.attributeValueName }}</td>
@@ -217,9 +217,7 @@
               </table>
               <a type="button" class="btn btn-primary" (click)="addProductAttribute()"><i class="fa fa-plus"
                   aria-hidden="true"></i> Thêm </a>
-
             </div>
-
           </div>
           <div class="form-group">
             <label>Seo Description</label>
@@ -235,10 +233,74 @@
           </div>
           <div class="form-group">
             <label>Description (mô tả chi tiết)</label>
-            <angular-editor id="description" formControlName="description" [config]="config"></angular-editor>
+            <angular-editor id="description" formControlName="description" [config]="config"
+              [class.is-invalid]="isControlInvalid('description')"
+              [class.is-valid]="isControlValid('description')"></angular-editor>
+            <div class="valid-feedback" *ngIf="isControlValid('description')">
+              Description hợp lệ
+            </div>
+            <div class="invalid-feedback" *ngIf="controlHasError('required', 'description')">
+              Description bắt buộc
+            </div>
+            <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'description')">
+              Tối đa 4000 ký tự
+            </div>
+
             <!-- <textarea style="height: 200px;" name="description" class="form-control form-control-solid"
               formControlName="description"></textarea> -->
           </div>
+
+          <ng-container *ngIf="!id">
+             <h2> <label>Hình ảnh sản phẩm</label></h2>
+            <div class="form-group row">
+              <div class="col-lg-4">
+                <label>Sort Order</label>
+                <input type="number" class="form-control form-control-lg form-control-solid" name="guarantee"
+                  formControlName="guarantee" />
+              </div>
+              <div class="col-lg-6">
+                <label>Chọn hình</label>
+                <input formControlName="file" id="file" type="file" class="form-control"   (change)="onFileAdd($event)">
+              </div>
+              <div class="col-lg-2">
+                <!-- <label>Action</label>
+                <a type="button" class="btn btn-primary" (click)="addProductImages()"><i class="fa fa-plus"
+                    aria-hidden="true"></i> Thêm </a> -->
+              </div>
+            </div>
+            <div>
+              <table class="table table-head-custom table-vertical-center overflow-hidden">
+                <thead>
+                  <th>
+                    Hình ảnh
+                  </th>
+                  <th>
+                    Sort Order
+                  </th>
+                  <th>ACTIONS</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let att of product.productImages">
+                    <td>
+                      <img id="blah" [src]="att.fileTmpURL" style="max-width: 250px; max-height: 250px;"
+                        alt="your image" />
+                    </td>
+                    <td>{{ att.sortOrder}}</td>
+                    <td>
+                      <a title="Delete attribute" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+                        (click)="removeItemAtt(att.attributeValueID)">
+                        <!-- --(click)="delete(product.id)" -->
+                        <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
+                          class="svg-icon svg-icon-md svg-icon-danger">
+                        </span>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-container>
+
           <div class="float-right">
             <button type="submit" class="btn btn-success font-weight-bold mr-2" (click)="save()">
               Lưu lại

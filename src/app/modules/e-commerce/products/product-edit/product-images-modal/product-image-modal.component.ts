@@ -1,34 +1,25 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { catchError, first, tap } from 'rxjs/operators';
-import { ProductSpecification } from '../../../../_models/product-specification.model';
-import { SPECIFICATIONS_DICTIONARY } from '../../../../_models/specification.dictionary';
-import { SpecificationsService } from '../../../../_services';
 import { ProductImage } from 'src/app/modules/e-commerce/_models/product-image.model';
 import { SwalService, TYPE } from 'src/app/modules/common/alter.service';
 import { ProductImagesService } from 'src/app/modules/e-commerce/_services/product-images.service';
 
-const EMPTY_SPEC: ProductImage = {
-  id: undefined,
-  sortOrder: 1,
-  imageUrl: ''
-};
-
 @Component({
-  selector: 'app-edit-spec-modal',
-  templateUrl: './edit-spec-modal.component.html',
+  selector: 'app-product-image-modal',
+  templateUrl: './product-image-modal.component.html',
   styleUrls: []
 })
-export class EditSpecModalComponent implements OnInit, OnDestroy {
+export class ProductImageModalComponent implements OnInit, OnDestroy {
   @Input() id: number;
   @Input() productId: number;
+  @Output() add = new EventEmitter<any>();
   isLoading = false;
-  spec: ProductImage={
-    id: undefined,
+  image: any = {
     sortOrder : 1,
-    imageUrl: '',
+    imageUrl : '' 
   };
   formGroup: FormGroup;
   fileReview : any;
@@ -45,7 +36,7 @@ export class EditSpecModalComponent implements OnInit, OnDestroy {
 
   loadForm() {
     this.formGroup = this.fb.group({
-      sortOrder: [this.spec.sortOrder],
+      sortOrder: [this.image.sortOrder],
          file : new FormControl(''),
          imageUrl : new FormControl('', Validators.required)
     });
@@ -55,55 +46,31 @@ export class EditSpecModalComponent implements OnInit, OnDestroy {
 
   save() {
     this.prepareSpec();
-    if (this.spec.id) {
+    if (this.image.id) {
      // this.edit();
     } else {
       this.create();
     }
   }
 
-  // edit() {
-  //   const sbUpdate = this.specsService.update(this.spec, '').pipe(
-  //     tap(() => {
-  //       this.modal.close();
-  //     }),
-  //     catchError((errorMessage) => {
-  //       this.modal.dismiss(errorMessage);
-  //       return of(this.spec);
-  //     }),
-  //   ).subscribe(res => this.spec = res);
-  //   this.subscriptions.push(sbUpdate);
-  // }
-
   create() {
-    var modelPost = new FormData ();
-    modelPost.append('Image', this.formGroup.get('imageUrl').value);
-    modelPost.append('ProductId',   this.productId.toString());
-    modelPost.append('SortOrder', this.spec.sortOrder.toString());
-    const sbCreate = this.specsService.createWithImage(modelPost, '/v1/ProductImage').pipe(
-      tap((res: any) => {
-        debugger;
-        this.checkSuccessEditOrAdd(res, "Thêm hình ảnh");
-        this.modal.close();
-      }),
-      catchError((errorMessage) => {
-        this.modal.dismiss(errorMessage);
-        return of(this.spec);
-      }),
-    ).subscribe((res: ProductImage) => this.spec = res);
-    this.subscriptions.push(sbCreate);
+    var add : any = {
+      sortOrder : 1,
+      imageUrl : this.formGroup.get('imageUrl')
+    }
+    this.add.emit(add);
   }
 
   private prepareSpec() {
     const formData = this.formGroup.value;
-    this.spec.sortOrder = formData.sortOrder;
+    this.image.sortOrder = formData.sortOrder;
   }
 
   onFileChange(event) { 
     if (event.target.files.length > 0) {
+      debugger;
       const file = event.target.files[0];
       this.formGroup.get('imageUrl').setValue(file);
-
       const reader = new FileReader();
         reader.onload = e => this.fileReview = reader.result;
         reader.readAsDataURL(file);

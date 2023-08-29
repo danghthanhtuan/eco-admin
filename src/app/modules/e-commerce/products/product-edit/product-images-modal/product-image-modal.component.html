@@ -46,7 +46,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
-    <ng-container *ngIf="spec">
+    <ng-container *ngIf="image">
 
       <button type="submit" class="btn btn-primary btn-elevate" (click)="save()"
         [disabled]="formGroup.invalid">Save</button>

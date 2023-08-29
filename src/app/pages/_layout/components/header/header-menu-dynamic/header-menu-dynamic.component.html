@@ -34,7 +34,7 @@
   <!-- begin::if has submenu classic -->
   <ng-container *ngIf="item.submenu && !item.mega">
     <!-- begin::1 Level -->
-    <li
+    <!-- <li
       [attr.data-menu-toggle]="headerMenuDesktopToggle"
       aria-haspopup="true"
       class="menu-item menu-item-submenu menu-item-rel"
@@ -61,14 +61,14 @@
           ></ng-container>
         </ul>
       </div>
-    </li>
+    </li> -->
   </ng-container>
   <!-- end::if has submenu classic -->
 
   <!-- begin::if has submenu mega -->
   <ng-container *ngIf="item.submenu && item.mega">
     <!-- begin::1 Level -->
-    <li
+    <!-- <li
       class="menu-item menu-item-submenu menu-item-rel"
       routerLinkActive="menu-item-active"
       [attr.data-menu-toggle]="headerMenuDesktopToggle"
@@ -100,7 +100,7 @@
           </ul>
         </div>
       </div>
-    </li>
+    </li> -->
   </ng-container>
   <!-- end::if has submenu mega -->
 </ng-template>

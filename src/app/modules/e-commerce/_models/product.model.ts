@@ -30,7 +30,7 @@ export interface Product extends BaseModel {
   updatedUser: string,
   createdUser: string,
   productAttributes: any,
-  productImages?: [],
+  productImages: any,
   productTags: string
 }
 

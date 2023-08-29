@@ -52,6 +52,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { AddProductAttributeModalComponent } from './products/product-edit/product-attribute/add-product-attribute-modal.component';
+import { ProductImageModalComponent } from './products/product-edit/product-images-modal/product-image-modal.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import { AddProductAttributeModalComponent } from './products/product-edit/produ
     AddFilterValueModalComponent,
 
     TransactionsComponent,
-    AddProductAttributeModalComponent
+    AddProductAttributeModalComponent,
+    ProductImageModalComponent
   ],
   imports: [
     CommonModule,
