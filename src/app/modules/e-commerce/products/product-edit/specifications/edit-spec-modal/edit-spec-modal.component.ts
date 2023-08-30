@@ -82,7 +82,7 @@ export class EditSpecModalComponent implements OnInit, OnDestroy {
     modelPost.append('SortOrder', this.spec.sortOrder.toString());
     const sbCreate = this.specsService.createWithImage(modelPost, '/v1/ProductImage').pipe(
       tap((res: any) => {
-        debugger;
+
         this.checkSuccessEditOrAdd(res, "Thêm hình ảnh");
         this.modal.close();
       }),

@@ -87,7 +87,7 @@ find(tableState: ITableState): Observable<TableResponseModel<Product>> {
       catchError(err => {
         this._errorMessage.next(err);
         console.error('GET ITEM BY IT', id, err);
-        return of(EMPTY_PRODUCT);
+        return of(err.error);
       }),
       finalize(() => this._isLoading$.next(false))
     );

@@ -150,6 +150,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       if (!res) {
         this.router.navigate(['/products'], { relativeTo: this.route });
       }
+      this.checkSuccessEditOrAdd(res, "Load sản phẩm");
       this.product = res.data ?? EMPTY_PRODUCT;
       this.previous = Object.assign({}, res);
       this.loadForm();
@@ -269,6 +270,11 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     this.product.productAttributes?.forEach(element => {
       modelCreate.append('AttributeValueIds', element.attributeValueID.toString());
     });
+
+    this.product.productImages?.forEach((element, index )=> {
+      modelCreate.append('Images[' + index + "].Image",  element.imageUrl);
+      modelCreate.append('Images[' + index + "].SortOrder", element.sortOrder);
+    });
     const sbCreate = this.productsService.createWithImage(modelCreate, '/v1/Product').pipe(
       tap((res: any) => {
         this.checkSuccessEditOrAdd(res, 'Tạo sản phẩm');
@@ -278,7 +284,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         console.error('Create ERROR', errorMessage);
         return of(this.product);
       })
-    ).subscribe(res => this.product = res as Product);
+    ).subscribe();
     this.subscriptions.push(sbCreate);
   }
 
@@ -338,12 +344,11 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(ProductImageModalComponent, { size: 'lg' });
     modalRef.componentInstance.add.subscribe(($value) => {
       var url: any;
-      debugger;
       const reader = new FileReader();
       reader.onload = (event: any) => {
         url = event.target.result;
         var itemAdd = {
-          sortOrder: 1,
+          sortOrder: $value.sortOrder,
           imageUrl: $value.imageUrl.value,
           fileTmpURL: url,
         }
@@ -352,27 +357,6 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       }
       reader.readAsDataURL($value.imageUrl.value);
     })
-  }
-
-  onFileAdd(event) {
-    if (event.target.files && event.target.files.length > 0) {
-      debugger;
-      const file = event.target.files[0];
-      //this.formGroup.get('imageUrl').setValue(file);
-      var url: any;
-      const reader = new FileReader();
-      reader.onload = (event: any) => {
-        url = event.target.result;
-        var itemAdd = {
-          sortOrder: 1,
-          imageUrl: file,
-          fileTmpURL: url,
-        }
-        this.product.productImages.push(itemAdd);
-        this.srvAlter.toast(TYPE.SUCCESS, "Thêm thành công!", false);
-      }
-      reader.readAsDataURL(event.target.files[0]);
-    }
   }
 
   deleteImageAdd(index : number){

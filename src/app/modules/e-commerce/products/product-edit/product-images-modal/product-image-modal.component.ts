@@ -55,7 +55,7 @@ export class ProductImageModalComponent implements OnInit, OnDestroy {
 
   create() {
     var add : any = {
-      sortOrder : 1,
+      sortOrder : this.image.sortOrder,
       imageUrl : this.formGroup.get('imageUrl')
     }
     this.add.emit(add);
@@ -68,7 +68,6 @@ export class ProductImageModalComponent implements OnInit, OnDestroy {
 
   onFileChange(event) { 
     if (event.target.files.length > 0) {
-      debugger;
       const file = event.target.files[0];
       this.formGroup.get('imageUrl').setValue(file);
       const reader = new FileReader();

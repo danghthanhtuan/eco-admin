@@ -324,10 +324,10 @@ export const DynamicHeaderMenuConfig = {
               page: '/ecommerce/transactions'
             },
             
-            {
-              title: 'Customers',
-              page: '/ecommerce/customers'
-            },
+            // {
+            //   title: 'Customers',
+            //   page: '/ecommerce/customers'
+            // },
             {
               title: 'Products',
               page: '/ecommerce/products'

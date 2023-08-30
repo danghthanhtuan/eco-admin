@@ -63,7 +63,7 @@ export class RemarksComponent
     this.grouping = this.remarksService.grouping;
     this.paginator = this.remarksService.paginator;
     this.sorting = this.remarksService.sorting;
-    this.remarksService.fetch();
+    //this.remarksService.fetch();
   }
 
   ngOnDestroy() {

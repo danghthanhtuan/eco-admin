@@ -7,7 +7,7 @@ export const AdminConfigs = {
         createProduct:"/v1/Product",
 
 
-
+        getReviewPaging:"/v1/Product/get-reviews-paging?productId=",
         getImageByProductId:"/v1/ProductImage/by-productid?productId=",
     }
 }

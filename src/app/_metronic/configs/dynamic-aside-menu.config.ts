@@ -320,10 +320,10 @@ export const DynamicAsideMenuConfig = {
           page: '/ecommerce/transactions'
         }
         ,
-        {
-          title: 'Customers',
-          page: '/ecommerce/customers'
-        },
+        // {
+        //   title: 'Customers',
+        //   page: '/ecommerce/customers'
+        // },
         {
           title: 'Products',
           page: '/ecommerce/products'

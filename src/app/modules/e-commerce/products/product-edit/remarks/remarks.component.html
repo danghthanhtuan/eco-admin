@@ -58,19 +58,25 @@
         </th>
         <th>
           ID
-          <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
-            (sort)="sort($event)"></app-sort-icon>
+          <!-- <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+            (sort)="sort($event)"></app-sort-icon> -->
         </th>
         <th>
-          TEXT
-          <app-sort-icon column="text" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
-            (sort)="sort($event)"></app-sort-icon>
+        Nội dung
+          <!-- <app-sort-icon column="text" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+            (sort)="sort($event)"></app-sort-icon> -->
         </th>
         <th>
-          DUE DATE
-          <app-sort-icon column="dueDate" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
-            (sort)="sort($event)"></app-sort-icon>
+         Số sao
+          <!-- <app-sort-icon column="dueDate" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
+            (sort)="sort($event)"></app-sort-icon> -->
         </th>
+        <th>
+         Tên       
+         </th>
+         <th>
+           Thời gian đánh giá    
+          </th>
         <th>ACTIONS</th>
       </thead>
       <tbody>
@@ -82,15 +88,12 @@
             </label>
           </td>
           <td>{{ remark.id }}</td>
-          <td>{{ remark.text }}</td>
-          <td>{{ remark.dueDate }}</td>
+          <td>{{ remark.content }}</td>
+          <td>{{ remark.rate }}</td>
+          <td>{{ remark.name }}</td>
+          <td>{{ remark.createDate }}</td>
           <td>
-            <button title="Edit remark" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"
-              (click)="edit(remark.id)">
-              <span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
-                class="svg-icon svg-icon-md svg-icon-primary">
-              </span>
-            </button>
+         
             <button title="Delete remark" class="btn btn-icon btn-light btn-hover-danger btn-sm"
               (click)="delete(remark.id)">
               <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
