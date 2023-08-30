@@ -251,21 +251,20 @@
           </div>
 
           <ng-container *ngIf="!id">
-             <h2> <label>Hình ảnh sản phẩm</label></h2>
+             <h2> <label>Hình ảnh sản phẩm (500x500, cùng kích thước)</label></h2>
             <div class="form-group row">
-              <div class="col-lg-4">
+              <!-- <div class="col-lg-4">
                 <label>Sort Order</label>
-                <input type="number" class="form-control form-control-lg form-control-solid" name="guarantee"
-                  formControlName="guarantee" />
+                <input #sortOrder type="number" class="form-control form-control-lg form-control-solid" name="sortOrder"
+                  formControlName="sortOrder" />
               </div>
               <div class="col-lg-6">
                 <label>Chọn hình</label>
-                <input formControlName="file" id="file" type="file" class="form-control"   (change)="onFileAdd($event)">
-              </div>
+                <input id="file" type="file" class="form-control" (change)="onFileAdd($event)">
+              </div> -->
               <div class="col-lg-2">
-                <!-- <label>Action</label>
                 <a type="button" class="btn btn-primary" (click)="addProductImages()"><i class="fa fa-plus"
-                    aria-hidden="true"></i> Thêm </a> -->
+                    aria-hidden="true"></i> Thêm ảnh</a>
               </div>
             </div>
             <div>
@@ -280,16 +279,14 @@
                   <th>ACTIONS</th>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let att of product.productImages">
+                  <tr *ngFor="let att of product.productImages; let i = index">
                     <td>
                       <img id="blah" [src]="att.fileTmpURL" style="max-width: 250px; max-height: 250px;"
                         alt="your image" />
                     </td>
                     <td>{{ att.sortOrder}}</td>
                     <td>
-                      <a title="Delete attribute" class="btn btn-icon btn-light btn-hover-danger btn-sm"
-                        (click)="removeItemAtt(att.attributeValueID)">
-                        <!-- --(click)="delete(product.id)" -->
+                      <a title="Delete attribute" class="btn btn-icon btn-light btn-hover-danger btn-sm"  (click)="deleteImageAdd(i)" >
                         <span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
                           class="svg-icon svg-icon-md svg-icon-danger">
                         </span>

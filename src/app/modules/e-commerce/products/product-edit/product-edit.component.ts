@@ -177,9 +177,9 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       status: [this.product.status],
       seoKeyword: [this.product.seoKeyword],
       seoDescription: [this.product.seoDescription],
-      stock: [this.product.stock , Validators.compose([Validators.required, Validators.min(1)])],
+      stock: [this.product.stock, Validators.compose([Validators.required, Validators.min(1)])],
       guarantee: [this.product.guarantee],
-      description: [this.product.description, Validators.compose([Validators.required,Validators.minLength(1), Validators.maxLength(4000)])],
+      description: [this.product.description, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(4000)])],
     });
   }
 
@@ -266,13 +266,13 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     modelCreate.append('SeoKeyword', this.product.seoKeyword.toString());
     modelCreate.append('SeoDescription', this.product.seoDescription.toString());
     modelCreate.append('SeoTitle', this.product.seoTitle.toString());
-   this.product.productAttributes?.forEach(element => {
+    this.product.productAttributes?.forEach(element => {
       modelCreate.append('AttributeValueIds', element.attributeValueID.toString());
     });
     const sbCreate = this.productsService.createWithImage(modelCreate, '/v1/Product').pipe(
       tap((res: any) => {
         this.checkSuccessEditOrAdd(res, 'Tạo sản phẩm');
-      //  this.router.navigate(['/ecommerce/products'])
+        //  this.router.navigate(['/ecommerce/products'])
       }),
       catchError((errorMessage) => {
         console.error('Create ERROR', errorMessage);
@@ -334,27 +334,50 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     })
   }
 
-  onFileAdd(event) { 
-    if (event.target.files.length > 0) {
+  addProductImages() {
+    const modalRef = this.modalService.open(ProductImageModalComponent, { size: 'lg' });
+    modalRef.componentInstance.add.subscribe(($value) => {
+      var url: any;
+      debugger;
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        url = event.target.result;
+        var itemAdd = {
+          sortOrder: 1,
+          imageUrl: $value.imageUrl.value,
+          fileTmpURL: url,
+        }
+        this.product.productImages.push(itemAdd);
+        this.srvAlter.toast(TYPE.SUCCESS, "Thêm thành công!", false);
+      }
+      reader.readAsDataURL($value.imageUrl.value);
+    })
+  }
+
+  onFileAdd(event) {
+    if (event.target.files && event.target.files.length > 0) {
       debugger;
       const file = event.target.files[0];
       //this.formGroup.get('imageUrl').setValue(file);
-      var url : any ;
-      const reader = new FileReader();  reader.readAsDataURL(file);
-        reader.onload = e => url = reader.result;
-      
-
-
+      var url: any;
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
+        url = event.target.result;
         var itemAdd = {
           sortOrder: 1,
           imageUrl: file,
           fileTmpURL: url,
         }
-        this.product.productImages.push(itemAdd);    
-        this.srvAlter.toast(TYPE.SUCCESS, "Thêm thành công!", false); 
+        this.product.productImages.push(itemAdd);
+        this.srvAlter.toast(TYPE.SUCCESS, "Thêm thành công!", false);
+      }
+      reader.readAsDataURL(event.target.files[0]);
     }
   }
 
+  deleteImageAdd(index : number){
+    this.product.productImages.splice(index, 1);
+  }
 
   validateAllFormFields(formGroup: FormGroup) {         //{1}
     Object.keys(formGroup.controls).forEach(field => {  //{2}
@@ -408,9 +431,9 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       this.srvAlter.toast(TYPE.SUCCESS, action + " thành công!", false);
 
     } else {
-      if(res && res.statusCode === 400 ){
+      if (res && res.statusCode === 400) {
         this.srvAlter.toast(TYPE.ERROR, res.errorMessage, false);
-      }else
+      } else
         this.srvAlter.toast(TYPE.ERROR, action + " không thành công!", false);
     }
   };

@@ -1143,6 +1143,13 @@
     "merge-source-map" "^1.1.0"
     "schema-utils" "^2.7.0"
 
+"@kolkov/angular-editor@^1.0.0":
+  "integrity" "sha512-HvVcLOG/Isv6AscYA7TOXwx3eJHKzFqcWT/jAMstPt5Ievcn/LUgHbCXnY/9NnUb/V0asxdhL+hbk01MDAq9Kg=="
+  "resolved" "https://registry.npmjs.org/@kolkov/angular-editor/-/angular-editor-1.0.0.tgz"
+  "version" "1.0.0"
+  dependencies:
+    "tslib" "^1.9.0"
+
 "@ng-bootstrap/ng-bootstrap@^9.1.0":
   "integrity" "sha512-5cTxOew6EsENIa/PiIlIlF3MSGanLGD2fyGPyQJc0hU5j9uK+alz2eJXWpeAX3IHLDIaOBfRdCGOrpXkeIUhzQ=="
   "resolved" "https://registry.npmjs.org/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-9.1.0.tgz"
@@ -8635,6 +8642,11 @@
     "unquote" "~1.1.1"
     "util.promisify" "~1.0.0"
 
+"sweetalert2@^11.7.23":
+  "integrity" "sha512-zhc2Jc/coeUFPCM7LyVaUddbSz1Av9/EgQVXxZVPre8cwJrTZXCOEAboCT11StS3vaFTio74cumWustmNzDOEw=="
+  "resolved" "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.7.23.tgz"
+  "version" "11.7.23"
+
 "symbol-observable@2.0.3":
   "integrity" "sha512-sQV7phh2WCYAn81oAkakC5qjq2Ml0g8ozqz03wOGnx9dDlG1de6yrF+0RAzSJD8fPUow3PTSMf2SAbOGxb93BA=="
   "resolved" "https://registry.npmjs.org/symbol-observable/-/symbol-observable-2.0.3.tgz"
@@ -8886,9 +8898,9 @@
   "version" "1.14.1"
 
 "tslib@^2.0.0":
-  "integrity" "sha512-gS9GVHRU+RGn5KQM2rllAlR3dU6m7AcpJKdtH8gFvQiC4Otgk98XnmMU+nZenHt/+VhnBPWwgrJsyrdcw6i23w=="
-  "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.2.0.tgz"
-  "version" "2.2.0"
+  "integrity" "sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q=="
+  "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.6.2.tgz"
+  "version" "2.6.2"
 
 "tslib@2.0.3":
   "integrity" "sha512-uZtkfKblCEQtZKBF6EBXVZeQNl82yqtDQdv+eck8u7tdPxjLu2/lp5/uPW+um2tpuxINHWy3GhiccY7QgEaVHQ=="
@@ -9220,6 +9232,11 @@
   "integrity" "sha1-wGavtYK7HLQSjWDqkjkulNXp2+w= sha512-qZKX4RnBzH2ugr8Lxa7x+0V6XD9Sb/ouARtiasEQCHB1EVU4NXtmHsDDrx1dO4ne5fc3J6EW05BP1Dl0z0iung=="
   "resolved" "https://registry.npmjs.org/void-elements/-/void-elements-2.0.1.tgz"
   "version" "2.0.1"
+
+"vs@^0.1.0":
+  "integrity" "sha512-1BDpm5U/cnOHRTCVpHyi/COvMVesm0Y7acrOI2Iu4Qh1xvi1CWDR+jJ72vnrYbsLMQ+5m+7vwyAxPtydtBZ9uQ=="
+  "resolved" "https://registry.npmjs.org/vs/-/vs-0.1.0.tgz"
+  "version" "0.1.0"
 
 "watchpack-chokidar2@^2.0.1":
   "integrity" "sha512-nCFfBIPKr5Sh61s4LPpy1Wtfi0HE8isJ3d2Yb5/Ppw2P2B/3eVSEBjKfN0fmHJSK14+31KwMKmcrzs2GM4P0Ww=="
