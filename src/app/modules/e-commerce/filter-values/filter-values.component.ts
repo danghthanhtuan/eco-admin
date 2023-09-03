@@ -64,12 +64,13 @@ export class FilterValuesComponent
     this.filterForm();
     this.searchForm();
     this.filterValueService.fetch();
-    const sb = this.filterValueService.isLoading$.subscribe(res => this.isLoading = res);
-    this.subscriptions.push(sb);
+    // const sb = this.filterValueService.isLoading$.subscribe(res => this.isLoading = res);
+    // this.subscriptions.push(sb);
     this.grouping = this.filterValueService.grouping;
     this.paginator = this.filterValueService.paginator;
     //this.sorting = this.attributeValueService.sorting;
     //this.attributeService.fetch();
+    this.isLoading = false;
   }
 
   ngOnDestroy() {

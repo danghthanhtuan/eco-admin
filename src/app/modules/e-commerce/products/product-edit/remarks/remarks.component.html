@@ -4,19 +4,19 @@
     <div class="form-filtration">
       <div class="row align-items-center">
         <div class="col-md-2 margin-bottom-10-mobile">
-          <form [formGroup]="searchGroup">
+          <!-- <form [formGroup]="searchGroup">
             <div>
               <input type="text" class="form-control" name="searchText" placeholder="Search"
                 formControlName="searchTerm" />
               <small class="form-text text-muted"><b>Search</b> in all fields</small></div>
-          </form>
+          </form> -->
         </div>
         <div class="col-md-8 margin-bottom-10-mobile"></div>
-        <div class="col-md-2 text-right margin-bottom-10-mobile">
+        <!-- <div class="col-md-2 text-right margin-bottom-10-mobile">
           <button type="button" class="btn btn-primary" (click)="create()">
             Create new remark
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -26,7 +26,7 @@
   <ng-container *ngIf="grouping.getSelectedRowsCount()">
     <div class="form">
       <div class="row align-items-center form-group-actions margin-top-20 margin-bottom-20">
-        <div class="col-xl-12">
+        <!-- <div class="col-xl-12">
           <div class="form-group form-group-inline">
             <div class="form-label form-label-no-wrap">
               <label class="font-bold font-danger"><span>Selected records count:
@@ -43,7 +43,7 @@
               </button>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </ng-container>
@@ -52,10 +52,10 @@
   <div class="table-responsive angular-bootstrap-table">
     <table class="table table-head-custom table-vertical-center overflow-hidden">
       <thead>
-        <th class="selection-cell-header" data-row-selection="true">
+        <!-- <th class="selection-cell-header" data-row-selection="true">
           <label class="checkbox checkbox-single"><input type="checkbox" (click)="grouping.selectAllRows()"
               [checked]="grouping.checkAreAllRowsSelected()" /><span></span></label>
-        </th>
+        </th> -->
         <th>
           ID
           <!-- <app-sort-icon column="id" [activeColumn]="sorting.column" [activeDirection]="sorting.direction"
@@ -81,17 +81,17 @@
       </thead>
       <tbody>
         <tr *ngFor="let remark of remarksService.items$ | async">
-          <td class="selection-cell">
+          <!-- <td class="selection-cell">
             <label class="checkbox checkbox-single"><input type="checkbox" (click)="grouping.selectRow(remark.id)"
                 [checked]="grouping.isRowSelected(remark.id)" />
               <span></span>
             </label>
-          </td>
+          </td> -->
           <td>{{ remark.id }}</td>
           <td>{{ remark.content }}</td>
           <td>{{ remark.rate }}</td>
           <td>{{ remark.name }}</td>
-          <td>{{ remark.createDate }}</td>
+          <td>{{ remark.createdDate }}</td>
           <td>
          
             <button title="Delete remark" class="btn btn-icon btn-light btn-hover-danger btn-sm"

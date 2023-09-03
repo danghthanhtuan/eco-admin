@@ -63,12 +63,13 @@ export class ProductsComponent
     this.filterForm();
     this.searchForm();
     this.productsService.fetch();
-    const sb = this.productsService.isLoading$.subscribe(res => this.isLoading = res);
-    this.subscriptions.push(sb);
+    // const sb = this.productsService.isLoading$.subscribe(res => this.isLoading = res);
+    // this.subscriptions.push(sb);
     this.grouping = this.productsService.grouping;
     this.paginator = this.productsService.paginator;
     this.sorting = this.productsService.sorting;
     //this.productsService.fetch();
+    this.isLoading = false;
   }
 
   ngOnDestroy() {

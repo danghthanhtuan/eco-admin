@@ -1,0 +1,117 @@
+<ng-container *ngIf="isLoading">
+  <div class="progress progress-modal">
+    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar"
+      style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+</ng-container>
+
+<div class="modal-header">
+  <!-- <div class="modal-title h4"> Add</div> -->
+  <!-- <ng-container *ngIf="id">Edit</ng-container>
+  <ng-container *ngIf="!id">Create</ng-container> -->
+  Tạo giá trị bộ lọc cho Danh mục
+</div>
+<div class="modal-body">
+  <!-- <ng-container *ngIf="isLoading">
+    <span>Thêm thuộc tính....</span>
+  </ng-container> -->
+  <ng-container *ngIf="isLoading">
+     <!-- begin: Grouping -->
+     <ng-container *ngIf="grouping.getSelectedRowsCount()">
+      <div class="form">
+        <div class="row align-items-center form-group-actions margin-top-20 margin-bottom-20">
+          <div class="col-xl-12">
+            <div class="form-group form-group-inline">
+              <div class="form-label form-label-no-wrap">
+                <label class="font-bold font-danger"><span>Selected records count:
+                    <b>{{ grouping.getSelectedRowsCount() }}</b></span></label>
+              </div>
+              <div>
+                <!-- <button type="button" class="btn btn-danger font-weight-bolder font-size-sm mr-1"
+                  (click)="deleteSelected()">
+                  <i class="fa fa-trash"></i> Delete All
+                </button>&nbsp;
+                <button type="button" class="btn btn-light-primary font-weight-bolder font-size-sm mr-1"
+                  (click)="fetchSelected()">
+                  <i class="fa fa-stream"></i> Fetch Selected
+                </button>&nbsp; -->
+                <button type="button" class="btn btn-light-primary font-weight-bolder font-size-sm mr-1"
+                  (click)="updateCheckedForSelected()">
+                  <i class="fa fa-sync-alt"></i> Update Bộ lọc
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <!-- end: Grouping -->
+
+    <!-- begin:Table -->
+    <div class="table-responsive angular-bootstrap-table">
+      <table class="table table-head-custom table-vertical-center overflow-hidden">
+        <thead>
+          <th class="selection-cell-header" data-row-selection="true">
+            <label class="checkbox checkbox-single"><input type="checkbox" (click)="grouping.selectAllRows()"
+                [checked]="grouping.checkAreAllRowsSelected()" /><span></span></label>
+          </th>
+          <th>
+            ID
+          </th>
+          <th>
+            Tên bộ lọc
+          </th>
+          <th>
+            Seach key
+          </th>
+          <th>
+            Min Price
+          </th>
+          <th>
+            Max Price         
+          </th>               
+        </thead>
+        <tbody>
+          <tr *ngFor="let catefilter of categoryFilterAddService.items$ | async">
+            <td class="selection-cell">
+              <label class="checkbox checkbox-single"><input type="checkbox" (click)="grouping.selectRow(catefilter.filterValueID)"
+                  [checked]="grouping.isRowSelected(catefilter.filterValueID)" />
+                <span></span>
+              </label>
+            </td>
+            <td>{{ catefilter.filterValueID }}</td>
+            <td>{{ catefilter.filterValueDisplayTextExtra }}</td>
+            <td>{{ catefilter.filterSearchKey }}</td>
+            <td>{{ catefilter.minPrice }}</td>
+            <td>{{ catefilter.maxPrice }}</td>
+            <!-- <td>
+              <span class="label label-lg label-inline" [class.label-light-danger]="catefilter.status === 1"
+                [class.label-light-success]="catefilter.status === 2" [class.label-light-primary]="catefilter.status === 3">
+                <ng-container *ngIf="catefilter.status === 1">Suspended</ng-container>
+
+              </span>
+            </td>
+            <td>
+              <span class="label label-dot label-primary mr-2" [class.label-success]="catefilter.type === 1"
+                [class.label-primary]="catefilter.type === 2"></span>&nbsp;<span class="font-bold font-primary">
+           
+              </span>
+            </td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+
+</div>
+
+<div class="modal-footer">
+  <div>
+    <button type="button" class="btn btn-light btn-elevate mr-1" (click)="modal.dismiss()">
+      Cancel
+    </button>&nbsp;
+    <button type="button" class="btn btn-primary btn-elevate" (click)="updateCheckedForSelected()">
+      Update Bộ lọc
+    </button>
+  </div>
+</div>

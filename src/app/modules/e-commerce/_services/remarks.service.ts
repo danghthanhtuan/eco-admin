@@ -23,10 +23,9 @@ export class RemarksService extends TableService<Review> {
     return this.http.get<any>(`${this.API_URL}${AdminConfigs.urls.getReviewPaging}${productId}`, this.httpOptions).pipe(
       mergeMap((response: any) => {
         var res: Review[] = response.data;
-        console.log(res);
         const result: TableResponseModel<Review> = {
-          items: res,
-          total: res.length
+          items: response?.data?.data ?? [],
+          total:  response?.data?.total ?? 0
         };
         return of<TableResponseModel<Review>>(<TableResponseModel<Review>>result);
       })

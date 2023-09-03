@@ -19,6 +19,7 @@ export class RemarksService extends TableService<ProductRemark> implements OnDes
 
   // READ
   find(tableState: ITableState): Observable<TableResponseModel<ProductRemark>> {
+    debugger;
     return this.http.get<ProductRemark[]>(this.API_URL).pipe(
       map((response: ProductRemark[]) => {
         const filteredResult = baseFilter(response.filter(el => el.carId === tableState.entityId), tableState);

@@ -67,12 +67,13 @@ export class CategoryComponent
     this.filterForm();
     this.searchForm();
     this.categoriesService.fetch();
-    const sb = this.categoriesService.isLoading$.subscribe(res => this.isLoading = res);
-    this.subscriptions.push(sb);
+    // const sb = this.categoriesService.isLoading$.subscribe(res => this.isLoading = res);
+    // this.subscriptions.push(sb);
     this.grouping = this.categoriesService.grouping;
     this.paginator = this.categoriesService.paginator;
     this.sorting = this.categoriesService.sorting;
     //this.attributeService.fetch();
+    this.isLoading = false;
   }
 
   ngOnDestroy() {

@@ -151,7 +151,6 @@ export abstract class TableService<T> {
 
   // READ (Returning filtered list of entities)
   find(tableState: ITableState): Observable<TableResponseModel<T>> {
-    debugger;
     const url = this.API_URL + '/find';
     this._errorMessage.next('');
     return this.http.post<TableResponseModel<T>>(url, tableState).pipe(
@@ -279,14 +278,15 @@ export abstract class TableService<T> {
           });
         }),
         finalize(() => {
-          this._isLoading$.next(false);
-          const itemIds = this._items$.value.map((el: T) => {
-            const item = (el as unknown) as BaseModel;
-            return item.id;
-          });
-          this.patchStateWithoutFetch({
-            grouping: this._tableState$.value.grouping.clearRows(itemIds),
-          });
+          // debugger;
+          // this._isLoading$.next(false);
+          // const itemIds = this._items$.value.map((el: T) => {
+          //   const item = (el as any);
+          //   return item.filterValueID;
+          // });
+          // this.patchStateWithoutFetch({
+          //   grouping: this._tableState$.value.grouping.clearRows(itemIds),
+          // });
         })
       )
       .subscribe();

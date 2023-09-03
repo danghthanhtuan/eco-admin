@@ -53,6 +53,10 @@ import { TransactionsComponent } from './transactions/transactions.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { AddProductAttributeModalComponent } from './products/product-edit/product-attribute/add-product-attribute-modal.component';
 import { ProductImageModalComponent } from './products/product-edit/product-images-modal/product-image-modal.component';
+import { CategoryFiltersComponent } from './category-filters/category-filters.component';
+import { AddCategoryFilterValueModalComponent } from './category-filters/components/add-category-filters-modal.component';
+import { TransactionsModalComponent } from './transactions/components/transactions-modal.component';
+import { AddProducutToTransModalComponent } from './transactions/components/add-product-to-trans-modal.component';
 
 @NgModule({
   declarations: [
@@ -101,7 +105,11 @@ import { ProductImageModalComponent } from './products/product-edit/product-imag
 
     TransactionsComponent,
     AddProductAttributeModalComponent,
-    ProductImageModalComponent
+    ProductImageModalComponent,
+    CategoryFiltersComponent,
+    AddCategoryFilterValueModalComponent,
+    TransactionsModalComponent,
+    AddProducutToTransModalComponent
   ],
   imports: [
     CommonModule,

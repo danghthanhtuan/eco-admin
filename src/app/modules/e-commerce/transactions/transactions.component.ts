@@ -19,6 +19,7 @@ import {
 } from '../../../_metronic/shared/crud-table';
 import { environment } from 'src/environments/environment';
 import { TransactionsService } from '../_services/transactions.service';
+import { TransactionsModalComponent } from './components/transactions-modal.component';
 
 @Component({
   selector: 'app-transactions',
@@ -58,12 +59,13 @@ export class TransactionsComponent
     this.filterForm();
     this.searchForm();
     this.transactionService.fetch();
-    const sb = this.transactionService.isLoading$.subscribe(res => this.isLoading = res);
-    this.subscriptions.push(sb);
+    // const sb = this.transactionService.isLoading$.subscribe(res => this.isLoading = res);
+    // this.subscriptions.push(sb);
     this.grouping = this.transactionService.grouping;
     this.paginator = this.transactionService.paginator;
     // this.sorting = this.tradeService.sorting;
     //this.attributeService.fetch();
+    this.isLoading = false;
   }
 
   ngOnDestroy() {
@@ -164,15 +166,16 @@ export class TransactionsComponent
   //   );
   // }
 
-  // addTrademarks(id: number) {
-  //   const modalRef = this.modalService.open(AddTrademarksModalComponent, {size: 'xl'});
-  //   modalRef.componentInstance.id = id;
-  //  // modalRef.componentInstance.listCategoryParent = this.listCategoryParent;
-  //   modalRef.result.then(
-  //     () => this.tradeService.fetch(),
-  //     () => { }
-  //   );
-  // }
+  editTransaction(id: number, tran : any) {
+    const modalRef = this.modalService.open(TransactionsModalComponent, {size: 'xl'});
+    modalRef.componentInstance.id = id;
+    modalRef.componentInstance.transaction = tran;
+   // modalRef.componentInstance.listCategoryParent = this.listCategoryParent;
+    modalRef.result.then(
+       () => this.transactionService.fetch(),
+      () => { }
+    );
+  }
 
   // deleteSelected() {
   //   const modalRef = this.modalService.open(DeleteCategoriesServiceModalComponent);

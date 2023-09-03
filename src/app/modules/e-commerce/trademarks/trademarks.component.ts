@@ -61,12 +61,13 @@ export class TrademarksComponent
     this.filterForm();
     this.searchForm();
     this.tradeService.fetch();
-    const sb = this.tradeService.isLoading$.subscribe(res => this.isLoading = res);
-    this.subscriptions.push(sb);
+    // const sb = this.tradeService.isLoading$.subscribe(res => this.isLoading = res);
+    // this.subscriptions.push(sb);
     this.grouping = this.tradeService.grouping;
     this.paginator = this.tradeService.paginator;
     // this.sorting = this.tradeService.sorting;
     //this.attributeService.fetch();
+    this.isLoading = false;
   }
 
   ngOnDestroy() {

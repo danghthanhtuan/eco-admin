@@ -19,17 +19,17 @@ export class FetchRemarksModalComponent implements OnInit, OnDestroy {
   constructor(private remarksService: RemarksService, public modal: NgbActiveModal) { }
 
   ngOnInit(): void {
-    this.loadRemarks();
+    //this.loadRemarks();
   }
 
-  loadRemarks() {
-    const sb = this.remarksService.items$.pipe(
-      first()
-    ).subscribe((res: ProductRemark[]) => {
-      this.remarks = res.filter(c => this.ids.indexOf(c.id) > -1);
-    });
-    this.subscriptions.push(sb);
-  }
+  // loadRemarks() {
+  //   const sb = this.remarksService.items$.pipe(
+  //     first()
+  //   ).subscribe((res: ProductRemark[]) => {
+  //     this.remarks = res.filter(c => this.ids.indexOf(c.id) > -1);
+  //   });
+  //   this.subscriptions.push(sb);
+  // }
 
   fetchSelected() {
     this.isLoading = true;

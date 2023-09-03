@@ -64,12 +64,13 @@ export class SlidesComponent
     this.filterForm();
     this.searchForm();
     this.slideService.fetch();
-    const sb = this.slideService.isLoading$.subscribe(res => this.isLoading = res);
-    this.subscriptions.push(sb);
+    // const sb = this.slideService.isLoading$.subscribe(res => this.isLoading = res);
+    // this.subscriptions.push(sb);
     this.grouping = this.slideService.grouping;
     this.paginator = this.slideService.paginator;
     this.sorting = this.slideService.sorting;
-    //this.attributeService.fetch();
+    //this.attributeService.fetch(); 
+       this.isLoading = false;
   }
 
   ngOnDestroy() {

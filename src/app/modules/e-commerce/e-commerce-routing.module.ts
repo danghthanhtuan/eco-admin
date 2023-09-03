@@ -13,6 +13,7 @@ import { TrademarksComponent } from './trademarks/trademarks.component';
 import { FiltersComponent } from './filters/filters.component';
 import { FilterValuesComponent } from './filter-values/filter-values.component';
 import { TransactionsComponent } from './transactions/transactions.component';
+import { CategoryFiltersComponent } from './category-filters/category-filters.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
       {
         path: 'filter/values',
         component: FilterValuesComponent,
+      },
+      {
+        path: 'categoryfilters',
+        component:  CategoryFiltersComponent,
       },
       {
         path: 'trademarks',

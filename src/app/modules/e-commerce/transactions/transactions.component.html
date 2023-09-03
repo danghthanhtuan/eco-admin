@@ -47,7 +47,7 @@
             placeholder="Search"
             value=""
             formControlName="searchTerm"/><small class="form-text text-muted"
-            ><b>Search</b> Name</small
+            ><b>Search</b> OrderCode, Phone, ShippingName</small
           >
         </div>
       </div>
@@ -105,7 +105,7 @@
               <a
                 title="Edit attribute"
                 class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3"               
-                
+                (click)="editTransaction(tran.id, tran)"
               >
               <!-- (click)="addSlides(slide.id)" -->
                 <span

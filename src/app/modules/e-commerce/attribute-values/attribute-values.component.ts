@@ -66,12 +66,13 @@ export class AttributeValuesComponent
     this.filterForm();
     this.searchForm();
     this.attributeValueService.fetch();
-    const sb = this.attributeValueService.isLoading$.subscribe(res => this.isLoading = res);
-    this.subscriptions.push(sb);
+    // const sb = this.attributeValueService.isLoading$.subscribe(res => this.isLoading = res);
+    // this.subscriptions.push(sb);
     this.grouping = this.attributeValueService.grouping;
     this.paginator = this.attributeValueService.paginator;
     //this.sorting = this.attributeValueService.sorting;
     //this.attributeService.fetch();
+    this.isLoading = false;
   }
 
   ngOnDestroy() {
