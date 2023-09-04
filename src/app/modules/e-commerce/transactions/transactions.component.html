@@ -90,6 +90,7 @@
           <th>ShippingPhone</th>   
           <th>totalAmount</th>
           <th>status</th>  
+          <th>Ngày đặt</th>  
           <th>ACTIONS</th>
         </thead>
         <tbody>
@@ -100,7 +101,7 @@
             <td>{{ tran.shippingPhone }}</td>
             <td>{{ tran.totalAmount | currency: "VND" }}</td>
             <td>{{ getStatusName(tran.status) }}</td>
-
+            <td>{{tran.createdDate | date:'yyyy/MM/dd HH:mm' }}</td>
             <td>
               <a
                 title="Edit attribute"

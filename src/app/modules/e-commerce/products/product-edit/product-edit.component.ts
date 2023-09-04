@@ -136,6 +136,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
     const sb = this.route.paramMap.pipe(
       switchMap(params => {
         // get id from URL
+        debugger;
         this.id = Number(params.get('id'));
         if (this.id || this.id > 0) {
           return this.productsService.getItemById(this.id, '');
@@ -150,7 +151,10 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       if (!res) {
         this.router.navigate(['/products'], { relativeTo: this.route });
       }
-      this.checkSuccessEditOrAdd(res, "Load sản phẩm");
+      if (this.id || this.id > 0){
+        this.checkSuccessEditOrAdd(res, "Load sản phẩm");
+      }
+      
       this.product = res.data ?? EMPTY_PRODUCT;
       this.previous = Object.assign({}, res);
       this.loadForm();

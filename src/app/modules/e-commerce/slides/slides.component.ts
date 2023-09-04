@@ -33,7 +33,7 @@ export class SlidesComponent
   implements
   OnInit,
   OnDestroy,
- // IDeleteAction,
+  // IDeleteAction,
   // IDeleteSelectedAction,
   // IFetchSelectedAction,
   // IUpdateStatusForSelectedAction,
@@ -50,17 +50,17 @@ export class SlidesComponent
   searchGroup: FormGroup;
   private subscriptions: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
   public urlImage = environment.urlImage;
-  listCategoryParent : any = [];
+  listCategoryParent: any = [];
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
     //public productsService: ProductsService,
-    public slideService : SlidesService
+    public slideService: SlidesService
   ) { }
 
   // angular lifecircle hooks
   ngOnInit(): void {
-   // this.getListCategoryParent();
+    // this.getListCategoryParent();
     this.filterForm();
     this.searchForm();
     this.slideService.fetch();
@@ -70,7 +70,7 @@ export class SlidesComponent
     this.paginator = this.slideService.paginator;
     this.sorting = this.slideService.sorting;
     //this.attributeService.fetch(); 
-       this.isLoading = false;
+    this.isLoading = false;
   }
 
   ngOnDestroy() {
@@ -158,9 +158,9 @@ export class SlidesComponent
     this.slideService.patchState({ paginator });
   }
   // actions
-  
+
   delete(id: number) {
-    const modalRef = this.modalService.open(DeleteSlidesModalComponent, );
+    const modalRef = this.modalService.open(DeleteSlidesModalComponent,);
     modalRef.componentInstance.id = id;
     modalRef.result.then(
       () => this.slideService.fetch(),
@@ -169,41 +169,13 @@ export class SlidesComponent
   }
 
   addSlides(id: number) {
-    const modalRef = this.modalService.open(AddSlidesModalComponent, {size: 'xl'});
+    const modalRef = this.modalService.open(AddSlidesModalComponent, { size: 'xl' });
     modalRef.componentInstance.id = id;
-   // modalRef.componentInstance.listCategoryParent = this.listCategoryParent;
+    // modalRef.componentInstance.listCategoryParent = this.listCategoryParent;
     modalRef.result.then(
       () => this.slideService.fetch(),
       () => { }
     );
   }
 
-  // deleteSelected() {
-  //   const modalRef = this.modalService.open(DeleteCategoriesServiceModalComponent);
-  //   modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-  //   modalRef.result.then(
-  //     () => this.categoriesService.fetch(),
-  //     () => { }
-  //   );
-  // }
-
-  // updateStatusForSelected() {
-  //   const modalRef = this.modalService.open(
-  //     UpdateProductsStatusModalComponent
-  //   );
-  //   modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-  //   modalRef.result.then(
-  //     () => this.productsService.fetch(),
-  //     () => { }
-  //   );
-  // }
-
-  // fetchSelected() {
-  //   const modalRef = this.modalService.open(FetchProductsModalComponent);
-  //   modalRef.componentInstance.ids = this.grouping.getSelectedRows();
-  //   modalRef.result.then(
-  //     () => this.productsService.fetch(),
-  //     () => { }
-  //   );
-  // }
 }
