@@ -5,5 +5,6 @@ export const AdminConfigs = {
         getProductById:'/v1/Product/by-id?id=',
         updateProduct:"/v1/Product",
         createProduct:"/v1/Product",
+        getChartQuickInfo:"/v1/Charts/QuickInfo",
     }
 }
