@@ -222,7 +222,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       ProductName: this.product.productName,
       CategoryId: this.product.categoryId,
       Description: this.product.description,
-      IsNew: this.product.partnerID,
+      IsNew: this.product.isNew,
       IsHot: this.product.isHot,
       Content: this.product.content,
       Price: this.product.price,
@@ -235,7 +235,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       SeoDescription: this.product.seoDescription,
       SeoKeyword: this.product.seoKeyword,
       SeoTitle: this.product.seoTitle,
-      ProductTags: this.product.productTags.toString(),
+      ProductTags: this.product.productTags?.toString(),
       id: 0
     };
     const sbUpdate = this.productsService.update(proUp, '').pipe(
