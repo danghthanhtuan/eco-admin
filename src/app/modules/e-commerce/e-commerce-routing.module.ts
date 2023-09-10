@@ -14,6 +14,7 @@ import { FiltersComponent } from './filters/filters.component';
 import { FilterValuesComponent } from './filter-values/filter-values.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { CategoryFiltersComponent } from './category-filters/category-filters.component';
+import { BannersComponent } from './banners/banners.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
       {
         path: 'attribute/values',
         component: AttributeValuesComponent,
+      },
+      {
+        path: 'banners',
+        component: BannersComponent,
       },
       {
         path: 'categories',

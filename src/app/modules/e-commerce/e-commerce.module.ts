@@ -57,6 +57,9 @@ import { CategoryFiltersComponent } from './category-filters/category-filters.co
 import { AddCategoryFilterValueModalComponent } from './category-filters/components/add-category-filters-modal.component';
 import { TransactionsModalComponent } from './transactions/components/transactions-modal.component';
 import { AddProducutToTransModalComponent } from './transactions/components/add-product-to-trans-modal.component';
+import { BannersComponent } from './banners/banners.component';
+import { AddBannersModalComponent } from './banners/components/add-banners-modal.component';
+import { DeleteBannersModalComponent } from './banners/components/delete-banners-modal.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +112,10 @@ import { AddProducutToTransModalComponent } from './transactions/components/add-
     CategoryFiltersComponent,
     AddCategoryFilterValueModalComponent,
     TransactionsModalComponent,
-    AddProducutToTransModalComponent
+    AddProducutToTransModalComponent,
+    BannersComponent,
+    AddBannersModalComponent,
+    DeleteBannersModalComponent
   ],
   imports: [
     CommonModule,
