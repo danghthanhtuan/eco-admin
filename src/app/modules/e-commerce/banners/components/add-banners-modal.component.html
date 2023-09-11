@@ -7,9 +7,9 @@
 
 <div class="modal-header">
   <!-- <div class="modal-title h4"> Add</div> -->
-  <ng-container *ngIf="slide.id">Edit</ng-container>
-  <ng-container *ngIf="!slide.id">Create</ng-container>
-   Banner
+  <ng-container *ngIf="banner.id">Edit</ng-container>
+  <ng-container *ngIf="!banner.id">Create</ng-container>
+  Banner
 </div>
 <div class="modal-body">
   <!-- <ng-container *ngIf="isLoading">
@@ -21,75 +21,58 @@
 
       <div class="form-group row">
         <div class="col-lg-6">
-          <label class="form-label">Url (Khi click vào thương hiệ VD:	danh-muc-san-pham-g?searchKey=intel)</label>
-          <input type="text" class="form-control form-control-lg form-control-solid" name="target"
-            placeholder="target" autocomplete="off"
-            [class.is-invalid]="isControlInvalid('target')"
-            [class.is-valid]="isControlValid('target')" formControlName="target" />
-          <div class="valid-feedback" *ngIf="isControlValid('target')">
+          <label class="form-label">Url (Khi click vào thương hiệ VD: danh-muc-san-pham-g?searchKey=intel)</label>
+          <input type="text" class="form-control form-control-lg form-control-solid" name="urlTarget"
+            placeholder="urlTarget" autocomplete="off" [class.is-invalid]="isControlInvalid('urlTarget')"
+            [class.is-valid]="isControlValid('urlTarget')" formControlName="urlTarget" />
+          <div class="valid-feedback" *ngIf="isControlValid('urlTarget')">
             Tên thuộc tính hợp lệ
           </div>
-          <!-- <div class="invalid-feedback" *ngIf="controlHasError('required', 'target')">
-            Tên thuộc tính bắt buộc
-          </div> -->
-          <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'target')">
-            Phải hiều hơn 1 ký tự
-          </div>
-          <div class="invalid-feedback" *ngIf="controlHasError('maxlength', 'target')">
-            Tối đa 200 ký tự
-          </div>
+
         </div>
-        <!-- <div class="col-lg-6">
-          <label class="form-label">Nhập Seo Title </label>
-          <input type="text" class="form-control form-control-lg form-control-solid" name="seoTitle" placeholder="seoTitle"
-            autocomplete="off" [class.is-invalid]="isControlInvalid('seoTitle')" [class.is-valid]="isControlValid('seoTitle')"
-            formControlName="seoTitle" />
-            <div class="valid-feedback" *ngIf="isControlValid('seoTitle')">
-              Seo Title hợp lệ
-            </div>
-            <div class="invalid-feedback" *ngIf="controlHasError('required', 'seoTitle')">
-              Seo Title bắt buộc
-            </div>
-            <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'seoTitle')">
-              Phải hiều hơn 1 ký tự
-            </div>
-            <div class="invalid-feedback" *ngIf="controlHasError('maxlength', 'seoTitle')">
-              Tối đa 50 ký tự
-            </div>
-        </div> -->
+        <div class="col-lg-3">
+          <label>Trang</label>
+          <select class="form-control" name="page" placeholder="Trang hiện" formControlName="page">
+            <option value="home" selected>Home</option>
+          </select>
+
+        </div>
+        <div class="col-lg-3">
+          <label>Vị trí hiện</label>
+          <select class="form-control" name="position" placeholder="Vị trí hiện" formControlName="position">
+            <option value="top" selected>Top</option>
+            <option value="center" selected>Center</option>
+            <option value="bottom" selected>Bottom</option>
+          </select>
+
+        </div>
       </div>
 
       <div class="form-group row">
         <div class="col-lg-4">
-          <label class="form-label">Sort Order</label>
-          <input type="number" class="form-control form-control-lg form-control-solid" name="sortOrder"
-            placeholder="sortOrder" autocomplete="off"
-            [class.is-invalid]="isControlInvalid('sortOrder')"
-            [class.is-valid]="isControlValid('sortOrder')" formControlName="sortOrder" />
-          <div class="valid-feedback" *ngIf="isControlValid('sortOrder')">
-            Sort Order hợp lệ
+          <label class="form-label">Name Banner</label>
+          <input type="text" class="form-control form-control-lg form-control-solid" name="nameBanner"
+            placeholder="nameBanner" autocomplete="off" [class.is-invalid]="isControlInvalid('nameBanner')"
+            [class.is-valid]="isControlValid('nameBanner')" formControlName="nameBanner" />
+          <div class="valid-feedback" *ngIf="isControlValid('nameBanner')">
+            NameBanner hợp lệ
           </div>
-          
+
         </div>
         <div class="col-lg-8">
           <label class="form-label">Hình ảnh</label>
-          <input 
-            formControlName="file"
-            id="file" 
-            type="file" 
-            class="form-control"
-            (change)="onFileChange($event)">
+          <input formControlName="file" id="file" type="file" class="form-control" (change)="onFileChange($event)">
         </div>
-         <div class="invalid-feedback" *ngIf="controlHasError('required', 'imageUrl')">
-            Tên thuộc tính bắt buộc
-          </div>
+        <div class="invalid-feedback" *ngIf="controlHasError('required', 'imageUrl')">
+          Tên thuộc tính bắt buộc
+        </div>
       </div>
 
       <div class="form-group row">
         <div class="col-lg-4">
         </div>
-        <div class="col-lg-8">          
-          <img id="blah" [src]="fileReview" style="max-width: 250px; max-height: 250px;" alt="your image" />     
+        <div class="col-lg-8">
+          <img id="blah" [src]="fileReview" style="max-width: 250px; max-height: 250px;" alt="your image" />
         </div>
       </div>
     </form>

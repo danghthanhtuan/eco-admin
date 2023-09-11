@@ -35,8 +35,9 @@ export class AddBannersModalComponent implements OnInit, OnDestroy {
     urlTarget: '',
     pathImage : '',
     status: 0,
-    position: '0',
-    productId: 0
+    position: 'top',
+    productId: 0,
+    page : 'home'
   };
   isLoading = false;
   subscriptions: Subscription[] = [];
@@ -55,6 +56,8 @@ export class AddBannersModalComponent implements OnInit, OnDestroy {
     this.formGroup = this.fb.group({
       urlTarget: [this.banner.nameBanner, ],
       nameBanner: [this.banner.nameBanner],
+      position: [this.banner.position],
+      page: [this.banner.page],
       status: [this.banner.status],
          file : new FormControl(''),
          imageUrl : new FormControl('', Validators.required)
@@ -80,14 +83,17 @@ export class AddBannersModalComponent implements OnInit, OnDestroy {
     this.subscriptions.push(sb);
   }
 
-  AddSlide() {
+  AddBanner() {
     this.isLoading = true;
     var modelPost = new FormData ();
-     modelPost.append('ImageUrl', this.formGroup.get('imageUrl').value);
-     modelPost.append('Url',   this.banner.url);
-     modelPost.append('SortOrder', this.banner.sortOrder.toString());
+     modelPost.append('ImageBanner', this.formGroup.get('imageUrl').value);
+     modelPost.append('UrlTarget',   this.banner.urlTarget);
+     modelPost.append('Page',   this.banner.page);
+     modelPost.append('Position',   this.banner.position);
+     modelPost.append('NameBanner',   this.banner.nameBanner);
+    // modelPost.append('SortOrder', this.banner.sortOrder.toString());
  
-    const sb = this.tradeMarksService.createWithImage(modelPost, '/v1/trademark').pipe(
+    const sb = this.tradeMarksService.createWithImage(modelPost, '/v1/banners').pipe(
       delay(500), // Remove it from your code (just for showing loading)
       tap((res: any) =>
       {  
@@ -113,10 +119,10 @@ export class AddBannersModalComponent implements OnInit, OnDestroy {
   edit() {
     this.isLoading = true;
     var modelUpdate = new FormData ();
-    modelUpdate.append('ID',   this.slide.id.toString());
+    modelUpdate.append('ID',   this.banner.id.toString());
     modelUpdate.append('ImageUrl', this.formGroup.get('imageUrl').value);
-    modelUpdate.append('Url',   this.slide.url);
-    modelUpdate.append('SortOrder', this.slide.sortOrder.toString());
+    // modelUpdate.append('Url',   this.banner.url);
+    // modelUpdate.append('SortOrder', this.banner.sortOrder.toString());
 
     const sbUpdate = this.tradeMarksService.updateWithImage(modelUpdate, '/v1/trademark').pipe(
       tap((res : any) => {
@@ -125,22 +131,22 @@ export class AddBannersModalComponent implements OnInit, OnDestroy {
       }),
       catchError((errorMessage) => {
         this.modal.dismiss(errorMessage);
-        return of(this.slide);
+        return of(this.banner);
       }),
-    ).subscribe(res => this.slide = res);
+    ).subscribe(res => this.banner = res);
     this.subscriptions.push(sbUpdate);
   }
 
   loadSlide() {
     if (!this.id) {
-      this.slide = this.EMPTY_Attribute_Value;
+      this.banner = this.EMPTY_Banner_Value;
       this.loadForm();
     } else {
       const sb = this.tradeMarksService.getItemById(this.id, '/v1/trademark/by-id?id=').pipe(
         first(),
         catchError((errorMessage) => {
           this.modal.dismiss(errorMessage);
-          return of(this.EMPTY_Attribute_Value);
+          return of(this.EMPTY_Banner_Value);
         })
       ).subscribe((att: any) => {
         if(att.data.imageUrl && att.data.imageUrl !== ''){
@@ -175,17 +181,20 @@ export class AddBannersModalComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.slide.id) {
+    if (this.banner.id) {
       this.edit();
     } else {
-      this.AddSlide();
+      this.AddBanner();
     }
   }
 
   private prepareAttribute() {
     const formData = this.formGroup.value;
-    this.slide.url = formData.target;
-    this.slide.sortOrder = formData.sortOrder;
+    this.banner.urlTarget = formData.urlTarget;
+    this.banner.position = formData.position;
+    this.banner.nameBanner = formData.nameBanner;
+    this.banner.page = formData.page;
+    ///this.banner.sortOrder = formData.sortOrder;
   }
 
   // helpers for View

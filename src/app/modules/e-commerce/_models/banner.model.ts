@@ -8,4 +8,5 @@ export interface Banners extends BaseModel {
   pathImage: string;
   status: Number;
   urlTarget: string;
+  page : string;
 }

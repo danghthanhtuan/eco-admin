@@ -24,7 +24,7 @@ export class DeleteBannersModalComponent implements OnInit, OnDestroy {
 
   deleteTrademarks() {
     this.isLoading = true;
-    const sb = this.trademarksService.delete(this.id, '/v1/trademark?id=').pipe(
+    const sb = this.trademarksService.delete(this.id, '/v1/banners?id=').pipe(
       delay(500), // Remove it from your code (just for showing loading)
       tap(() => this.modal.close()),
       catchError((err) => {
