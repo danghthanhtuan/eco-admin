@@ -41,7 +41,7 @@
         <div
             class="timeline-label text-dark-75 font-size-lg"
         >
-          {{item.orderDate}}
+          {{item?.OrderDate}}
         </div>
         <!--end::Label-->
 
@@ -54,7 +54,7 @@
         <!--begin::Content-->
         <div class="timeline-content d-flex">
             <span class="text-dark-75 pl-3 font-size-lg"
-              >Khách hàng <b style="color: red;">{{item.customerName}}</b> đã đặt sản phẩm <b style="color: red;">{{item.productName}}</b></span
+              >Khách hàng <b style="color: red;">{{item?.CustomerName}}</b> đã đặt sản phẩm <b style="color: red;">{{item?.ProductName}}</b></span
           >
         </div>
           

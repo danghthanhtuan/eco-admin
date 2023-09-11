@@ -22,13 +22,15 @@ export class ListsWidget9Component implements OnInit {
   getDataCharts(){
     this._chartSvc.getChartQuickInfo().subscribe((res : any)=>{
       this.responeData = {...res}.data;
-      this.responeData.forEach(element => {
-         this.listOrderId.push(element.orderId)
-      });
-      console.log(this.responeData);
-      this.countOrder = this.countUnique(this.listOrderId);
-      const date = new Date(this.responeData[0].orderDate);
-      this.time = date.toLocaleTimeString('it-IT');
+      if(this.responeData.length > 0 ){
+          this.responeData.forEach(element => {
+            this.listOrderId.push(element.OrderID)
+        });
+        console.log(this.responeData);
+        this.countOrder = this.countUnique(this.listOrderId);
+        const date = new Date(this.responeData[0].OrderDate);
+        this.time = date.toLocaleTimeString('it-IT');
+      }
      })
   }
 }
