@@ -26,7 +26,7 @@
             placeholder="urlTarget" autocomplete="off" [class.is-invalid]="isControlInvalid('urlTarget')"
             [class.is-valid]="isControlValid('urlTarget')" formControlName="urlTarget" />
           <div class="valid-feedback" *ngIf="isControlValid('urlTarget')">
-            Tên thuộc tính hợp lệ
+            Url hợp lệ
           </div>
 
         </div>
@@ -41,6 +41,8 @@
           <label>Vị trí hiện</label>
           <select class="form-control" name="position" placeholder="Vị trí hiện" formControlName="position">
             <option value="top" selected>Top</option>
+            <option value="left" selected>Left</option>
+            <option value="right" selected>Right</option>
             <option value="center" selected>Center</option>
             <option value="bottom" selected>Bottom</option>
           </select>

@@ -93,15 +93,6 @@ export class AddCategoriesModalComponent implements OnInit, OnDestroy {
     this.subscriptions.push(sb);
   }
 
-  // this.category.categoryName = formData.categoryName;
-  // this.category.sortOrder = formData.sortOrder;
-  // this.category.seoDescription = formData.seoDescription;
-  // this.category.seoKeyword = formData.seoKeyword;
-  // this.category.seoTitle = formData.seoTitle;
-  // this.category.content = formData.content;
-  // this.category.categoryTags = formData.categoryTags;
-  // this.category.categoryParent = formData.categoryParent;
-
   AddCategory() {
     this.isLoading = true;
     var modelPost = new FormData ();

@@ -101,7 +101,8 @@
           <th>SeoTitle</th>    
           <th>SeoDescription</th> 
           <th>ImageUrl</th> 
-          <th>Content</th>    
+          <!-- <th>Content</th> -->
+          <th>Sắp xếp</th>        
           <th>ACTIONS</th>
         </thead>
         <tbody>
@@ -126,7 +127,8 @@
                     [src]="urlImage + att.imageUrl" class="h-75 align-self-end"></span></div>
 
             </td>
-            <td>{{ att.content }}</td>
+            <!-- <td>{{ att.content }}</td> -->
+            <td>{{ att.sortOrder }}</td>
             <td>
               <a
                 title="Edit attribute"
@@ -147,9 +149,9 @@
               <a
                 title="Delete attribute"
                 class="btn btn-icon btn-light btn-hover-danger btn-sm"
-               
+                (click)="delete(att.id)" 
               >
-              <!-- --(click)="delete(product.id)" -->
+              <!-- ---->
                 <span
                   [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'"
                   cacheSVG="true"

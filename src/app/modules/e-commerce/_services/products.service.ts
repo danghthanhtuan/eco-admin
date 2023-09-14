@@ -52,12 +52,15 @@ export class ProductsService extends TableService<Product> {
     super(http, router);
 }
 find(tableState: ITableState): Observable<TableResponseModel<Product>> {
+  debugger;
     const categoryId = tableState.filter['categoryId'] ?? '0';
     const nameSearch = tableState.searchTerm ?? "";
     const status = tableState.filter['status'] ?? '-1';
+    const isHot = tableState.filter['isHot'] ?? '-1';
+    const isNew = tableState.filter['isNew'] ?? '-1';
     const page = tableState.paginator.page ?? 1;
     const pageSize = tableState.paginator.pageSize ?? 10; 
-    const params = `?CategoryId=${categoryId}&ProductName=${nameSearch}&Page=${page}&PageSize=${pageSize}&Status=${status}`;
+    const params = `?CategoryId=${categoryId}&ProductName=${nameSearch}&Page=${page}&PageSize=${pageSize}&Status=${status}&IsHot=${isHot}&IsNew=${isNew}`;
     return this.http.get<any>(`${this.API_URL}${AdminConfigs.urls.getListProduts}${params}`,this.httpOptions).pipe(
     mergeMap((response: any) => {
       var res : Product [] = response.data;

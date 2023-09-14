@@ -21,6 +21,7 @@ import {
 import { CategoriesService } from '../_services/categories.service';
 import { environment } from 'src/environments/environment';
 import { AddCategoriesModalComponent } from './components/add-categories-modal/add-categories-modal.component';
+import { DeleteCategoryModalComponent } from './components/delete-categories-modal.component';
 // import { DeleteAttributeModalComponent } from './components/delete-attribute-modal/delete-attribute-modal.component';
 // import { AddAttributeModalComponent } from './components/add-attribute-modal/add-attribute-modal.component';
 // import { DeleteProductsModalComponent } from './components/delete-products-modal/delete-products-modal.component';
@@ -162,14 +163,14 @@ export class CategoryComponent
   }
   // actions
   
-  // delete(id: number) {
-  //   const modalRef = this.modalService.open(DeleteAttributeModalComponent, );
-  //   modalRef.componentInstance.id = id;
-  //   modalRef.result.then(
-  //     () => this.categoriesService.fetch(),
-  //     () => { }
-  //   );
-  // }
+  delete(id: number) {
+    const modalRef = this.modalService.open(DeleteCategoryModalComponent, );
+    modalRef.componentInstance.id = id;
+    modalRef.result.then(
+      () => this.categoriesService.fetch(),
+      () => { }
+    );
+  }
 
   addCategories(id: number) {
     const modalRef = this.modalService.open(AddCategoriesModalComponent, {size: 'xl'});

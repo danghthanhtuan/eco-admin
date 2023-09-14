@@ -80,6 +80,8 @@ export class ProductsComponent
   filterForm() {
     this.filterGroup = this.fb.group({
       status: [''],
+      isNew: [''],
+      isHot: [''],
       categoryId: [''],
       searchTerm: [''],
     });
@@ -90,6 +92,12 @@ export class ProductsComponent
     );
     this.subscriptions.push(
       this.filterGroup.controls.categoryId.valueChanges.subscribe(() => this.filter())
+    );
+    this.subscriptions.push(
+      this.filterGroup.controls.isNew.valueChanges.subscribe(() => this.filter())
+    );
+    this.subscriptions.push(
+      this.filterGroup.controls.isHot.valueChanges.subscribe(() => this.filter())
     );
   }
 
@@ -103,6 +111,16 @@ export class ProductsComponent
     const categoryId = this.filterGroup.get('categoryId').value;
     if (categoryId) {
       filter['categoryId'] = categoryId;
+    }
+
+    const isNew = this.filterGroup.get('isNew').value;
+    if (isNew) {
+      filter['isNew'] = isNew;
+    }
+
+    const isHot = this.filterGroup.get('isHot').value;
+    if (isHot) {
+      filter['isHot'] = isHot;
     }
     this.productsService.patchState({ filter });
   }

@@ -60,6 +60,7 @@ import { AddProducutToTransModalComponent } from './transactions/components/add-
 import { BannersComponent } from './banners/banners.component';
 import { AddBannersModalComponent } from './banners/components/add-banners-modal.component';
 import { DeleteBannersModalComponent } from './banners/components/delete-banners-modal.component';
+import { DeleteCategoryModalComponent } from './categories/components/delete-categories-modal.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { DeleteBannersModalComponent } from './banners/components/delete-banners
     DeleteAttributeValueModalComponent,
     CategoryComponent,
     AddCategoriesModalComponent,
+    DeleteCategoryModalComponent,
     SlidesComponent,
     AddSlidesModalComponent,
     DeleteSlidesModalComponent,
