@@ -61,6 +61,8 @@ import { BannersComponent } from './banners/banners.component';
 import { AddBannersModalComponent } from './banners/components/add-banners-modal.component';
 import { DeleteBannersModalComponent } from './banners/components/delete-banners-modal.component';
 import { DeleteCategoryModalComponent } from './categories/components/delete-categories-modal.component';
+import { BuildPCConfigsComponent } from './build-pc-configs/build-pc-configs.component';
+import { AddBuildPCConfigModalComponent } from './build-pc-configs/components/add-build-pc-configs-modal.component';
 
 @NgModule({
   declarations: [
@@ -117,7 +119,11 @@ import { DeleteCategoryModalComponent } from './categories/components/delete-cat
     AddProducutToTransModalComponent,
     BannersComponent,
     AddBannersModalComponent,
-    DeleteBannersModalComponent
+    DeleteBannersModalComponent,
+
+    BuildPCConfigsComponent,
+
+    AddBuildPCConfigModalComponent
   ],
   imports: [
     CommonModule,

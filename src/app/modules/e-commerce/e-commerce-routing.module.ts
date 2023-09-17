@@ -15,6 +15,7 @@ import { FilterValuesComponent } from './filter-values/filter-values.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { CategoryFiltersComponent } from './category-filters/category-filters.component';
 import { BannersComponent } from './banners/banners.component';
+import { BuildPCConfigsComponent } from './build-pc-configs/build-pc-configs.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,10 @@ const routes: Routes = [
       {
         path: 'banners',
         component: BannersComponent,
+      },
+      {
+        path: 'buildPCConfigs',
+        component: BuildPCConfigsComponent,
       },
       {
         path: 'categories',

@@ -182,7 +182,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       status: [this.product.status],
       seoKeyword: [this.product.seoKeyword],
       seoDescription: [this.product.seoDescription],
-      stock: [this.product.stock, Validators.compose([Validators.required, Validators.min(1)])],
+      stock: [this.product.stock, Validators.compose([Validators.required, Validators.min(0)])],
       guarantee: [this.product.guarantee],
       description: [this.product.description, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(4000)])],
     });

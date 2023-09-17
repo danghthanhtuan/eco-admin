@@ -298,6 +298,10 @@ export const DynamicAsideMenuConfig = {
           title: 'AttributeValues',
           page: '/ecommerce/attribute/values'
         },
+        // {
+        //   title: 'BuildPCConfigs',
+        //   page: '/ecommerce/buildPCConfigs'
+        // },
         {
           title: 'Trademarks',
           page: '/ecommerce/trademarks'
