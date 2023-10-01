@@ -11,6 +11,7 @@ import { AddProductAttributeModalComponent } from './product-attribute/add-produ
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AttributeValueService } from '../../_services/attribute-value.service';
 import { ProductImageModalComponent } from './product-images-modal/product-image-modal.component';
+import { max } from 'moment';
 
 const EMPTY_PRODUCT: Product = {
   id: 0,
@@ -104,15 +105,15 @@ export class ProductEditComponent implements OnInit, OnDestroy {
         tag: 'h1',
       },
     ],
-    uploadUrl: 'v1/image',
+    //uploadUrl: 'api/v1/Product/image-description',
     // upload: (file: File) => { ... }
     //uploadWithCredentials: false,
     sanitize: true,
     toolbarPosition: 'top',
-    toolbarHiddenButtons: [
-      ['bold', 'italic'],
-      ['fontSize']
-    ]
+    // toolbarHiddenButtons: [
+    //   ['bold', 'italic'],
+    //   ['fontSize']
+    // ]
   };
 
   constructor(
@@ -184,7 +185,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       seoDescription: [this.product.seoDescription],
       stock: [this.product.stock, Validators.compose([Validators.required, Validators.min(0)])],
       guarantee: [this.product.guarantee],
-      description: [this.product.description, Validators.compose([Validators.required, Validators.minLength(1), Validators.maxLength(4000)])],
+      description: [this.product.description, Validators.compose([Validators.required, Validators.minLength(1), ])],
     });
   }
 
@@ -204,7 +205,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       this.validateAllFormFields(this.formGroup);
       return;
     }
-
+    debugger;
     const formValues = this.formGroup.value;
     this.product = Object.assign(this.product, formValues);
     if (this.id) {
@@ -221,7 +222,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
       ProductCode: this.product.productCode,
       ProductName: this.product.productName,
       CategoryId: this.product.categoryId,
-      Description: this.product.description,
+      Description: this.formGroup.controls['description'].value,
       IsNew: this.product.isNew,
       IsHot: this.product.isHot,
       Content: this.product.content,
